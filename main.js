@@ -7,9 +7,9 @@ class Map {
         this.height = 70
         this.map = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 3, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -22,11 +22,27 @@ class Map {
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
+        this.addblocke()
     }
+    addblocke() {
+        let emtiSpais = []
+        this.map.forEach((element, y) => {
+            for (let x = 0; x < element.length; x++) {
+                if (element[x] == 0) {
+                    emtiSpais.push({ y, x })
+                }
 
+            }
+        });
+        for (let i = 0; i < 50; i++) {
+            let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)]
+            console.log(pos);
+            this.map[pos.y][pos.x] = 2
+        }
+
+    }
     draw() {
         bord.innerHTML = ""
-        console.log(this.map.length, this.map[0].length);
 
         bord.style.display = "grid"
         bord.style.gridTemplateColumns = `repeat(${this.map[0].length}, 1fr)`
@@ -36,10 +52,13 @@ class Map {
         for (let y = 0; y < this.map.length; y++) {
             for (let x = 0; x < this.map[y].length; x++) {
                 const tile = document.createElement('div')
-                tile.id='til'
+                tile.id = 'til'
                 if (this.map[y][x] === 1) {
                     tile.style.backgroundImage = "url('block.png')"
 
+                }
+                if (this.map[y][x] === 2) {
+                    tile.style.backgroundImage = "url('RTS.png')"
                 }
                 tile.style.border = '1px solid #ccc'
                 bord.appendChild(tile)
