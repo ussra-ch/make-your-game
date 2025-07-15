@@ -92,6 +92,7 @@ class Ui {
         this.elapsed = 0
     }
     draw(deltaTime) {
+        
         this.elapsed += deltaTime;
         if (this.elapsed >= 1000) {
             this.timeS += Math.floor(this.elapsed / 1000);
@@ -133,8 +134,9 @@ function animate(timestamp) {
     lastTime = timestamp;
     console.log(Math.ceil(deltatime));
     if (game.puse) {
-
+        document.getElementById('puse').style.display='block'
     } else {
+        document.getElementById('puse').style.display='none'
 
         game.draw(deltatime)
     }
