@@ -36,7 +36,6 @@ class Map {
         });
         for (let i = 0; i < 50; i++) {
             let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)]
-            console.log(pos);
             this.map[pos.y][pos.x] = 2
         }
 
@@ -67,21 +66,80 @@ class Map {
     }
 
 }
+class Input {
+    constructor(game) {
+        this.game = game;
+        this.keys = [];
+        window.addEventListener('keydown', e => {
+            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !this.keys.includes(e.key)) {
+                this.keys.push(e.key);
+            }
 
+        });
+        window.addEventListener('keyup', e => {
+            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
+                this.keys.splice(this.keys.indexOf(e.key), 1);
+            }
+        });
+    }
+}
+class Ui {
+    constructor(game) {
+        this.game = game
+        this.score = 0
+        this.timeS = 0
+        this.timeM = 0
+        this.elapsed = 0
+    }
+    draw(deltaTime) {
+        this.elapsed += deltaTime;
+        if (this.elapsed >= 1000) {
+            this.timeS += Math.floor(this.elapsed / 1000);
+            this.elapsed %= 1000;
+        }
+        if (this.timeS >= 60) {
+            this.timeM += 1
+            this.timeS = 0
+        }
+        const timeEl = document.getElementById('time');
+        timeEl.textContent = `${this.timeM}:${this.timeS}`;
+    }
+}
 class Game {
     constructor() {
         this.map = new Map(this)
+        this.ui = new Ui(this)
+        this.input = new Input(this)
+        this.puse = false
+        this.pPressedLastFrame = false
     }
-    draw() {
+    draw(deleteTime) {
         this.map.draw()
+        this.ui.draw(deleteTime)
+    }
+    update() {
+        const pPressed = this.input.keys.includes('p');
+        if (pPressed && !this.pPressedLastFrame) {
+            this.puse = !this.puse;
+        }
+        this.pPressedLastFrame = pPressed;
     }
 }
 
 const game = new Game()
+let lastTime = 0
+function animate(timestamp) {
+    let deltatime = timestamp - lastTime;
+    lastTime = timestamp;
+    console.log(Math.ceil(deltatime));
+    if (game.puse) {
 
-function animate() {
-    game.draw()
+    } else {
+
+        game.draw(deltatime)
+    }
     requestAnimationFrame(animate)
+    game.update()
 }
 
-animate()
+animate(0)
