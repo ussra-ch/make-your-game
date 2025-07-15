@@ -209,9 +209,9 @@ class Bomb {
     update() {
         this.timer--;
         
-        if (this.timer < 60) { 
+        if (this.timer < 80) { 
             this.blinkTimer++;
-            if (this.blinkTimer % 10 === 0) {
+            if (this.blinkTimer % 1 === 0) {
                 this.visible = !this.visible;
             }
         }
@@ -250,8 +250,10 @@ class Bomb {
     }
 
     draw() {
-        if (!this.exploded && this.visible) {
-            const idx = this.y * this.game.map.map[0].length + this.x;
+        if (!this.exploded && this.visible ) {
+            const idx = this.y * this.game.map.map[0].length + this.x
+            console.log(idx);
+            
             const tile = bord.children[idx];
             if (tile) {
                 tile.style.backgroundColor = "#FFA500"; 
