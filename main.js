@@ -313,38 +313,6 @@ class Bomb {
     }
 }
 
-class Game {
-    constructor() {
-        this.map = new Map(this)
-        this.ui = new Ui(this)
-        this.input = new Input(this)
-        this.player = new Player(this, 1, 1)
-        this.puse = false
-        this.pPressedLastFrame = false
-    }
-
-    draw(deltaTime) {
-        this.map.draw()
-        this.player.draw()
-        this.ui.draw(deltaTime)
-        document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;
-        document.getElementById('score').textContent = `Score: ${this.ui.score}`;
-    }
-
-    update() {
-        const pPressed = this.input.keys.includes('p');
-        if (pPressed && !this.pPressedLastFrame) {
-            this.puse = !this.puse;
-        }
-        this.pPressedLastFrame = pPressed;
-
-        if (!this.puse) {
-            this.player.update();
-        }
-
-    }
-}
-
 class Enemies{
     constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed){
         this.x = x
@@ -368,27 +336,37 @@ class Enemies{
         this.element.style.top = `${this.y}px`;
     }
 
-    update(time, gameBoard){
+    update(deltatime, gameBoard){
         //time howa time li kan bin had l frame wl frame li kant 9bl
         if(!this.isAlive) return
-        let distance = this.speed * time, newX = this.x, newY = this.y;
+        let distance = this.speed * deltatime, newX = this.x, newY = this.y;
         if (this.direction === 'idle') {
             this.randomDirection();
         }
+        // console.log(deltatime);
         if (this.direction === 'up'){
             newY = this.y - distance
             newX = this.x
+        // console.log();
         }else if (this.direction === 'down'){
             newY = this.y + distance
             newX = this.x
+        // console.log(newY);
+
         }else if (this.direction === 'left'){
             newX = this.x - distance
             newY = this.y
+        // console.log(newY);
+
         }else if (this.direction === 'right'){
             newX = this.x + distance
             newY = this.y
+        // console.log(newY);
+
         }
 
+        // console.log(newX);
+        // console.log(newY);
         if(this.checkForCollision(newX, newY, gameBoard)){
             this.randomDirection()
         }else{
@@ -398,6 +376,8 @@ class Enemies{
     }
 
     checkForCollision(newX, newY, gameBoard){
+        // console.log(newY);
+        // console.log(newX);
         const corners = [
             { x: newX, y: newY },// Top-left
             { x: newX + this.size - 1, y: newY }, // Top-right
@@ -407,12 +387,14 @@ class Enemies{
         for(let corner of corners){
             const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
             const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
+            // console.log(corner);
+            // console.log(corner.y);
 
             if (tileX >= gameBoard[0].length|| tileX < 0 ||
                 tileY >= gameBoard.length || tileY < 0) {
                     return true
                 }
-            if (gameBoard[tileY][tileX] === 1){
+            if (gameBoard[tileY][tileX] == 1){
                 return true
             }
         }
@@ -422,6 +404,50 @@ class Enemies{
     randomDirection(){
         const directions = ['up', 'down', 'left', 'right']
         this.direction = directions[Math.floor(Math.random() * directions.length)]
+    }
+}
+
+class Game {
+    constructor() {
+        this.map = new Map(this)
+        this.ui = new Ui(this)
+        this.input = new Input(this)
+        this.player = new Player(this, 1, 1)
+        this.puse = false
+        this.pPressedLastFrame = false
+        this.enemies = []
+
+        this.enemies.push(new Enemies(3 * GRID_CELL_SIZE, 3 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+        this.enemies.push(new Enemies(8 * GRID_CELL_SIZE, 5 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
+    }
+
+    draw(deltaTime) {
+        this.map.draw()
+        this.player.draw()
+        this.ui.draw(deltaTime)
+        document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;
+        document.getElementById('score').textContent = `Score: ${this.ui.score}`;
+
+        this.enemies.forEach(enemy => {
+            enemy.render();
+        })
+    }
+
+    update(deltatime) {
+        const pPressed = this.input.keys.includes('p');
+        if (pPressed && !this.pPressedLastFrame) {
+            this.puse = !this.puse;
+        }
+        this.pPressedLastFrame = pPressed;
+
+        if (!this.puse) {
+            this.player.update();
+            this.enemies.forEach(enemy => {
+                enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
+            });
+            this.enemies = this.enemies.filter(enemy => enemy.isAlive);
+        }
+
     }
 }
 const game = new Game()
@@ -438,7 +464,7 @@ function animate(timestamp) {
         game.draw(deltatime)
     }
 
-    game.update()
+    game.update(deltatime)
     requestAnimationFrame(animate)
 }
 
