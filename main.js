@@ -1,4 +1,6 @@
 const bord = document.getElementById('game')
+const GRID_CELL_SIZE = 40
+const initialSpeed = 60
 
 class Map {
     constructor(game) {
@@ -48,7 +50,6 @@ class Map {
         bord.style.gridTemplateColumns = `repeat(${this.map[0].length}, 1fr)`
         bord.style.gridTemplateRows = `repeat(${this.map.length}, 1fr)`
 
-
         for (let y = 0; y < this.map.length; y++) {
             for (let x = 0; x < this.map[y].length; x++) {
                 const tile = document.createElement('div')
@@ -67,7 +68,6 @@ class Map {
         }
     }
 }
-
 
 class Input {
     constructor(game) {
@@ -346,6 +346,23 @@ class Game {
 
     }
 }
+
+class Enmies{
+    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed){
+        this.x = x
+        this.y = y
+        this.isAlive = true //active or no
+        this.size = enemySize
+        this.speed = speed
+        this.element = document.createElement('div')
+        this.element.className = 'enemy'
+        this.element.style.width = `${this.size}px`;
+        this.element.style.height = `${this.size}px`;
+        this.element.backgroundColor = 'blue'
+        gameBord.append(this.element)
+        this.direction = 'idle'
+    }
+}
 const game = new Game()
 let lastTime = 0
 
@@ -363,5 +380,7 @@ function animate(timestamp) {
     game.update()
     requestAnimationFrame(animate)
 }
+
+
 
 animate(0)
