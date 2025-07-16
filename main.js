@@ -73,34 +73,32 @@ class Input {
     constructor(game) {
         this.game = game;
         this.keys = [];
-        this.keysPressed = new Set();
 
         window.addEventListener('keydown', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
                 }
-                this.keysPressed.add(e.key);
+                
             }
         });
         window.addEventListener('keyup', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
+                console.log(this.keysPressed);
+                console.log(this.keys);
+                
+                
                 this.keys.splice(this.keys.indexOf(e.key), 1);
-                this.keysPressed.delete(e.key);
             }
         });
     }
 
-    isKeyPressed(key) {
-        return this.keysPressed.has(key);
-    }
+  
 
 
 
 
-    clearPressed() {
-        this.keysPressed.clear();
-    }
+    
 }
 
 class Ui {
@@ -183,7 +181,8 @@ class Player {
         }
         if (this.moveCooldown > 0) this.moveCooldown--;
 
-        if (this.game.input.isKeyPressed(' ')) {
+        if (  this.game.input.keys[this.game.input.keys.length - 1]==' '
+) {
             this.placeBomb();
         }
 
@@ -345,7 +344,6 @@ class Game {
             this.player.update();
         }
 
-        this.input.clearPressed();
     }
 }
 const game = new Game()
