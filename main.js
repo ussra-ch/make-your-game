@@ -24,7 +24,7 @@ class Map {
         ]
         this.addblocke()
     }
-    
+
     addblocke() {
         let emtiSpais = []
         this.map.forEach((element, y) => {
@@ -41,7 +41,7 @@ class Map {
             }
         }
     }
-   draw() {
+    draw() {
         bord.innerHTML = ""
 
         bord.style.display = "grid"
@@ -58,7 +58,7 @@ class Map {
 
                 }
                 if (this.map[y][x] === 2) {
-                    
+
                     tile.style.backgroundImage = "url('RTS.png')"
                 }
                 tile.style.border = '1px solid #ccc'
@@ -74,7 +74,7 @@ class Input {
         this.game = game;
         this.keys = [];
         this.keysPressed = new Set();
-        
+
         window.addEventListener('keydown', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
@@ -86,7 +86,7 @@ class Input {
         window.addEventListener('keyup', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
                 this.keys.splice(this.keys.indexOf(e.key), 1);
-                this.keysPressed.delete(e.key); 
+                this.keysPressed.delete(e.key);
             }
         });
     }
@@ -95,9 +95,9 @@ class Input {
         return this.keysPressed.has(key);
     }
 
-  
-    
-    
+
+
+
     clearPressed() {
         this.keysPressed.clear();
     }
@@ -111,7 +111,7 @@ class Ui {
         this.timeM = 0
         this.elapsed = 0
     }
-    
+
     draw(deltaTime) {
         this.elapsed += deltaTime;
         if (this.elapsed >= 1000) {
@@ -136,34 +136,34 @@ class Player {
         this.bombs = [];
         this.moveCooldown = 0;
         this.moveDelay = 10;
-        this.maxBombs = 3; 
+        this.maxBombs = 3;
         this.inagif = '3adi'
 
     }
-          
-    update() { 
+
+    update() {
 
 
 
         if (this.moveCooldown <= 0 && this.game.input.keys.length > 0) {
             const lastKey = this.game.input.keys[this.game.input.keys.length - 1];
-            
+
             if (lastKey === 'ArrowUp' && this.canMove(this.x, this.y - 1)) {
                 this.y--;
                 this.moveCooldown = this.moveDelay;
                 this.inagif = 'up';
-                
+
             }
             if (lastKey === 'ArrowDown' && this.canMove(this.x, this.y + 1)) {
                 this.y++;
                 this.moveCooldown = this.moveDelay;
-                            this.inagif = 'down';
+                this.inagif = 'down';
 
             }
             if (lastKey === 'ArrowLeft' && this.canMove(this.x - 1, this.y)) {
                 this.x--;
                 this.moveCooldown = this.moveDelay;
-                                this.inagif = 'left';
+                this.inagif = 'left';
 
             }
             if (lastKey === 'ArrowRight' && this.canMove(this.x + 1, this.y)) {
@@ -172,18 +172,18 @@ class Player {
                 this.inagif = 'right';
 
             }
-                       
-            
-          
+
+
+
         }
-        if( this.game.input.keys[this.game.input.keys.length - 1] === undefined ) {
-                console.log(6666);
-                
-                this.inagif = '3adi';
-            }
+        if (this.game.input.keys[this.game.input.keys.length - 1] === undefined) {
+            console.log(6666);
+
+            this.inagif = '3adi';
+        }
         if (this.moveCooldown > 0) this.moveCooldown--;
 
-        if (this.game.input.isKeyPressed(' ') ) {
+        if (this.game.input.isKeyPressed(' ')) {
             this.placeBomb();
         }
 
@@ -195,13 +195,13 @@ class Player {
         if (y < 0 || y >= this.game.map.map.length || x < 0 || x >= this.game.map.map[0].length) return false;
         const tile = this.game.map.map[y][x];
         const hasBomb = this.bombs.some(b => b.x === x && b.y === y && !b.exploded);
-        return tile === 0 && !hasBomb; 
+        return tile === 0 && !hasBomb;
     }
 
     placeBomb() {
         if (this.bombs.length < this.maxBombs && !this.bombs.some(b => b.x === this.x && b.y === this.y)) {
             this.bombs.push(new Bomb(this.game, this.x, this.y));
-            
+
         }
     }
 
@@ -209,28 +209,28 @@ class Player {
         this.bombs.forEach(bomb => bomb.draw());
         const idx = this.y * this.game.map.map[0].length + this.x;
         const tile = bord.children[idx];
-        
+
         if (tile) {
-            if( this.inagif == 'right' ){
-                
-                 tile.style.backgroundImage
-                  = "url('liman.gif')"; 
-            }else if (this.inagif == 'left') {
-                
-                 tile.style.backgroundImage
-                  = "url('left.gif')";
-            }else if (this.inagif == 'up') {
+            if (this.inagif == 'right') {
+
                 tile.style.backgroundImage
-                  = "url('up.gif')";
-            }else if (this.inagif == 'down') {
+                    = "url('liman.gif')";
+            } else if (this.inagif == 'left') {
+
                 tile.style.backgroundImage
-                  = "url('down.gif')"; 
-               
-            }else if (this.inagif == '3adi') {
+                    = "url('left.gif')";
+            } else if (this.inagif == 'up') {
                 tile.style.backgroundImage
-                  = "url('wa9f.gif')";
+                    = "url('up.gif')";
+            } else if (this.inagif == 'down') {
+                tile.style.backgroundImage
+                    = "url('down.gif')";
+
+            } else if (this.inagif == '3adi') {
+                tile.style.backgroundImage
+                    = "url('wa9f.gif')";
             }
-           
+
         }
     }
 }
@@ -248,14 +248,14 @@ class Bomb {
 
     update() {
         this.timer--;
-        
+
         // if (this.timer < 80) { 
         //     this.blinkTimer++;
         //     if (this.blinkTimer % 1 === 0) {
         //         this.visible = !this.visible;
         //     }
         // }
-        
+
         if (this.timer <= 0 && !this.exploded) {
             this.explode();
         }
@@ -263,20 +263,20 @@ class Bomb {
 
     explode() {
         this.exploded = true;
-        
+
         const dirs = [
             [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]
         ];
-        
+
         dirs.forEach(([dx, dy]) => {
-            
+
             const nx = this.x + dx;
             const ny = this.y + dy;
             if (
                 ny >= 0 && ny < this.game.map.map.length &&
                 nx >= 0 && nx < this.game.map.map[0].length
             ) {
-                
+
                 if (this.game.map.map[ny][nx] === 2) {
                     this.game.map.map[ny][nx] = 0;
                     // fajar  zmar ana irhabih hhhhhh
@@ -293,23 +293,23 @@ class Bomb {
                     }
                 }
             }
-              const idx = ny * this.game.map.map[0].length + nx
-            
+            const idx = ny * this.game.map.map[0].length + nx
+
             const tile = bord.children[idx];
             if (tile) {
-                tile.style.backgroundcolor = `rgb(255, 165, 0)`; // Orange color 
+                tile.style.backgroundColor = `rgba(0, 0, 0, 1)`;
                 tile.style.borderRadius = "100%";
             }
         });
     }
 
     draw() {
-        if (!this.exploded && this.visible ) {
+        if (!this.exploded && this.visible) {
             const idx = this.y * this.game.map.map[0].length + this.x
-            
+
             const tile = bord.children[idx];
             if (tile) {
-                tile.style.backgroundImage = "url('bomb.gif')"; 
+                tile.style.backgroundImage = "url('bomb.gif')";
                 tile.style.borderRadius = "100%";
             }
         }
@@ -325,7 +325,7 @@ class Game {
         this.puse = false
         this.pPressedLastFrame = false
     }
-    
+
     draw(deltaTime) {
         this.map.draw()
         this.player.draw()
@@ -333,18 +333,18 @@ class Game {
         document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;
         document.getElementById('score').textContent = `Score: ${this.ui.score}`;
     }
-    
+
     update() {
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
             this.puse = !this.puse;
         }
         this.pPressedLastFrame = pPressed;
-        
+
         if (!this.puse) {
             this.player.update();
         }
-        
+
         this.input.clearPressed();
     }
 }
@@ -354,14 +354,14 @@ let lastTime = 0
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
-    
+
     if (game.puse) {
         document.getElementById('puse').style.display = 'block'
     } else {
         document.getElementById('puse').style.display = 'none'
         game.draw(deltatime)
     }
-    
+
     game.update()
     requestAnimationFrame(animate)
 }
