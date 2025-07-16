@@ -1,56 +1,63 @@
-* {
-    padding: 0;
+body {
     margin: 0;
-}
-
-#game {
-    border: 1px solid black;
-    width: 800px;
-    height: 80vh;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    ;
-}
-
-#til{
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: white;
 }
 
 #ui {
-    background: rgba(255, 255, 255, 0.85);
-    padding: 24px 32px;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    position: absolute;
-    top: 32px;
-    left: 32px;
-    z-index: 10;
-}
-#ui h1 {
-    margin: 0;
-    font-size: 1.3rem;
-    color: #333;
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
-#ui button {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    background: #0078d4;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-#ui button:hover {
-    background: #005fa3;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
 }
 
+#ui h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#game {
+    width: 680px;
+    height: 600px;
+    margin: 0 auto;
+    border: 2px solid #555;
+    background-color: #111;
+}
+
+#game div {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#puse {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 24px;
+    display: none;
+    cursor: pointer;
+}
+
+button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
+}
