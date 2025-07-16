@@ -283,7 +283,14 @@ class Bomb {
                     this.game.ui.score += 10;
                 }
                 if (this.game.player.x === nx && this.game.player.y === ny) {
-                    this.game.player.lives--;
+                    this.game.player.lives--
+                    this.game.player.x = 1;
+                    this.game.player.y = 1;
+
+                    if (this.game.player.lives <= 0) {
+                        alert("Game Over");
+                        window.location.reload();
+                    }
                 }
             }
               const idx = ny * this.game.map.map[0].length + nx
