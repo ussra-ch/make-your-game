@@ -249,12 +249,12 @@ class Bomb {
     update() {
         this.timer--;
         
-        if (this.timer < 80) { 
-            this.blinkTimer++;
-            if (this.blinkTimer % 1 === 0) {
-                this.visible = !this.visible;
-            }
-        }
+        // if (this.timer < 80) { 
+        //     this.blinkTimer++;
+        //     if (this.blinkTimer % 1 === 0) {
+        //         this.visible = !this.visible;
+        //     }
+        // }
         
         if (this.timer <= 0 && !this.exploded) {
             this.explode();
@@ -286,6 +286,13 @@ class Bomb {
                     this.game.player.lives--;
                 }
             }
+              const idx = ny * this.game.map.map[0].length + nx
+            
+            const tile = bord.children[idx];
+            if (tile) {
+                tile.style.backgroundcolor = `rgb(255, 165, 0)`; // Orange color 
+                tile.style.borderRadius = "100%";
+            }
         });
     }
 
@@ -295,7 +302,7 @@ class Bomb {
             
             const tile = bord.children[idx];
             if (tile) {
-                tile.style.backgroundColor = "#FFA500"; 
+                tile.style.backgroundImage = "url('bomb.gif')"; 
                 tile.style.borderRadius = "100%";
             }
         }
