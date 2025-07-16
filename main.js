@@ -280,7 +280,7 @@ class Bomb {
                 if (this.game.map.map[ny][nx] === 2) {
                     this.game.map.map[ny][nx] = 0;
                     // fajar  zmar ana irhabih hhhhhh
-                    this.game.ui.score += 10;
+                    //this.game.ui.score += 10;  // hta nchof  wach nzidoha wala la 
                 }
                 if (this.game.player.x === nx && this.game.player.y === ny) {
                     this.game.player.lives--
