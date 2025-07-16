@@ -141,8 +141,6 @@ class Player {
 
     update() {
 
-
-
         if (this.moveCooldown <= 0 && this.game.input.keys.length > 0) {
             const lastKey = this.game.input.keys[this.game.input.keys.length - 1];
 
@@ -347,7 +345,7 @@ class Game {
     }
 }
 
-class Enmies{
+class Enemies{
     constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed){
         this.x = x
         this.y = y
@@ -361,6 +359,69 @@ class Enmies{
         this.element.backgroundColor = 'blue'
         gameBord.append(this.element)
         this.direction = 'idle'
+        this.render()
+    }
+
+    render(){
+        if (!this.isAlive) return
+        this.element.style.left = `${this.x}px`;
+        this.element.style.top = `${this.y}px`;
+    }
+
+    update(time, gameBoard){
+        //time howa time li kan bin had l frame wl frame li kant 9bl
+        if(!this.isAlive) return
+        let distance = this.speed * time, newX = this.x, newY = this.y;
+        if (this.direction === 'idle') {
+            this.randomDirection();
+        }
+        if (this.direction === 'up'){
+            newY = this.y - distance
+            newX = this.x
+        }else if (this.direction === 'down'){
+            newY = this.y + distance
+            newX = this.x
+        }else if (this.direction === 'left'){
+            newX = this.x - distance
+            newY = this.y
+        }else if (this.direction === 'right'){
+            newX = this.x + distance
+            newY = this.y
+        }
+
+        if(this.checkForCollision(newX, newY, gameBoard)){
+            this.randomDirection()
+        }else{
+            this.x = newX
+            this.y = newY
+        }
+    }
+
+    checkForCollision(newX, newY, gameBoard){
+        const corners = [
+            { x: newX, y: newY },// Top-left
+            { x: newX + this.size - 1, y: newY }, // Top-right
+            { x: newX, y: newY + this.size - 1 }, // Bottom-left
+            { x: newX + this.size - 1, y: newY + this.size - 1} // Bottom-right
+        ];
+        for(let corner of corners){
+            const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
+            const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
+
+            if (tileX >= gameBoard[0].length|| tileX < 0 ||
+                tileY >= gameBoard.length || tileY < 0) {
+                    return true
+                }
+            if (gameBoard[tileY][tileX] === 1){
+                return true
+            }
+        }
+        return false
+    }
+
+    randomDirection(){
+        const directions = ['up', 'down', 'left', 'right']
+        this.direction = directions[Math.floor(Math.random() * directions.length)]
     }
 }
 const game = new Game()
