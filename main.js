@@ -23,6 +23,7 @@ class Map {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
         this.addblocke()
+        this.draw()
     }
 
     addblocke() {
@@ -42,7 +43,6 @@ class Map {
         }
     }
     draw() {
-        bord.innerHTML = ""
 
         bord.style.display = "grid"
         bord.style.gridTemplateColumns = `repeat(${this.map[0].length}, 1fr)`
@@ -61,7 +61,7 @@ class Map {
 
                     tile.style.backgroundImage = "url('RTS.png')"
                 }
-                tile.style.border = '1px solid #ccc'
+                //tile.style.border = '1px solid #ccc'
                 bord.appendChild(tile)
             }
         }
@@ -79,26 +79,26 @@ class Input {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
                 }
-                
+
             }
         });
         window.addEventListener('keyup', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
                 console.log(this.keysPressed);
                 console.log(this.keys);
-                
-                
+
+
                 this.keys.splice(this.keys.indexOf(e.key), 1);
             }
         });
     }
 
-  
 
 
 
 
-    
+
+
 }
 
 class Ui {
@@ -136,38 +136,47 @@ class Player {
         this.moveDelay = 10;
         this.maxBombs = 3;
         this.inagif = '3adi'
+        this.element=document.createElement('div')
+        this.element.id="player"
+        
+        this.element.style.zIndex="100"
+        this.element.style.position="absolute"
 
+        bord.append(this.element)
     }
 
     update() {
 
 
-
         if (this.moveCooldown <= 0 && this.game.input.keys.length > 0) {
             const lastKey = this.game.input.keys[this.game.input.keys.length - 1];
 
-            if (lastKey === 'ArrowUp' && this.canMove(this.x, this.y - 1)) {
-                this.y--;
+            if (lastKey === 'ArrowUp' ) {
+                this.y-=5;
                 this.moveCooldown = this.moveDelay;
                 this.inagif = 'up';
+                this.element.style.top=`${this.y+125}px`
 
             }
-            if (lastKey === 'ArrowDown' && this.canMove(this.x, this.y + 1)) {
-                this.y++;
+            if (lastKey === 'ArrowDown' ) {
+                this.y+=5;
                 this.moveCooldown = this.moveDelay;
                 this.inagif = 'down';
+                this.element.style.top=`${this.y+125}px`
 
             }
-            if (lastKey === 'ArrowLeft' && this.canMove(this.x - 1, this.y)) {
-                this.x--;
+            if (lastKey === 'ArrowLeft' ) {
+                this.x-=5;
                 this.moveCooldown = this.moveDelay;
                 this.inagif = 'left';
+                this.element.style.left=`${this.x+180}px`
 
             }
-            if (lastKey === 'ArrowRight' && this.canMove(this.x + 1, this.y)) {
-                this.x++;
+            if (lastKey === 'ArrowRight' ) {
+                this.x+=5;
                 this.moveCooldown = this.moveDelay;
                 this.inagif = 'right';
+                this.element.style.left=`${this.x+180}px`
 
             }
 
@@ -181,8 +190,8 @@ class Player {
         }
         if (this.moveCooldown > 0) this.moveCooldown--;
 
-        if (  this.game.input.keys[this.game.input.keys.length - 1]==' '
-) {
+        if (this.game.input.keys[this.game.input.keys.length - 1] == ' '
+        ) {
             this.placeBomb();
         }
 
@@ -193,8 +202,8 @@ class Player {
     canMove(x, y) {
         if (y < 0 || y >= this.game.map.map.length || x < 0 || x >= this.game.map.map[0].length) return false;
         const tile = this.game.map.map[y][x];
-        const hasBomb = this.bombs.some(b => b.x === x && b.y === y );
-        return (tile === 0||tile==3) && !hasBomb;
+        const hasBomb = this.bombs.some(b => b.x === x && b.y === y);
+        return (tile === 0 || tile == 3) && !hasBomb;
     }
 
     placeBomb() {
@@ -209,28 +218,28 @@ class Player {
         const idx = this.y * this.game.map.map[0].length + this.x;
         const tile = bord.children[idx];
 
-        if (tile) {
+      
             if (this.inagif == 'right') {
 
-                tile.style.backgroundImage
-                    = "url('liman.gif')";
+                this.element.style.backgroundImage
+                    = "url('liman-unscreen.gif')";
             } else if (this.inagif == 'left') {
 
-                tile.style.backgroundImage
-                    = "url('left.gif')";
+                this.element.style.backgroundImage
+                    = "url('left-unscreen.gif')";
             } else if (this.inagif == 'up') {
-                tile.style.backgroundImage
-                    = "url('up.gif')";
+                this.element.style.backgroundImage
+                    = "url('up-unscreen.gif')";
             } else if (this.inagif == 'down') {
-                tile.style.backgroundImage
-                    = "url('down.gif')";
+                this.element.style.backgroundImage
+                    = "url('down-unscreen.gif')";
 
             } else if (this.inagif == '3adi') {
-                tile.style.backgroundImage
-                    = "url('wa9f.gif')";
+                this.element.style.backgroundImage
+                    = "url('wa9f-unscreen.gif')";
             }
 
-        }
+        
     }
 }
 
@@ -248,7 +257,7 @@ class Bomb {
     update() {
         this.timer--;
 
-        if (this.timer < 80) { 
+        if (this.timer < 80) {
             this.blinkTimer++;
             if (this.blinkTimer % 10 === 0) {
                 this.visible = !this.visible;
@@ -326,7 +335,6 @@ class Game {
     }
 
     draw(deltaTime) {
-        this.map.draw()
         this.player.draw()
         this.ui.draw(deltaTime)
         document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;

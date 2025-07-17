@@ -61,3 +61,9 @@ button {
 button:hover {
     background-color: #777;
 }
+#player{
+    width: 40px;
+    height: 40px;
+    top: 123px;
+    left: 180px;
+}
