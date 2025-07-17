@@ -325,13 +325,25 @@ class Enemies{
         this.element.style.width = `${this.size}px`;
         this.element.style.height = `${this.size}px`;
         this.element.backgroundColor = 'blue'
-        gameBord.append(this.element)
+        this.element.style.zIndex = 100
+        bord.append(this.element)
+        console.log(bord);
+        
         this.direction = 'idle'
         this.render()
+        // console.log('hehe');
+        
     }
+
+
 
     render(){
         if (!this.isAlive) return
+        // console.log(`${this.x}px`);
+        // let t = document.querySelector('body')
+        // console.log(t);
+        
+        
         this.element.style.left = `${this.x}px`;
         this.element.style.top = `${this.y}px`;
     }
@@ -373,6 +385,8 @@ class Enemies{
             this.x = newX
             this.y = newY
         }
+
+        this.render()
     }
 
     checkForCollision(newX, newY, gameBoard){
@@ -416,13 +430,17 @@ class Game {
         this.puse = false
         this.pPressedLastFrame = false
         this.enemies = []
+        this.startDraw = true
 
         this.enemies.push(new Enemies(3 * GRID_CELL_SIZE, 3 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
         this.enemies.push(new Enemies(8 * GRID_CELL_SIZE, 5 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
     }
 
     draw(deltaTime) {
-        this.map.draw()
+        if(this.startDraw){
+            this.startDraw = false
+            this.map.draw()
+        }
         this.player.draw()
         this.ui.draw(deltaTime)
         document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;
@@ -445,7 +463,7 @@ class Game {
             this.enemies.forEach(enemy => {
                 enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
             });
-            this.enemies = this.enemies.filter(enemy => enemy.isAlive);
+            // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
 
     }
