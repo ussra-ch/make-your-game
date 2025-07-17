@@ -1,6 +1,6 @@
 const bord = document.getElementById('game')
 const GRID_CELL_SIZE = 40
-const initialSpeed = 60
+const initialSpeed = 0.01
 
 class Map {
     constructor(game) {
@@ -44,7 +44,8 @@ class Map {
         }
     }
     draw() {
-        bord.innerHTML = ""
+
+        console.log("--- draw");
 
         bord.style.display = "grid"
         bord.style.gridTemplateColumns = `repeat(${this.map[0].length}, 1fr)`
@@ -79,26 +80,26 @@ class Input {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
                 }
-                
+
             }
         });
         window.addEventListener('keyup', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
                 console.log(this.keysPressed);
                 console.log(this.keys);
-                
-                
+
+
                 this.keys.splice(this.keys.indexOf(e.key), 1);
             }
         });
     }
 
-  
 
 
 
 
-    
+
+
 }
 
 class Ui {
@@ -179,8 +180,8 @@ class Player {
         }
         if (this.moveCooldown > 0) this.moveCooldown--;
 
-        if (  this.game.input.keys[this.game.input.keys.length - 1]==' '
-) {
+        if (this.game.input.keys[this.game.input.keys.length - 1] == ' '
+        ) {
             this.placeBomb();
         }
 
@@ -191,8 +192,8 @@ class Player {
     canMove(x, y) {
         if (y < 0 || y >= this.game.map.map.length || x < 0 || x >= this.game.map.map[0].length) return false;
         const tile = this.game.map.map[y][x];
-        const hasBomb = this.bombs.some(b => b.x === x && b.y === y );
-        return (tile === 0||tile==3) && !hasBomb;
+        const hasBomb = this.bombs.some(b => b.x === x && b.y === y);
+        return (tile === 0 || tile == 3) && !hasBomb;
     }
 
     placeBomb() {
@@ -246,7 +247,7 @@ class Bomb {
     update() {
         this.timer--;
 
-        if (this.timer < 80) { 
+        if (this.timer < 80) {
             this.blinkTimer++;
             if (this.blinkTimer % 10 === 0) {
                 this.visible = !this.visible;
@@ -313,109 +314,124 @@ class Bomb {
     }
 }
 
-class Enemies{
-    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed){
+class Enemies {
+    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed) {
         this.x = x
         this.y = y
         this.isAlive = true //active or no
         this.size = enemySize
         this.speed = speed
+        this.direction = 'idle'
+        bord.append(this.create())
+
+        this.render()
+    }
+
+    create() {
         this.element = document.createElement('div')
         this.element.className = 'enemy'
-        this.element.style.width = `${this.size}px`;
-        this.element.style.height = `${this.size}px`;
-        this.element.backgroundColor = 'blue'
+        this.element.style = `
+            width: 40px;
+            height: 40px;
+            z-index: 100;
+            position: absolute;
+            left: ${this.x}px;
+            top: ${this.y}px;
+            background-color: red;
+            transform: translate(${this.x}px, ${this.y}px);
+        `
         this.element.style.zIndex = 100
-        bord.append(this.element)
-        console.log(bord);
-        
-        this.direction = 'idle'
-        this.render()
-        // console.log('hehe');
-        
+        console.log("create enemy");
+
+        return this.element
     }
 
-
-
-    render(){
+    render() {
         if (!this.isAlive) return
-        // console.log(`${this.x}px`);
-        // let t = document.querySelector('body')
-        // console.log(t);
+        console.log('hehe');
         
+        // console.log("b" , this.x);
+        console.log("b" , this.y);
+        console.log(`translate(${this.x}px, ${this.y}px);`);
         
-        this.element.style.left = `${this.x}px`;
-        this.element.style.top = `${this.y}px`;
+        this.element.style.top = `${this.x}px`;
+        this.element.style.left = `${this.y}px`;
+        // this.element.style.top = `${this.y}px`;
     }
 
-    update(deltatime, gameBoard){
+    update(deltatime, gameBoard) {
+        
         //time howa time li kan bin had l frame wl frame li kant 9bl
-        if(!this.isAlive) return
-        let distance = this.speed * deltatime, newX = this.x, newY = this.y;
+        if (!this.isAlive) return
+        let distance = this.speed * deltatime ;
+        
         if (this.direction === 'idle') {
             this.randomDirection();
         }
+
         // console.log(deltatime);
-        if (this.direction === 'up'){
-            newY = this.y - distance
-            newX = this.x
-        // console.log();
-        }else if (this.direction === 'down'){
-            newY = this.y + distance
-            newX = this.x
-        // console.log(newY);
+        if (this.direction === 'up') {
+            this.y = this.y - distance
+             this.x = this.x
+            // console.log();
+        } else if (this.direction === 'down') {
+            this.y = this.y + distance
+             this.x = this.x
+            // console.log(this.y);
 
-        }else if (this.direction === 'left'){
-            newX = this.x - distance
-            newY = this.y
-        // console.log(newY);
+        } else if (this.direction === 'left') {
+             this.x = this.x - distance
+            this.y = this.y
+            // console.log(this.y);
 
-        }else if (this.direction === 'right'){
-            newX = this.x + distance
-            newY = this.y
-        // console.log(newY);
+        } else if (this.direction === 'right') {
+             this.x = this.x + distance
+            this.y = this.y
+            // console.log(newY);
 
         }
 
         // console.log(newX);
         // console.log(newY);
-        if(this.checkForCollision(newX, newY, gameBoard)){
-            this.randomDirection()
-        }else{
-            this.x = newX
-            this.y = newY
-        }
+        // if (this.checkForCollision(newX, newY, gameBoard)) {
+        //     this.randomDirection()
+        // } else {
+            
+        // }
+
+        console.log("a" , this.x);
+        console.log("a" , this.y);
 
         this.render()
     }
 
-    checkForCollision(newX, newY, gameBoard){
+    checkForCollision(newX, newY, gameBoard) {
         // console.log(newY);
         // console.log(newX);
         const corners = [
             { x: newX, y: newY },// Top-left
             { x: newX + this.size - 1, y: newY }, // Top-right
             { x: newX, y: newY + this.size - 1 }, // Bottom-left
-            { x: newX + this.size - 1, y: newY + this.size - 1} // Bottom-right
+            { x: newX + this.size - 1, y: newY + this.size - 1 } // Bottom-right
         ];
-        for(let corner of corners){
+        for (let corner of corners) {
             const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
             const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
             // console.log(corner);
             // console.log(corner.y);
 
-            if (tileX >= gameBoard[0].length|| tileX < 0 ||
+            if (tileX >= gameBoard[0].length || tileX < 0 ||
                 tileY >= gameBoard.length || tileY < 0) {
-                    return true
-                }
-            if (gameBoard[tileY][tileX] == 1){
+                return true
+            }
+            if (gameBoard[tileY][tileX] == 1) {
                 return true
             }
         }
         return false
     }
 
-    randomDirection(){
+    randomDirection() {
         const directions = ['up', 'down', 'left', 'right']
         this.direction = directions[Math.floor(Math.random() * directions.length)]
     }
@@ -437,7 +453,7 @@ class Game {
     }
 
     draw(deltaTime) {
-        if(this.startDraw){
+        if (this.startDraw) {
             this.startDraw = false
             this.map.draw()
         }
