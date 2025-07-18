@@ -549,9 +549,9 @@ class Bomb {
             if (scale < 2) {
                 requestAnimationFrame(animateExplosion);
             } else {
-                if (bommmmm.parentNode) {
+              
                     bommmmm.remove();
-                }
+                
             }
         };
 
