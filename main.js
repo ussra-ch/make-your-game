@@ -133,68 +133,81 @@ class Player {
         this.lives = 5;
         this.bombs = [];
         this.moveCooldown = 0;
-        this.moveDelay = 10;
+        this.moveDelay = 5;
         this.maxBombs = 3;
         this.inagif = '3adi'
-        this.element=document.createElement('div')
-        this.element.id="player"
-        
-        this.element.style.zIndex="100"
-        this.element.style.position="absolute"
+        this.element = document.createElement('div')
+        this.element.id = "player"
+
+        this.element.style.zIndex = "100"
+        this.element.style.position = "absolute"
 
         bord.append(this.element)
     }
 
     update() {
-
+        const tileSize = 40;
 
         if (this.moveCooldown <= 0 && this.game.input.keys.length > 0) {
             const lastKey = this.game.input.keys[this.game.input.keys.length - 1];
 
-            if (lastKey === 'ArrowUp' ) {
-                this.y-=5;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'up';
-                this.element.style.top=`${this.y+125}px`
-
+            let newPosX = this.x;
+            let newPosY = this.y;
+            if (lastKey === 'ArrowUp') {
+                newPosY = this.y - 10;
             }
-            if (lastKey === 'ArrowDown' ) {
-                this.y+=5;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'down';
-                this.element.style.top=`${this.y+125}px`
-
+            if (lastKey === 'ArrowDown') {
+                newPosY = this.y + 10;
             }
-            if (lastKey === 'ArrowLeft' ) {
-                this.x-=5;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'left';
-                this.element.style.left=`${this.x+180}px`
-
+            if (lastKey === 'ArrowLeft') {
+                newPosX = this.x - 10;
             }
-            if (lastKey === 'ArrowRight' ) {
-                this.x+=5;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'right';
-                this.element.style.left=`${this.x+180}px`
-
+            if (lastKey === 'ArrowRight') {
+                newPosX = this.x + 10;
             }
-
-
-
+            // Calculate intended grid position
+            const gridX = Math.round(newPosX / tileSize);
+            const gridY = Math.round(newPosY / tileSize);
+            // Check collision
+            if (
+                gridY >= 0 && gridY < this.game.map.map.length &&
+                gridX >= 0 && gridX < this.game.map.map[0].length &&
+                this.game.map.map[gridY][gridX] !== 1 &&
+                this.game.map.map[gridY][gridX] !== 2
+            ) {
+                if (lastKey === 'ArrowUp') {
+                    this.y = newPosY;
+                    this.moveCooldown = this.moveDelay;
+                    this.inagif = 'up';
+                    this.element.style.top = `${this.y}px`;
+                }
+                if (lastKey === 'ArrowDown') {
+                    this.y = newPosY;
+                    this.moveCooldown = this.moveDelay;
+                    this.inagif = 'down';
+                    this.element.style.top = `${this.y}px`;
+                }
+                if (lastKey === 'ArrowLeft') {
+                    this.x = newPosX;
+                    this.moveCooldown = this.moveDelay;
+                    this.inagif = 'left';
+                    this.element.style.left = `${this.x}px`;
+                }
+                if (lastKey === 'ArrowRight') {
+                    this.x = newPosX;
+                    this.moveCooldown = this.moveDelay;
+                    this.inagif = 'right';
+                    this.element.style.left = `${this.x}px`;
+                }
+            }
         }
         if (this.game.input.keys[this.game.input.keys.length - 1] === undefined) {
-            console.log(6666);
-
             this.inagif = '3adi';
         }
         if (this.moveCooldown > 0) this.moveCooldown--;
-
-        if (this.game.input.keys[this.game.input.keys.length - 1] == ' '
-        ) {
+        if (this.game.input.keys[this.game.input.keys.length - 1] == ' ') {
             this.placeBomb();
         }
-
         this.bombs.forEach(bomb => bomb.update());
         this.bombs = this.bombs.filter(bomb => !bomb.exploded);
     }
@@ -207,9 +220,15 @@ class Player {
     }
 
     placeBomb() {
-        if (this.bombs.length < this.maxBombs && !this.bombs.some(b => b.x === this.x && b.y === this.y)) {
-            this.bombs.push(new Bomb(this.game, this.x, this.y));
+        const tileSize = 40;
 
+        const gridX = Math.round(this.x / tileSize);
+        const gridY = Math.round(this.y / tileSize);
+        if (
+            this.bombs.length < this.maxBombs &&
+            !this.bombs.some(b => b.x === gridX && b.y === gridY)
+        ) {
+            this.bombs.push(new Bomb(this.game, gridX, gridY));
         }
     }
 
@@ -218,28 +237,28 @@ class Player {
         const idx = this.y * this.game.map.map[0].length + this.x;
         const tile = bord.children[idx];
 
-      
-            if (this.inagif == 'right') {
 
-                this.element.style.backgroundImage
-                    = "url('liman-unscreen.gif')";
-            } else if (this.inagif == 'left') {
+        if (this.inagif == 'right') {
 
-                this.element.style.backgroundImage
-                    = "url('left-unscreen.gif')";
-            } else if (this.inagif == 'up') {
-                this.element.style.backgroundImage
-                    = "url('up-unscreen.gif')";
-            } else if (this.inagif == 'down') {
-                this.element.style.backgroundImage
-                    = "url('down-unscreen.gif')";
+            this.element.style.backgroundImage
+                = "url('liman-unscreen.gif')";
+        } else if (this.inagif == 'left') {
 
-            } else if (this.inagif == '3adi') {
-                this.element.style.backgroundImage
-                    = "url('wa9f-unscreen.gif')";
-            }
+            this.element.style.backgroundImage
+                = "url('left-unscreen.gif')";
+        } else if (this.inagif == 'up') {
+            this.element.style.backgroundImage
+                = "url('up-unscreen.gif')";
+        } else if (this.inagif == 'down') {
+            this.element.style.backgroundImage
+                = "url('down-unscreen.gif')";
 
-        
+        } else if (this.inagif == '3adi') {
+            this.element.style.backgroundImage
+                = "url('wa9f-unscreen.gif')";
+        }
+
+
     }
 }
 
@@ -286,28 +305,38 @@ class Bomb {
             ) {
 
                 if (this.game.map.map[ny][nx] === 2) {
-                    this.game.map.map[ny][nx] = 0;
+                    const idx = ny * this.game.map.map[0].length + nx
+
+                    const tile = bord.children[idx];
+                    if (tile) {
+                        tile.style.backgroundColor = `rgba(0, 0, 0, 1)`;
+                        tile.style.borderRadius = "100%";
+                        setTimeout(() => {
+                            tile.style.backgroundImage = "";
+                        }, 150);
+
+                    }
                     // fajar  zmar ana irhabih hhhhhh
                     //this.game.ui.score += 10;  // hta nchof  wach nzidoha wala la 
                 }
-                if (this.game.player.x === nx && this.game.player.y === ny) {
-                    this.game.player.lives--
-                    this.game.player.x = 1;
-                    this.game.player.y = 1;
-
+                // Check player collision by grid
+                const tileSize = 40;
+                const playerGridX = Math.round(this.game.player.x / tileSize);
+                const playerGridY = Math.round(this.game.player.y / tileSize);
+                if (playerGridX === nx && playerGridY === ny) {
+                    this.game.player.lives--;
+                    // Respawn player at (1,1) in px
+                    this.game.player.x = 1 * tileSize;
+                    this.game.player.y = 1 * tileSize;
+                    this.game.player.element.style.left = `${this.game.player.x}px`;
+                    this.game.player.element.style.top = `${this.game.player.y}px`;
                     if (this.game.player.lives <= 0) {
                         alert("Game Over");
                         window.location.reload();
                     }
                 }
             }
-            const idx = ny * this.game.map.map[0].length + nx
 
-            const tile = bord.children[idx];
-            if (tile) {
-                tile.style.backgroundColor = `rgba(0, 0, 0, 1)`;
-                tile.style.borderRadius = "100%";
-            }
         });
     }
 
@@ -319,6 +348,9 @@ class Bomb {
             if (tile) {
                 tile.style.backgroundImage = "url('bomb.gif')";
                 tile.style.borderRadius = "100%";
+                setTimeout(() => {
+                    tile.style.backgroundImage = "";
+                }, 100);
             }
         }
     }
@@ -329,7 +361,7 @@ class Game {
         this.map = new Map(this)
         this.ui = new Ui(this)
         this.input = new Input(this)
-        this.player = new Player(this, 1, 1)
+        this.player = new Player(this, 40, 40)
         this.puse = false
         this.pPressedLastFrame = false
     }

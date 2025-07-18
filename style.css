@@ -26,6 +26,7 @@ body {
     margin: 0 auto;
     border: 2px solid #555;
     background-color: #111;
+    position: relative; /* Added for player positioning */
 }
 
 #game div {
@@ -64,6 +65,7 @@ button:hover {
 #player{
     width: 40px;
     height: 40px;
-    top: 123px;
-    left: 180px;
+    position: absolute; 
+    top: 40px;
+    left: 40px;
 }
