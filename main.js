@@ -295,9 +295,9 @@ class Player {
                 }
                 return false;
             }
-            const hasBomb = this.bombs.some(
-                b => b.x === gridX && b.y === gridY && !b.exploded
-            );
+            // const hasBomb = this.bombs.some(
+            //     b => b.x === gridX && b.y === gridY && !b.exploded
+            // );
             /* if (hasBomb) {
                  return false;
              }*/
