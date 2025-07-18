@@ -174,7 +174,7 @@ class Player {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
             this.element.style.width = `${this.game.map.tileSize - 7}px`;
-            this.element.style.height = `${this.game.map.tileSize }px`;
+            this.element.style.height = `${this.game.map.tileSize -7}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('wa9f.gif')";
             this.element.style.zIndex = '10';
