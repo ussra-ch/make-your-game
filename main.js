@@ -153,8 +153,10 @@ class Ui {
             timeEl.textContent = `${this.timeM}:${this.timeS.toString().padStart(2, '0')}`;
         }
         document.getElementById('score').textContent = `Score: ${this.score}`;
-        const l=document.getElementById('game-over');
-        if (!l) {
+        document.getElementById('bombs').textContent = `Bombs: ${this.game.player.maxBombs - this.game.player.bombs.length}`;
+        document.getElementById('speed').textContent = `Speed: ${this.game.player.speed}`;
+        const gameover=document.getElementById('game-over');
+        if (!gameover) {
             this.gameOverEl = document.createElement('div');
             this.gameOverEl.id = 'game-over';
             this.gameOverEl.textContent = `Game Over! Score: ${this.score}`;
