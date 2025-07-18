@@ -1,5 +1,7 @@
 const bord = document.getElementById('game');
-let tilesContainer = null; // Container for map tiles
+let tilesContainer = null;
+const GRID_CELL_SIZE = 35
+const initialSpeed = 0.05 // Container for map tiles
 
 class Map {
     constructor(game) {
@@ -26,6 +28,17 @@ class Map {
         ];
         this.addblocke();
         this.createTilesContainer();
+    }
+     findEmptySpaces(){
+        let emtiSpais = [];
+        this.map.forEach((element, y) => {
+            for (let x = 0; x < element.length; x++) {
+                if (element[x] === 0) {
+                    emtiSpais.push({ x, y });
+                }
+            }
+        });
+        return emtiSpais
     }
 
     addblocke() {
@@ -95,7 +108,7 @@ class Map {
                     //tile.style.backgroundColor = "#ffdd44";
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
-                    //  tile.style.backgroundColor = "#000000";
+                    tile.style.backgroundImage = "url('grass.png')";
                 }
 
                 tilesContainer.appendChild(tile);
@@ -237,6 +250,34 @@ class Player {
             this.placeBomb();
             this.bombCooldown = 10;
         }
+            let X = this.pixelX / this.game.map.tileSize;
+            let Y = this.pixelY / this.game.map.tileSize;
+            const gridX = Math.round(X);
+            const gridY = Math.round(Y);
+
+               this.game.enemies.forEach(enemy => { 
+
+          
+            const enemyGridX = Math.floor(enemy.x / this.game.map.tileSize);
+            const enemyGridY = Math.floor(enemy.y / this.game.map.tileSize);
+            console.log(enemyGridX, enemyGridY, gridX, gridY);
+            
+            
+            if (enemyGridX === gridY && enemyGridY === gridX) {
+                console.log(999999);
+                
+                
+                this.lives--;
+                this.pixelX = 1 * this.game.map.tileSize;
+                this.pixelY = 1 * this.game.map.tileSize;
+
+                if (this.lives <= 0) {
+                    //alert("Game Over! Score: " + this.game.ui.score);
+                    // window.location.reload();
+                    this.game.gameOver = true;
+                }
+            }
+        })
 
         // Update bombs
         this.bombs.forEach(bomb => bomb.update());
@@ -409,6 +450,8 @@ class Bomb {
 
                 // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
+                    console.log(666);
+                    
                     this.game.map.map[ny][nx] = 0;
                     this.game.ui.score += 10;
                 }
@@ -481,7 +524,119 @@ class Bomb {
         }
     }
 }
+class Enemies {
+    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed) {
+        this.x = x
+        this.y = y
+        this.isAlive = true //active or no
+        this.size = enemySize
+        this.speed = speed
+        this.direction = 'idle'
+        bord.append(this.create())
+        this.state = true
+        this.gameBoard = gameBord
+        this.render()
+    }
 
+    create() {
+        console.log('create enemy');
+        this.element = document.createElement('div')
+        this.element.className = 'enemy'
+        this.element.style = `
+            width: 35px;
+            height: 35px;
+            z-index: 100;
+            position: absolute;
+            left: ${this.x}px;
+            top: ${this.y}px;
+            background-color: red;
+        `
+        return this.element
+    }
+
+    render() {
+        if (!this.isAlive) return
+        this.element.style.top = `${this.x}px`;
+        this.element.style.left = `${this.y}px`;
+    }
+
+    update(deltatime, gameBoard) {
+        // console.log("before : ",this.x, this.y);
+        //time howa time li kan bin had l frame wl frame li kant 9bl
+        if (!this.isAlive) return
+        let distance = this.speed * deltatime, newX, newY
+        // console.log("deltatime is :", deltatime);
+        if (this.direction === 'idle') {
+            this.randomDirection();
+        }
+
+        // console.log(deltatime);
+        if (this.direction === 'up') {
+            newY = this.y - distance
+            newX = this.x
+            // console.log();
+        } else if (this.direction === 'down') {
+            newY = this.y + distance
+            newX = this.x
+            // console.log(this.y);
+
+        } else if (this.direction === 'left') {
+            newX = this.x - distance
+            newY = this.y
+            // console.log(this.y);
+
+        } else if (this.direction === 'right') {
+            newX = this.x + distance
+            newY = this.y
+            // console.log(newY);
+
+        }
+        if(!this.checkForCollision(newX, newY, gameBoard.map)){
+            this.x = newX, this.y = newY
+            this.render()
+        }else{
+            this.randomDirection();
+        }
+
+    }
+
+    checkForCollision(newX, newY, gameBoard) {
+        // console.log(newY);
+        // console.log(newX);
+        const corners = [
+            { x: newX, y: newY },// Top-left
+            { x: newX + this.size - 1, y: newY }, // Top-right
+            { x: newX, y: newY + this.size - 1 }, // Bottom-left
+            { x: newX + this.size - 1, y: newY + this.size - 1 } // Bottom-right
+        ];
+        for (let corner of corners) {
+            const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
+            const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
+            // console.log(tileX, gameBoard[0].length);
+            // console.log(corner.y);
+
+
+            if (tileX >= gameBoard[0].length || tileX < 0 ||
+                tileY >= gameBoard.length || tileY < 0) {
+                    // console.log('khdmat ?');
+                return true
+            }
+            // console.log(gameBoard[tileY][tileX]);
+            if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2) {
+               // console.log('dkhal');
+                return true
+            }
+        }
+        return false
+    }
+
+    randomDirection() {
+        // console.log('random direction');
+        const directions = ['up', 'down', 'left', 'right']
+        this.direction = directions[Math.floor(Math.random() * directions.length)]
+        // console.log(this.direction);
+    }
+}
 class Game {
     constructor() {
         this.map = new Map(this);
@@ -491,10 +646,32 @@ class Game {
         this.puse = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
+        this.enemies = []
+        this.startDraw = true
+        // this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
+        // this.boardHeight = (this.map.map[0].length - 1) * GRID_CELL_SIZE
+        let emptySpaces = this.map.findEmptySpaces()
+        console.log(emptySpaces.length);
+        
+        // console.log(bord.getBoundingClientRect());
+
+        // this.enemies.push(new Enemies(0, 0 , bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies(0, (this.map.map[0].length - 1 ) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+
+        for(let i = 0; i < 1; i++){ 
+            let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
+            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
+        }
     }
 
     draw(deltaTime) {
-        this.map.draw();
+if (this.startDraw) {
+     this.startDraw = false
+    
+        }        
+          this.map.draw()
         this.player.draw();
         this.ui.draw(deltaTime);
 
@@ -507,9 +684,12 @@ class Game {
         if (scoreEl) {
             scoreEl.textContent = `Score: ${this.ui.score}`;
         }
+        this.enemies.forEach(enemy => {
+            enemy.render();
+        })
     }
 
-    update() {
+    update(deltaTime) {
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
             this.puse = !this.puse;
@@ -518,11 +698,20 @@ class Game {
 
         if (!this.puse) {
             this.player.update();
+             this.enemies.forEach(enemy => {
+                enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
+            });
+            // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
+    }
+     randomCoordonates(gameMap){
+        // console.log("gameMap  :", gameMap);
+        return  Math.floor(Math.random() * gameMap)
     }
 }
 
-// Initialize game
+
+
 const game = new Game();
 let lastTime = 0;
 
@@ -542,7 +731,7 @@ function animate(timestamp) {
         game.draw(deltatime);
     }
 
-    game.update();
+    game.update(deltatime);
     requestAnimationFrame(animate);
 }
 
