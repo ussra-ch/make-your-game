@@ -2,6 +2,7 @@ const bord = document.getElementById('game');
 let tilesContainer = null;
 const GRID_CELL_SIZE = 35
 const initialSpeed = 0.05 // Container for map tiles
+let  cadeau = [4, 5, 6]; // Array of possible gifts
 
 class Map {
     constructor(game) {
@@ -109,6 +110,21 @@ class Map {
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
                     tile.style.backgroundImage = "url('grass.png')";
+                }
+                if(this.map[y][x] === 4){
+                    console.log(666);
+                    
+                tile.style.backgroundImage = "url('energy.gif')";
+                }
+                  if(this.map[y][x] === 5){
+                    console.log(666);
+                    
+                tile.style.backgroundImage = "url('heart.gif')";
+                }
+                   if(this.map[y][x] === 6){
+                    console.log(666);
+                    
+                tile.style.backgroundImage = "url('poison.gif')";
                 }
 
                 tilesContainer.appendChild(tile);
@@ -251,6 +267,7 @@ class Player {
             this.placeBomb();
             this.bombCooldown = 10;
         }
+       
             let X = this.pixelX / this.game.map.tileSize;
             let Y = this.pixelY / this.game.map.tileSize;
             const gridX = Math.round(X);
@@ -279,6 +296,26 @@ class Player {
                 }
             }
         })
+     
+        if( this.game.map.map[gridY][gridX] === 4) {
+            this.game.map.map[gridY][gridX] = 0;
+            this.game.player.speed += 0.1;
+            this.game.ui.score += 10;
+        }
+        if( this.game.map.map[gridY][gridX] === 5) {
+            this.game.map.map[gridY][gridX] = 0;
+            this.game.player.lives += 1;
+            this.game.ui.score += 10;
+        }
+        if( this.game.map.map[gridY][gridX] === 6) {
+            this.game.map.map[gridY][gridX] = 0;
+            this.game.player.lives -= 1;
+            this.game.ui.score -= 10;
+            if (this.game.player.lives <= 0) {
+               
+                this.game.gameOver = true;
+            }
+        }
 
         // Update bombs
         this.bombs.forEach(bomb => bomb.update());
@@ -451,10 +488,9 @@ class Bomb {
 
                 // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
-                    console.log(666);
                     
-                    this.game.map.map[ny][nx] = 0;
-                    this.game.ui.score += 10;
+                    this.game.map.map[ny][nx] = cadeau[Math.floor(Math.random() * cadeau.length)] ;
+                    //this.game.ui.score += 10;
                 }
 
                 const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
