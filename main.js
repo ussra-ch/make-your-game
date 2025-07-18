@@ -306,16 +306,19 @@ class Bomb {
 
                 if (this.game.map.map[ny][nx] === 2) {
                     const idx = ny * this.game.map.map[0].length + nx
-
+                    this.game.map.map[ny][nx] = 0
                     const tile = bord.children[idx];
                     if (tile) {
                         tile.style.backgroundColor = `rgba(0, 0, 0, 1)`;
                         tile.style.borderRadius = "100%";
                         setTimeout(() => {
                             tile.style.backgroundImage = "";
+                            tile.style.borderRadius = "0";
                         }, 150);
 
                     }
+                    console.log(this.game.map.map[ny][nx]);
+                    
                     // fajar  zmar ana irhabih hhhhhh
                     //this.game.ui.score += 10;  // hta nchof  wach nzidoha wala la 
                 }
