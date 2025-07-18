@@ -25,7 +25,8 @@ body {
     height: 600px;
     margin: 0 auto;
     border: 2px solid #555;
-    background-color: #111;
+    background-color: #f00000;
+    background-image: url('grass.png');
     position: relative; /* Added for player positioning */
 }
 

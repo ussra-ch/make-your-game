@@ -66,7 +66,7 @@ class Map {
         bord.style.width = `${this.map[0].length * this.tileSize}px`;
         bord.style.height = `${this.map.length * this.tileSize}px`;
         bord.style.border = "2px solid #333";
-        bord.style.backgroundColor = "#333";
+      //  bord.style.backgroundColor = "#333";
 
         // Clear only tiles container
         if (tilesContainer) {
@@ -95,7 +95,7 @@ class Map {
                     //tile.style.backgroundColor = "#ffdd44";
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
-                    tile.style.backgroundColor = "#000000";
+                  //  tile.style.backgroundColor = "#000000";
                 }
 
                 tilesContainer.appendChild(tile);
