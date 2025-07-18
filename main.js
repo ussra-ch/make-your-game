@@ -1,7 +1,7 @@
 const bord = document.getElementById('game');
 let tilesContainer = null; // Container for map tiles
 const GRID_CELL_SIZE = 35
-const initialSpeed = 0.01
+const initialSpeed = 0.05
 
 class Map {
     constructor(game) {
@@ -43,6 +43,7 @@ class Map {
     }
 
     addblocke() {
+        console.log('create sandooo9');
         let emtiSpais = this.findEmptySpaces()
         for (let i = 0; i < 50; i++) {
             let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)];
@@ -475,10 +476,12 @@ class Enemies {
         this.direction = 'idle'
         bord.append(this.create())
         this.state = true
+        this.gameBoard = gameBord
         this.render()
     }
 
     create() {
+        console.log('create enemy');
         this.element = document.createElement('div')
         this.element.className = 'enemy'
         this.element.style = `
@@ -494,10 +497,10 @@ class Enemies {
     }
 
     render() {
-        if (this.state){
-            console.log("x & y are :", this.x, this.y);
-            this.state = false
-        }
+        // if (this.state){
+        //     // console.log("x & y are :", this.x, this.y);
+        //     this.state = false
+        // }
         if (!this.isAlive) return
         this.element.style.top = `${this.x}px`;
         this.element.style.left = `${this.y}px`;
@@ -508,7 +511,7 @@ class Enemies {
         // console.log("before : ",this.x, this.y);
         //time howa time li kan bin had l frame wl frame li kant 9bl
         if (!this.isAlive) return
-        let distance = this.speed * deltatime;
+        let distance = this.speed * deltatime, newX, newY
         // console.log("deltatime is :", deltatime);
         if (this.direction === 'idle') {
             this.randomDirection();
@@ -516,26 +519,31 @@ class Enemies {
 
         // console.log(deltatime);
         if (this.direction === 'up') {
-            this.y = this.y - distance
-            this.x = this.x
+            newY = this.y - distance
+            newX = this.x
             // console.log();
         } else if (this.direction === 'down') {
-            this.y = this.y + distance
-            this.x = this.x
+            newY = this.y + distance
+            newX = this.x
             // console.log(this.y);
 
         } else if (this.direction === 'left') {
-            this.x = this.x - distance
-            this.y = this.y
+            newX = this.x - distance
+            newY = this.y
             // console.log(this.y);
 
         } else if (this.direction === 'right') {
-            this.x = this.x + distance
-            this.y = this.y
+            newX = this.x + distance
+            newY = this.y
             // console.log(newY);
 
         }
-        this.render()
+        if(!this.checkForCollision(newX, newY, gameBoard.map)){
+            this.x = newX, this.y = newY
+            this.render()
+        }else{
+            this.randomDirection();
+        }
         // console.log("after : ",this.x, this.y);
 
     }
@@ -552,14 +560,18 @@ class Enemies {
         for (let corner of corners) {
             const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
             const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
-            // console.log(corner);
+            // console.log(tileX, gameBoard[0].length);
             // console.log(corner.y);
+
 
             if (tileX >= gameBoard[0].length || tileX < 0 ||
                 tileY >= gameBoard.length || tileY < 0) {
+                    // console.log('khdmat ?');
                 return true
             }
-            if (gameBoard[tileY][tileX] == 1) {
+            // console.log(gameBoard[tileY][tileX]);
+            if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2) {
+                console.log('dkhal');
                 return true
             }
         }
@@ -567,8 +579,10 @@ class Enemies {
     }
 
     randomDirection() {
+        // console.log('random direction');
         const directions = ['up', 'down', 'left', 'right']
         this.direction = directions[Math.floor(Math.random() * directions.length)]
+        // console.log(this.direction);
     }
 }
 
@@ -595,8 +609,8 @@ class Game {
 
         for(let i = 0; i < 4; i++){ 
             let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
-            console.log("x&y are : ", place.x, place.y);
-            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+            // console.log("x&y are : ", place.x, place.y);
+            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
         }
         // this.enemies.push(new Enemies(8 , 5 , bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
     }
@@ -635,9 +649,9 @@ class Game {
 
         if (!this.puse) {
             this.player.update();
-            // this.enemies.forEach(enemy => {
-            //     enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
-            // });
+            this.enemies.forEach(enemy => {
+                enemy.update(deltatime, this.map); // Pass deltaTime and the actual map array
+            });
             // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
 
