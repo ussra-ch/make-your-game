@@ -40,13 +40,14 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    color: rgb(168, 31, 31);
     padding: 20px 40px;
     border: none;
     border-radius: 10px;
     font-size: 24px;
     display: none;
     cursor: pointer;
+    z-index: 1000;
 }
 
 button {

@@ -1,10 +1,12 @@
-const bord = document.getElementById('game')
+const bord = document.getElementById('game');
+let tilesContainer = null; // Container for map tiles
 
 class Map {
     constructor(game) {
-        this.game = game
-        this.width = 80
-        this.height = 70
+        this.game = game;
+        this.width = 80;
+        this.height = 70;
+        this.tileSize = 35;
         this.map = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -21,53 +23,86 @@ class Map {
             [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ]
-        this.addblocke()
+        ];
+        this.addblocke();
+        this.createTilesContainer();
     }
 
     addblocke() {
-        let emtiSpais = []
+        let emtiSpais = [];
         this.map.forEach((element, y) => {
             for (let x = 0; x < element.length; x++) {
-                if (element[x] == 0) {
-                    emtiSpais.push({ x, y })
+                if (element[x] === 0) {
+                    emtiSpais.push({ x, y });
                 }
             }
         });
         for (let i = 0; i < 50; i++) {
-            let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)]
+            let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)];
             if (pos) {
-                this.map[pos.y][pos.x] = 2
+                this.map[pos.y][pos.x] = 2;
             }
         }
     }
+
+    createTilesContainer() {
+        if (!tilesContainer) {
+            tilesContainer = document.createElement('div');
+            tilesContainer.style.position = "absolute";
+            tilesContainer.style.top = "0";
+            tilesContainer.style.left = "0";
+            tilesContainer.style.width = `${this.map[0].length * this.tileSize}px`;
+            tilesContainer.style.height = `${this.map.length * this.tileSize}px`;
+            tilesContainer.style.zIndex = "1";
+            bord.appendChild(tilesContainer);
+        }
+    }
+
     draw() {
-        bord.innerHTML = ""
+      
 
-        bord.style.display = "grid"
-        bord.style.gridTemplateColumns = `repeat(${this.map[0].length}, 1fr)`
-        bord.style.gridTemplateRows = `repeat(${this.map.length}, 1fr)`
+        // Setup board
+        bord.style.position = "relative";
+        bord.style.width = `${this.map[0].length * this.tileSize}px`;
+        bord.style.height = `${this.map.length * this.tileSize}px`;
+        bord.style.border = "2px solid #333";
+        bord.style.backgroundColor = "#333";
 
+        // Clear only tiles container
+        if (tilesContainer) {
+            tilesContainer.innerHTML = "";
+        }
 
+        // Draw tiles
         for (let y = 0; y < this.map.length; y++) {
             for (let x = 0; x < this.map[y].length; x++) {
-                const tile = document.createElement('div')
-                tile.id = 'til'
+                const tile = document.createElement('div');
+                tile.style.position = "absolute";
+                tile.style.left = `${x * this.tileSize}px`;
+                tile.style.top = `${y * this.tileSize}px`;
+                tile.style.width = `${this.tileSize}px`;
+                tile.style.height = `${this.tileSize}px`;
+                tile.style.border = '1px solid #555';
+                tile.style.backgroundSize = "cover";
+                tile.style.boxSizing = "border-box";
+                
                 if (this.map[y][x] === 1) {
-                    tile.style.backgroundImage = "url('block.png')"
-
+                    tile.style.backgroundImage = "url('block.png')";
+                    tile.style.backgroundColor = "#654321";
                 }
                 if (this.map[y][x] === 2) {
-
-                    tile.style.backgroundImage = "url('RTS.png')"
+                    tile.style.backgroundImage = "url('RTS.png')";
+                    tile.style.backgroundColor = "#ffdd44";
                 }
-                tile.style.border = '1px solid #ccc'
-                bord.appendChild(tile)
+                if (this.map[y][x] === 0) {
+                    tile.style.backgroundColor = "#222";
+                }
+                
+                tilesContainer.appendChild(tile);
             }
         }
     }
 }
-
 
 class Input {
     constructor(game) {
@@ -79,35 +114,27 @@ class Input {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
                 }
-                
             }
         });
+        
         window.addEventListener('keyup', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
-                console.log(this.keysPressed);
-                console.log(this.keys);
-                
-                
-                this.keys.splice(this.keys.indexOf(e.key), 1);
+                const index = this.keys.indexOf(e.key);
+                if (index > -1) {
+                    this.keys.splice(index, 1);
+                }
             }
         });
     }
-
-  
-
-
-
-
-    
 }
 
 class Ui {
     constructor(game) {
-        this.game = game
-        this.score = 0
-        this.timeS = 0
-        this.timeM = 0
-        this.elapsed = 0
+        this.game = game;
+        this.score = 0;
+        this.timeS = 0;
+        this.timeM = 0;
+        this.elapsed = 0;
     }
 
     draw(deltaTime) {
@@ -117,120 +144,186 @@ class Ui {
             this.elapsed %= 1000;
         }
         if (this.timeS >= 60) {
-            this.timeM += 1
-            this.timeS = 0
+            this.timeM += 1;
+            this.timeS = 0;
         }
         const timeEl = document.getElementById('time');
-        timeEl.textContent = `${this.timeM}:${this.timeS.toString().padStart(2, '0')}`;
+        if (timeEl) {
+            timeEl.textContent = `${this.timeM}:${this.timeS.toString().padStart(2, '0')}`;
+        }
     }
 }
 
 class Player {
     constructor(game, x, y) {
         this.game = game;
-        this.x = x;
-        this.y = y;
+        this.pixelX = x * this.game.map.tileSize;
+        this.pixelY = y * this.game.map.tileSize;
+        this.speed = 4;
         this.lives = 5;
         this.bombs = [];
-        this.moveCooldown = 0;
-        this.moveDelay = 10;
         this.maxBombs = 3;
-        this.inagif = '3adi'
+        this.inagif = '3adi';
+        this.element = null;
+        this.bombCooldown = 0;
+        this.createPlayerElement();
+    }
 
+    createPlayerElement() {
+        if (!this.element && bord) {
+            this.element = document.createElement('div');
+            this.element.style.position = 'absolute';
+            this.element.style.width = `${this.game.map.tileSize-7 }px`;
+            this.element.style.height = `${this.game.map.tileSize -7}px`;
+            this.element.style.backgroundSize = 'cover';
+            this.element.style.backgroundImage = "url('wa9f.gif')";
+            this.element.style.zIndex = '10';
+            bord.appendChild(this.element);
+        }
     }
 
     update() {
+        let moveX = 0;
+        let moveY = 0;
 
-
-
-        if (this.moveCooldown <= 0 && this.game.input.keys.length > 0) {
-            const lastKey = this.game.input.keys[this.game.input.keys.length - 1];
-
-            if (lastKey === 'ArrowUp' && this.canMove(this.x, this.y - 1)) {
-                this.y--;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'up';
-
-            }
-            if (lastKey === 'ArrowDown' && this.canMove(this.x, this.y + 1)) {
-                this.y++;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'down';
-
-            }
-            if (lastKey === 'ArrowLeft' && this.canMove(this.x - 1, this.y)) {
-                this.x--;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'left';
-
-            }
-            if (lastKey === 'ArrowRight' && this.canMove(this.x + 1, this.y)) {
-                this.x++;
-                this.moveCooldown = this.moveDelay;
-                this.inagif = 'right';
-
-            }
-
-
-
+        // Handle movement
+        if (this.game.input.keys.includes('ArrowUp')) {
+            moveY = -this.speed;
+            this.inagif = 'up';
+        } else if (this.game.input.keys.includes('ArrowDown')) {
+            moveY = this.speed;
+            this.inagif = 'down';
+        } else if (this.game.input.keys.includes('ArrowLeft')) {
+            moveX = -this.speed;
+            this.inagif = 'left';
+        } else if (this.game.input.keys.includes('ArrowRight')) {
+            moveX = this.speed;
+            this.inagif = 'right';
         }
-        if (this.game.input.keys[this.game.input.keys.length - 1] === undefined) {
-            console.log(6666);
 
+        // Reset animation if no movement
+        if (moveX === 0 && moveY === 0) {
             this.inagif = '3adi';
         }
-        if (this.moveCooldown > 0) this.moveCooldown--;
 
-        if (  this.game.input.keys[this.game.input.keys.length - 1]==' '
-) {
-            this.placeBomb();
+        // Calculate new position
+        const newX = this.pixelX + moveX;
+        const newY = this.pixelY + moveY;
+
+        // Check collision and move
+        if (this.canMove(newX, newY)) {
+            this.pixelX = newX;
+            this.pixelY = newY;
         }
 
+        this.checkCollections();
+
+        if (this.bombCooldown > 0) {
+            this.bombCooldown--;
+        }
+        
+        if (this.game.input.keys.includes(' ') && this.bombCooldown === 0) {
+            this.placeBomb();
+            this.bombCooldown = 10; 
+        }
+
+        // Update bombs
         this.bombs.forEach(bomb => bomb.update());
         this.bombs = this.bombs.filter(bomb => !bomb.exploded);
     }
 
-    canMove(x, y) {
-        if (y < 0 || y >= this.game.map.map.length || x < 0 || x >= this.game.map.map[0].length) return false;
-        const tile = this.game.map.map[y][x];
-        const hasBomb = this.bombs.some(b => b.x === x && b.y === y && !b.exploded);
-        return tile === 0 && !hasBomb;
+    checkCollections() {
+        const centerX = this.pixelX + (this.game.map.tileSize / 2);
+        const centerY = this.pixelY + (this.game.map.tileSize / 2);
+        
+        const gridX = Math.floor(centerX / this.game.map.tileSize);
+        const gridY = Math.floor(centerY / this.game.map.tileSize);
+        
+        if (gridY >= 0 && gridY < this.game.map.map.length &&
+            gridX >= 0 && gridX < this.game.map.map[0].length) {
+            
+            if (this.game.map.map[gridY][gridX] === 2) {
+                console.log(8888);
+                
+            }
+        }
+    }
+
+    canMove(newX, newY) {
+        const playerSize = this.game.map.tileSize - 7;
+        
+        // Check corners of player hitbox
+        const corners = [
+            [newX , newY ],
+            [newX + playerSize , newY],
+            [newX , newY + playerSize ],
+            [newX + playerSize , newY + playerSize ]
+        ];
+
+        for (const [px, py] of corners) {
+            const gridX = Math.floor(px / this.game.map.tileSize);
+            const gridY = Math.floor(py / this.game.map.tileSize);
+
+            // Check bounds
+            if (gridY < 0 || gridY >= this.game.map.map.length ||
+                gridX < 0 || gridX >= this.game.map.map[0].length) {
+                return false;
+            }
+
+            const tile = this.game.map.map[gridY][gridX];
+            
+            if (tile === 1 || tile ==2) {
+                return false;
+            }
+                
+            const hasBomb = this.bombs.some(
+                b => b.x === gridX && b.y === gridY && !b.exploded
+            );
+            if (hasBomb && time ==0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     placeBomb() {
-        if (this.bombs.length < this.maxBombs && !this.bombs.some(b => b.x === this.x && b.y === this.y)) {
-            this.bombs.push(new Bomb(this.game, this.x, this.y));
-
+        const centerX = this.pixelX + (this.game.map.tileSize / 2);
+        const centerY = this.pixelY + (this.game.map.tileSize / 2);
+        
+        const gridX = Math.floor(centerX / this.game.map.tileSize);
+        const gridY = Math.floor(centerY / this.game.map.tileSize);
+        
+        if (this.bombs.length < this.maxBombs &&
+            !this.bombs.some(b => b.x === gridX && b.y === gridY)) {
+            this.bombs.push(new Bomb(this.game, gridX, gridY));
         }
     }
 
     draw() {
-        this.bombs.forEach(bomb => bomb.draw());
-        const idx = this.y * this.game.map.map[0].length + this.x;
-        const tile = bord.children[idx];
-
-        if (tile) {
-            if (this.inagif == 'right') {
-
-                tile.style.backgroundImage
-                    = "url('liman.gif')";
-            } else if (this.inagif == 'left') {
-
-                tile.style.backgroundImage
-                    = "url('left.gif')";
-            } else if (this.inagif == 'up') {
-                tile.style.backgroundImage
-                    = "url('up.gif')";
-            } else if (this.inagif == 'down') {
-                tile.style.backgroundImage
-                    = "url('down.gif')";
-
-            } else if (this.inagif == '3adi') {
-                tile.style.backgroundImage
-                    = "url('wa9f.gif')";
-            }
-
+        if (!this.element) {
+            this.createPlayerElement();
         }
+        
+        if (this.element) {
+            this.element.style.left = `${this.pixelX}px`;
+            this.element.style.top = `${this.pixelY}px`;
+
+            // Update animation
+            if (this.inagif === 'right') {
+                this.element.style.backgroundImage = "url('liman.gif')";
+            } else if (this.inagif === 'left') {
+                this.element.style.backgroundImage = "url('left.gif')";
+            } else if (this.inagif === 'up') {
+                this.element.style.backgroundImage = "url('up.gif')";
+            } else if (this.inagif === 'down') {
+                this.element.style.backgroundImage = "url('down.gif')";
+            } else if (this.inagif === '3adi') {
+                this.element.style.backgroundImage = "url('wa9f.gif')";
+            }
+        }
+        
+        this.bombs.forEach(bomb => bomb.draw());
     }
 }
 
@@ -239,22 +332,40 @@ class Bomb {
         this.game = game;
         this.x = x;
         this.y = y;
-        this.timer = 80; // taniya ochihaja na ofhamtk bghit tbadal badal mabghitich blach
+        this.timer = 120;  //2tawani daba mazyanin
         this.exploded = false;
-        this.blinkTimer = 0;
         this.visible = true;
+        this.element = null;
+        this.blinkTimer = 0;
+        this.createBombElement();
+    }
+
+    createBombElement() {
+        if (!this.element && bord) {
+            this.element = document.createElement('div');
+            this.element.style.position = 'absolute';
+            this.element.style.left = `${this.x * this.game.map.tileSize }px`;
+            this.element.style.top = `${this.y * this.game.map.tileSize }px`;
+            this.element.style.width = `${this.game.map.tileSize }px`;
+            this.element.style.height = `${this.game.map.tileSize }px`;
+            this.element.style.backgroundImage = "url('bomb.gif')";
+            this.element.style.borderRadius = `${50}px`
+            //this.element.style.backgroundSize = 'cover';
+            this.element.style.zIndex = '8';
+            bord.appendChild(this.element);
+        }
     }
 
     update() {
         this.timer--;
-
-        // if (this.timer < 80) { 
-        //     this.blinkTimer++;
-        //     if (this.blinkTimer % 1 === 0) {
-        //         this.visible = !this.visible;
-        //     }
-        // }
-
+        
+        if (this.timer < 60) {
+            this.blinkTimer++;
+            if (this.blinkTimer % 10 === 0) {
+                this.visible = !this.visible;
+            }
+        }
+        
         if (this.timer <= 0 && !this.exploded) {
             this.explode();
         }
@@ -262,75 +373,120 @@ class Bomb {
 
     explode() {
         this.exploded = true;
-
+        
+        if (this.element && this.element.parentNode) {
+            this.element.remove();
+            this.element = null;
+        }
         const dirs = [
             [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]
         ];
 
         dirs.forEach(([dx, dy]) => {
-
             const nx = this.x + dx;
             const ny = this.y + dy;
-            if (
-                ny >= 0 && ny < this.game.map.map.length &&
-                nx >= 0 && nx < this.game.map.map[0].length
-            ) {
 
+            if (ny >= 0 && ny < this.game.map.map.length &&
+                nx >= 0 && nx < this.game.map.map[0].length) {
+                
+                // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
                     this.game.map.map[ny][nx] = 0;
-                    // fajar  zmar ana irhabih hhhhhh
-                    //this.game.ui.score += 10;  // hta nchof  wach nzidoha wala la 
+                    this.game.ui.score += 10;
                 }
-                if (this.game.player.x === nx && this.game.player.y === ny) {
-                    this.game.player.lives--
-                    this.game.player.x = 1;
-                    this.game.player.y = 1;
+
+                const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
+                const playerCenterY = this.game.player.pixelY + (this.game.map.tileSize / 2);
+                const playerGridX = Math.floor(playerCenterX / this.game.map.tileSize);
+                const playerGridY = Math.floor(playerCenterY / this.game.map.tileSize);
+                
+                if (playerGridX === nx && playerGridY === ny) {
+                    this.game.player.lives--;
+                    this.game.player.pixelX = 1 * this.game.map.tileSize;
+                    this.game.player.pixelY = 1 * this.game.map.tileSize;
 
                     if (this.game.player.lives <= 0) {
-                        alert("Game Over");
+                        alert("Game Over! Score: " + this.game.ui.score);
                         window.location.reload();
                     }
                 }
-            }
-            const idx = ny * this.game.map.map[0].length + nx
 
-            const tile = bord.children[idx];
-            if (tile) {
-                tile.style.backgroundColor = `rgba(0, 0, 0, 1)`;
-                tile.style.borderRadius = "100%";
+                this.createExplosion(nx, ny);
             }
         });
     }
 
-    draw() {
-        if (!this.exploded && this.visible) {
-            const idx = this.y * this.game.map.map[0].length + this.x
+    createExplosion(x, y) {
+        const bommmmm = document.createElement('div');
+     bommmmm.style.position = 'absolute';
+     bommmmm.style.left = `${x * this.game.map.tileSize}px`;
+     bommmmm.style.top = `${y * this.game.map.tileSize}px`;
+     bommmmm.style.width = `${this.game.map.tileSize}px`;
+     bommmmm.style.height = `${this.game.map.tileSize}px`;
+     bommmmm.style.backgroundColor = 'rgba(255, 165, 0, 0.9)';
+     bommmmm.style.borderRadius = '50%';
+     bommmmm.style.zIndex = '15';
+     bommmmm.style.border = '2px solid rgba(255, 0, 0, 0.8)';
+     bommmmm.style.boxShadow = '0 0 20px rgba(255, 165, 0, 0.8)';
+        
+        if (bord) {
+            bord.appendChild(bommmmm);
+        }
 
-            const tile = bord.children[idx];
-            if (tile) {
-                tile.style.backgroundImage = "url('bomb.gif')";
-                tile.style.borderRadius = "100%";
+        // Animate explosion
+        let scale = 0.1;
+        const animateExplosion = () => {
+            scale += 0.1;
+         bommmmm.style.transform = `scale(${scale})`;
+         bommmmm.style.opacity = `${1 - scale * 0.1}`;
+            
+            if (scale < 2) {
+                requestAnimationFrame(animateExplosion);
+            } else {
+                if (bommmmm.parentNode) {
+                 bommmmm.remove();
+                }
             }
+        };
+        
+        requestAnimationFrame(animateExplosion);
+    }
+
+    draw() {
+        if (!this.element) {
+            this.createBombElement();
+        }
+        
+        if (this.element && !this.exploded) {
+            this.element.style.display = this.visible ? 'block' : 'none';
         }
     }
 }
 
 class Game {
     constructor() {
-        this.map = new Map(this)
-        this.ui = new Ui(this)
-        this.input = new Input(this)
-        this.player = new Player(this, 1, 1)
-        this.puse = false
-        this.pPressedLastFrame = false
+        this.map = new Map(this);
+        this.ui = new Ui(this);
+        this.input = new Input(this);
+        this.player = new Player(this, 1, 1);
+        this.puse = false;
+        this.pPressedLastFrame = false;
     }
 
     draw(deltaTime) {
-        this.map.draw()
-        this.player.draw()
-        this.ui.draw(deltaTime)
-        document.querySelector('#ui h1').textContent = `Lives: ${this.player.lives}`;
-        document.getElementById('score').textContent = `Score: ${this.ui.score}`;
+        this.map.draw();
+        this.player.draw();
+        this.ui.draw(deltaTime);
+        
+        const livesEl = document.querySelector('#ui h1');
+        if (livesEl) {
+            livesEl.textContent = `Lives: ${this.player.lives}`;
+        }
+        
+        const scoreEl = document.getElementById('score');
+        if (scoreEl) {
+            scoreEl.textContent = `Score: ${this.ui.score}`;
+        }
     }
 
     update() {
@@ -343,25 +499,32 @@ class Game {
         if (!this.puse) {
             this.player.update();
         }
-
     }
 }
-const game = new Game()
-let lastTime = 0
+
+// Initialize game
+const game = new Game();
+let lastTime = 0;
 
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
 
+    const pauseEl = document.getElementById('puse');
     if (game.puse) {
-        document.getElementById('puse').style.display = 'block'
+       
+        
+        if (pauseEl) {
+             console.log(77);
+            pauseEl.style.display = 'block';
+        }
     } else {
-        document.getElementById('puse').style.display = 'none'
-        game.draw(deltatime)
+        if (pauseEl) pauseEl.style.display = 'none';
+        game.draw(deltatime);
     }
 
-    game.update()
-    requestAnimationFrame(animate)
+    game.update();
+    requestAnimationFrame(animate);
 }
 
-animate(0)
+animate(0);
