@@ -66,7 +66,7 @@ class Map {
         bord.style.width = `${this.map[0].length * this.tileSize}px`;
         bord.style.height = `${this.map.length * this.tileSize}px`;
         bord.style.border = "2px solid #333";
-      //  bord.style.backgroundColor = "#333";
+        //  bord.style.backgroundColor = "#333";
 
         // Clear only tiles container
         if (tilesContainer) {
@@ -95,7 +95,7 @@ class Map {
                     //tile.style.backgroundColor = "#ffdd44";
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
-                  //  tile.style.backgroundColor = "#000000";
+                    //  tile.style.backgroundColor = "#000000";
                 }
 
                 tilesContainer.appendChild(tile);
@@ -135,6 +135,7 @@ class Ui {
         this.timeS = 0;
         this.timeM = 0;
         this.elapsed = 0;
+        this.gameOverEl= null; 
     }
 
     draw(deltaTime) {
@@ -151,6 +152,15 @@ class Ui {
         if (timeEl) {
             timeEl.textContent = `${this.timeM}:${this.timeS.toString().padStart(2, '0')}`;
         }
+        document.getElementById('score').textContent = `Score: ${this.score}`;
+        const l=document.getElementById('game-over');
+        if (!l) {
+            this.gameOverEl = document.createElement('div');
+            this.gameOverEl.id = 'game-over';
+            this.gameOverEl.textContent = `Game Over! Score: ${this.score}`;
+            bord.prepend(this.gameOverEl);
+        }
+        
     }
 }
 
@@ -174,7 +184,7 @@ class Player {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
             this.element.style.width = `${this.game.map.tileSize - 5}px`;
-            this.element.style.height = `${this.game.map.tileSize-5}px`;
+            this.element.style.height = `${this.game.map.tileSize - 5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('wa9f.gif')";
             this.element.style.zIndex = '10';
@@ -211,22 +221,9 @@ class Player {
         const newY = this.pixelY + moveY;
 
         // Check collision and move
-        if (this.canMove(newX, newY)) {
+        if (this.canMove(newX + 2, newY + 2)) {
             this.pixelX = newX;
             this.pixelY = newY;
-        } else {
-            
-            if ( (this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  < 0.5) {
-                this.pixelX--
-            }else if((this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  > 0.5) {
-                this.pixelX++
-            }
-            if ( (this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  < 0.5) {
-                this.pixelY--
-            }else if((this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  > 0.5) {
-                this.pixelY++
-            }
-
         }
 
 
@@ -248,7 +245,8 @@ class Player {
 
     canMove(newX, newY) {
         const playerSize = this.game.map.tileSize - 5;
-
+        const nudgeAmount = 1.5;
+        const edgeThreshold = 0.4; // in tile units
         // Check corners of player hitbox
         const corners = [
             [newX, newY],
@@ -256,31 +254,52 @@ class Player {
             [newX, newY + playerSize],
             [newX + playerSize, newY + playerSize]
         ];
-
         for (const [px, py] of corners) {
-            const gridX = Math.floor(px / this.game.map.tileSize);
-            const gridY = Math.floor(py / this.game.map.tileSize);
-
+            let X = px / this.game.map.tileSize;
+            let Y = py / this.game.map.tileSize;
+            const gridX = Math.floor(X);
+            const gridY = Math.floor(Y);
             // Check bounds
             if (gridY < 0 || gridY >= this.game.map.map.length ||
                 gridX < 0 || gridX >= this.game.map.map[0].length) {
                 return false;
             }
-
             const tile = this.game.map.map[gridY][gridX];
-
             if (tile === 1 || tile == 2) {
+                // Nudge logic for all directions
+                if (this.inagif === 'down' && X - gridX < edgeThreshold && gridX > 0 && this.game.map.map[gridY][gridX - 1] !== 1) {
+                    this.pixelX -= nudgeAmount;
+                }
+                if (this.inagif === 'down' && gridX + 1 < this.game.map.map[0].length && (gridX + 1 - X) < edgeThreshold && this.game.map.map[gridY][gridX + 1] !== 1) {
+                    this.pixelX += nudgeAmount;
+                }
+                if (this.inagif === 'up' && X - gridX < edgeThreshold && gridX > 0 && this.game.map.map[gridY][gridX - 1] !== 1) {
+                    this.pixelX -= nudgeAmount;
+                }
+                if (this.inagif === 'up' && gridX + 1 < this.game.map.map[0].length && (gridX + 1 - X) < edgeThreshold && this.game.map.map[gridY][gridX + 1] !== 1) {
+                    this.pixelX += nudgeAmount;
+                }
+                if (this.inagif === 'left' && Y - gridY < edgeThreshold && gridY > 0 && this.game.map.map[gridY - 1][gridX] !== 1) {
+                    this.pixelY -= nudgeAmount;
+                }
+                if (this.inagif === 'left' && gridY + 1 < this.game.map.map.length && (gridY + 1 - Y) < edgeThreshold && this.game.map.map[gridY + 1][gridX] !== 1) {
+                    this.pixelY += nudgeAmount;
+                }
+                if (this.inagif === 'right' && Y - gridY < edgeThreshold && gridY > 0 && this.game.map.map[gridY - 1][gridX] !== 1) {
+                    this.pixelY -= nudgeAmount;
+                }
+                if (this.inagif === 'right' && gridY + 1 < this.game.map.map.length && (gridY + 1 - Y) < edgeThreshold && this.game.map.map[gridY + 1][gridX] !== 1) {
+                    this.pixelY += nudgeAmount;
+                }
                 return false;
             }
-
             const hasBomb = this.bombs.some(
                 b => b.x === gridX && b.y === gridY && !b.exploded
             );
-            if (hasBomb && time == 0) {
-                return false;
-            }
+            /* if (hasBomb) {
+                 return false;
+             }*/
         }
-
         return true;
     }
 
@@ -403,8 +422,9 @@ class Bomb {
                     this.game.player.pixelY = 1 * this.game.map.tileSize;
 
                     if (this.game.player.lives <= 0) {
-                        alert("Game Over! Score: " + this.game.ui.score);
-                        window.location.reload();
+                        //alert("Game Over! Score: " + this.game.ui.score);
+                        // window.location.reload();
+                        this.game.gameOver = true;
                     }
                 }
 
@@ -468,6 +488,7 @@ class Game {
         this.player = new Player(this, 1, 1);
         this.puse = false;
         this.pPressedLastFrame = false;
+        this.gameOver = false;
     }
 
     draw(deltaTime) {
@@ -508,11 +529,12 @@ function animate(timestamp) {
     lastTime = timestamp;
 
     const pauseEl = document.getElementById('puse');
-    if (game.puse) {
-        if (pauseEl) {
-            console.log(77);
-            pauseEl.style.display = 'block';
-        }
+    if (game.puse)  {
+        pauseEl.style.display = 'block';
+        
+    }else if (game.gameOver) {
+        game.ui.gameOverEl.style.display = 'block';
+        
     } else {
         if (pauseEl) pauseEl.style.display = 'none';
         game.draw(deltatime);

@@ -27,7 +27,8 @@ body {
     border: 2px solid #555;
     background-color: #f00000;
     background-image: url('grass.png');
-    position: relative; /* Added for player positioning */
+    position: relative;
+    /* Added for player positioning */
 }
 
 #game div {
@@ -47,26 +48,47 @@ body {
     border: none;
     border-radius: 10px;
     font-size: 24px;
-    display: none;
+    /* display: none;*/
     cursor: pointer;
+    z-index: 1000;
+    /* Ensure it appears above other elements */
 }
 
 button {
-    background-color: #555;
+    background-color: #555555;
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 3px;
     cursor: pointer;
+   
 }
 
 button:hover {
     background-color: #777;
 }
-#player{
+
+#player {
     width: 40px;
     height: 40px;
-    position: absolute; 
+    position: absolute;
     top: 40px;
     left: 40px;
+}
+
+#game-over {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 24px;
+    text-align: center;
+    z-index: 1000;
+    /* Ensure it appears above other elements */
+    font-family: "Bitcount Grid Single", system-ui;
+    display: none;
 }
