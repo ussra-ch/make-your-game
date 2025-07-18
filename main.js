@@ -488,10 +488,10 @@ class Bomb {
                     //this.game.ui.score += 10;
                 }
 
-                const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
-                const playerCenterY = this.game.player.pixelY + (this.game.map.tileSize / 2);
-                const playerGridX = Math.floor(playerCenterX / this.game.map.tileSize);
-                const playerGridY = Math.floor(playerCenterY / this.game.map.tileSize);
+                // const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
+                // const playerCenterY = this.game.player.pixelY + (this.game.map.tileSize / 2);
+                const playerGridX = Math.floor(this.game.player.pixelX / this.game.map.tileSize);
+                const playerGridY = Math.floor(this.game.player.pixelY / this.game.map.tileSize);
 
                 if (playerGridX === nx && playerGridY === ny) {
                     this.game.player.lives--;
