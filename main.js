@@ -30,7 +30,7 @@ class Map {
         this.createTilesContainer();
     }
 
-    addblocke() {
+    findEmptySpaces(){
         let emtiSpais = [];
         this.map.forEach((element, y) => {
             for (let x = 0; x < element.length; x++) {
@@ -39,6 +39,11 @@ class Map {
                 }
             }
         });
+        return emtiSpais
+    }
+
+    addblocke() {
+        let emtiSpais = this.findEmptySpaces()
         for (let i = 0; i < 50; i++) {
             let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)];
             if (pos) {
@@ -61,8 +66,6 @@ class Map {
     }
 
     draw() {
-
-
         // Setup board
         bord.style.position = "relative";
         bord.style.width = `${this.map[0].length * this.tileSize}px`;
@@ -580,9 +583,10 @@ class Game {
         this.pPressedLastFrame = false;
         this.enemies = []
         this.startDraw = true
-        this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
-        this.boardHeight = (this.map.map[0].length -1) * GRID_CELL_SIZE
-        console.log(bord.getBoundingClientRect());
+        // this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
+        // this.boardHeight = (this.map.map[0].length - 1) * GRID_CELL_SIZE
+        let emptySpaces = this.map.findEmptySpaces()
+        // console.log(bord.getBoundingClientRect());
 
         // this.enemies.push(new Enemies(0, 0 , bord, GRID_CELL_SIZE, initialSpeed));
         // this.enemies.push(new Enemies(0, (this.map.map[0].length - 1 ) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
@@ -590,7 +594,9 @@ class Game {
         // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
 
         for(let i = 0; i < 4; i++){ 
-            this.enemies.push(new Enemies(this.randomCoordonates(this.boardWidth), this.randomCoordonates(this.boardHeight) , bord, GRID_CELL_SIZE, initialSpeed));
+            let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
+            console.log("x&y are : ", place.x, place.y);
+            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
         }
         // this.enemies.push(new Enemies(8 , 5 , bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
     }
@@ -638,7 +644,7 @@ class Game {
     }
 
     randomCoordonates(gameMap){
-        console.log("gameMap  :", gameMap);
+        // console.log("gameMap  :", gameMap);
         return  Math.floor(Math.random() * gameMap)
     }
 }
