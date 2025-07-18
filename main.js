@@ -473,6 +473,19 @@ class Bomb {
                     }
                 }
 
+                if( this.game.enemies.length > 0){
+                    this.game.enemies.forEach(enemy => {
+                        const enemyGridX = Math.floor(enemy.x / this.game.map.tileSize);
+                        const enemyGridY = Math.floor(enemy.y / this.game.map.tileSize);
+                        
+                        if (enemyGridX === ny && enemyGridY === nx) {
+                              enemy.isAlive = false;
+                            enemy.element.remove();
+                            this.game.ui.score += 20;
+                        }
+                    });
+                }
+
                 this.createExplosion(nx, ny);
             }
         });
@@ -500,7 +513,6 @@ class Bomb {
         const animateExplosion = () => {
             scale += 0.1;
             bommmmm.style.transform = `scale(${scale})`;
-            bommmmm.style.opacity = `${1 - scale * 0.1}`;
 
             if (scale < 2) {
                 requestAnimationFrame(animateExplosion);
@@ -549,7 +561,7 @@ class Enemies {
             position: absolute;
             left: ${this.x}px;
             top: ${this.y}px;
-            background-color: red;
+            background-image: url('enemy.gif');
         `
         return this.element
     }
@@ -623,7 +635,6 @@ class Enemies {
             }
             // console.log(gameBoard[tileY][tileX]);
             if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2) {
-               // console.log('dkhal');
                 return true
             }
         }
@@ -660,7 +671,7 @@ class Game {
         // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
         // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
 
-        for(let i = 0; i < 1; i++){ 
+        for(let i = 0; i < 5; i++){ 
             let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
             this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
         }
@@ -701,7 +712,7 @@ if (this.startDraw) {
              this.enemies.forEach(enemy => {
                 enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
             });
-            // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
+         this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
     }
      randomCoordonates(gameMap){
