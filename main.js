@@ -173,8 +173,8 @@ class Player {
         if (!this.element && bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.width = `${this.game.map.tileSize - 7}px`;
-            this.element.style.height = `${this.game.map.tileSize -7}px`;
+            this.element.style.width = `${this.game.map.tileSize - 5}px`;
+            this.element.style.height = `${this.game.map.tileSize-5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('wa9f.gif')";
             this.element.style.zIndex = '10';
@@ -247,7 +247,7 @@ class Player {
 
 
     canMove(newX, newY) {
-        const playerSize = this.game.map.tileSize - 7;
+        const playerSize = this.game.map.tileSize - 5;
 
         // Check corners of player hitbox
         const corners = [
