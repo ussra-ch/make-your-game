@@ -168,6 +168,7 @@ class Ui {
         document.getElementById('score').textContent = `Score: ${this.score}`;
         document.getElementById('bombs').textContent = `Bombs: ${this.game.player.maxBombs - this.game.player.bombs.length}`;
         document.getElementById('speed').textContent = `Speed: ${this.game.player.speed}`;
+        document.getElementById('enemy').textContent = `Enemies: ${this.game.enemies.length}`;
         const gameover=document.getElementById('game-over');
         if (!gameover) {
             this.gameOverEl = document.createElement('div');
