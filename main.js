@@ -1,6 +1,6 @@
 const bord = document.getElementById('game');
 let tilesContainer = null; // Container for map tiles
-const GRID_CELL_SIZE = 40
+const GRID_CELL_SIZE = 35
 const initialSpeed = 0.01
 
 class Map {
@@ -176,7 +176,7 @@ class Player {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
             this.element.style.width = `${this.game.map.tileSize - 7}px`;
-            this.element.style.height = `${this.game.map.tileSize -7}px`;
+            this.element.style.height = `${this.game.map.tileSize - 7}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('wa9f.gif')";
             this.element.style.zIndex = '10';
@@ -217,16 +217,16 @@ class Player {
             this.pixelX = newX;
             this.pixelY = newY;
         } else {
-            
-            if ( (this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  < 0.5) {
+
+            if ((this.pixelX / this.game.map.tileSize) - Math.floor(this.pixelX / this.game.map.tileSize) < 0.5) {
                 this.pixelX -= 5
-            }else if((this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  > 0.5) {
+            } else if ((this.pixelX / this.game.map.tileSize) - Math.floor(this.pixelX / this.game.map.tileSize) > 0.5) {
                 this.pixelX += 5
             }
-            if ( (this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  < 0.5) {
-                this.pixelY-= 5
-            }else if((this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  > 0.5) {
-                this.pixelY+= 5
+            if ((this.pixelY / this.game.map.tileSize) - Math.floor(this.pixelY / this.game.map.tileSize) < 0.5) {
+                this.pixelY -= 5
+            } else if ((this.pixelY / this.game.map.tileSize) - Math.floor(this.pixelY / this.game.map.tileSize) > 0.5) {
+                this.pixelY += 5
             }
 
         }
@@ -471,7 +471,7 @@ class Enemies {
         this.speed = speed
         this.direction = 'idle'
         bord.append(this.create())
-
+        this.state = true
         this.render()
     }
 
@@ -479,40 +479,34 @@ class Enemies {
         this.element = document.createElement('div')
         this.element.className = 'enemy'
         this.element.style = `
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             z-index: 100;
             position: absolute;
             left: ${this.x}px;
             top: ${this.y}px;
             background-color: red;
-            transform: translate(${this.x}px, ${this.y}px);
         `
-        this.element.style.zIndex = 100
-        console.log("create enemy");
-
         return this.element
     }
 
     render() {
+        if (this.state){
+            console.log("x & y are :", this.x, this.y);
+            this.state = false
+        }
         if (!this.isAlive) return
-        console.log('hehe');
-        
-        // console.log("b" , this.x);
-        console.log("b" , this.y);
-        console.log(`translate(${this.x}px, ${this.y}px);`);
-        
         this.element.style.top = `${this.x}px`;
         this.element.style.left = `${this.y}px`;
         // this.element.style.top = `${this.y}px`;
     }
 
     update(deltatime, gameBoard) {
-        
+        // console.log("before : ",this.x, this.y);
         //time howa time li kan bin had l frame wl frame li kant 9bl
         if (!this.isAlive) return
-        let distance = this.speed * deltatime ;
-        
+        let distance = this.speed * deltatime;
+        // console.log("deltatime is :", deltatime);
         if (this.direction === 'idle') {
             this.randomDirection();
         }
@@ -520,37 +514,27 @@ class Enemies {
         // console.log(deltatime);
         if (this.direction === 'up') {
             this.y = this.y - distance
-             this.x = this.x
+            this.x = this.x
             // console.log();
         } else if (this.direction === 'down') {
             this.y = this.y + distance
-             this.x = this.x
+            this.x = this.x
             // console.log(this.y);
 
         } else if (this.direction === 'left') {
-             this.x = this.x - distance
+            this.x = this.x - distance
             this.y = this.y
             // console.log(this.y);
 
         } else if (this.direction === 'right') {
-             this.x = this.x + distance
+            this.x = this.x + distance
             this.y = this.y
             // console.log(newY);
 
         }
-
-        // console.log(newX);
-        // console.log(newY);
-        // if (this.checkForCollision(newX, newY, gameBoard)) {
-        //     this.randomDirection()
-        // } else {
-            
-        // }
-
-        console.log("a" , this.x);
-        console.log("a" , this.y);
-
         this.render()
+        // console.log("after : ",this.x, this.y);
+
     }
 
     checkForCollision(newX, newY, gameBoard) {
@@ -586,7 +570,6 @@ class Enemies {
 }
 
 
-
 class Game {
     constructor() {
         this.map = new Map(this);
@@ -597,9 +580,19 @@ class Game {
         this.pPressedLastFrame = false;
         this.enemies = []
         this.startDraw = true
+        this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
+        this.boardHeight = (this.map.map[0].length -1) * GRID_CELL_SIZE
+        console.log(bord.getBoundingClientRect());
 
-        this.enemies.push(new Enemies(3 * GRID_CELL_SIZE, 3 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
-        this.enemies.push(new Enemies(8 * GRID_CELL_SIZE, 5 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
+        // this.enemies.push(new Enemies(0, 0 , bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies(0, (this.map.map[0].length - 1 ) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
+        // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+
+        for(let i = 0; i < 4; i++){ 
+            this.enemies.push(new Enemies(this.randomCoordonates(this.boardWidth), this.randomCoordonates(this.boardHeight) , bord, GRID_CELL_SIZE, initialSpeed));
+        }
+        // this.enemies.push(new Enemies(8 , 5 , bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
     }
 
     draw(deltaTime) {
@@ -609,6 +602,7 @@ class Game {
         }
         this.player.draw();
         this.ui.draw(deltaTime);
+        // console.log(bord.getBoundingClientRect());
 
         const livesEl = document.querySelector('#ui h1');
         if (livesEl) {
@@ -626,6 +620,7 @@ class Game {
     }
 
     update(deltatime) {
+        // console.log("Game class, deltaTime is :", deltatime);
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
             this.puse = !this.puse;
@@ -634,12 +629,17 @@ class Game {
 
         if (!this.puse) {
             this.player.update();
-            this.enemies.forEach(enemy => {
-                enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
-            });
+            // this.enemies.forEach(enemy => {
+            //     enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
+            // });
             // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
 
+    }
+
+    randomCoordonates(gameMap){
+        console.log("gameMap  :", gameMap);
+        return  Math.floor(Math.random() * gameMap)
     }
 }
 
@@ -654,7 +654,7 @@ function animate(timestamp) {
     const pauseEl = document.getElementById('puse');
     if (game.puse) {
         if (pauseEl) {
-            console.log(77);
+            // console.log(77);
             pauseEl.style.display = 'block';
         }
     } else {
@@ -662,7 +662,7 @@ function animate(timestamp) {
         game.draw(deltatime);
     }
 
-    game.update();
+    game.update(deltatime);
     requestAnimationFrame(animate);
 }
 
