@@ -174,7 +174,7 @@ class Player {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
             this.element.style.width = `${this.game.map.tileSize - 7}px`;
-            this.element.style.height = `${this.game.map.tileSize - 7}px`;
+            this.element.style.height = `${this.game.map.tileSize }px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('wa9f.gif')";
             this.element.style.zIndex = '10';
@@ -214,9 +214,21 @@ class Player {
         if (this.canMove(newX, newY)) {
             this.pixelX = newX;
             this.pixelY = newY;
+        } else {
+            
+            if ( (this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  < 0.5) {
+                this.pixelX--
+            }else if((this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  > 0.5) {
+                this.pixelX++
+            }
+            if ( (this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  < 0.5) {
+                this.pixelY--
+            }else if((this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  > 0.5) {
+                this.pixelY++
+            }
+
         }
 
-        this.checkCollections();
 
         if (this.bombCooldown > 0) {
             this.bombCooldown--;
@@ -232,22 +244,7 @@ class Player {
         this.bombs = this.bombs.filter(bomb => !bomb.exploded);
     }
 
-    checkCollections() {
-        const centerX = this.pixelX + (this.game.map.tileSize / 2);
-        const centerY = this.pixelY + (this.game.map.tileSize / 2);
 
-        const gridX = Math.floor(centerX / this.game.map.tileSize);
-        const gridY = Math.floor(centerY / this.game.map.tileSize);
-
-        if (gridY >= 0 && gridY < this.game.map.map.length &&
-            gridX >= 0 && gridX < this.game.map.map[0].length) {
-
-            if (this.game.map.map[gridY][gridX] === 2) {
-                console.log(8888);
-
-            }
-        }
-    }
 
     canMove(newX, newY) {
         const playerSize = this.game.map.tileSize - 7;
