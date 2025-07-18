@@ -112,18 +112,15 @@ class Map {
                     tile.style.backgroundImage = "url('grass.png')";
                 }
                 if(this.map[y][x] === 4){
-                    console.log(666);
-                    
+                   
                 tile.style.backgroundImage = "url('energy.gif')";
                 }
                   if(this.map[y][x] === 5){
-                    console.log(666);
-                    
+                 
                 tile.style.backgroundImage = "url('heart.gif')";
                 }
                    if(this.map[y][x] === 6){
-                    console.log(666);
-                    
+                
                 tile.style.backgroundImage = "url('poison.gif')";
                 }
 
@@ -276,13 +273,11 @@ class Player {
                this.game.enemies.forEach(enemy => { 
 
           
-            const enemyGridX = Math.floor(enemy.x / this.game.map.tileSize);
-            const enemyGridY = Math.floor(enemy.y / this.game.map.tileSize);
-            console.log(enemyGridX, enemyGridY, gridX, gridY);
-            
+            const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
+            const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
+           
             
             if (enemyGridX === gridY && enemyGridY === gridX) {
-                console.log(999999);
                 
                 
                 this.lives--;
@@ -299,7 +294,7 @@ class Player {
      
         if( this.game.map.map[gridY][gridX] === 4) {
             this.game.map.map[gridY][gridX] = 0;
-            this.game.player.speed += 0.1;
+            this.game.player.speed += 0.5;
             this.game.ui.score += 10;
         }
         if( this.game.map.map[gridY][gridX] === 5) {
@@ -512,8 +507,8 @@ class Bomb {
 
                 if( this.game.enemies.length > 0){
                     this.game.enemies.forEach(enemy => {
-                        const enemyGridX = Math.floor(enemy.x / this.game.map.tileSize);
-                        const enemyGridY = Math.floor(enemy.y / this.game.map.tileSize);
+                        const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
+                        const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
                         
                         if (enemyGridX === ny && enemyGridY === nx) {
                               enemy.isAlive = false;
@@ -744,7 +739,7 @@ if (this.startDraw) {
         }
         this.pPressedLastFrame = pPressed;
 
-        if (!this.puse) {
+        if (!this.puse && !this.gameOver) {
             this.player.update();
              this.enemies.forEach(enemy => {
                 enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
@@ -752,10 +747,10 @@ if (this.startDraw) {
          this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
     }
-     randomCoordonates(gameMap){
-        // console.log("gameMap  :", gameMap);
-        return  Math.floor(Math.random() * gameMap)
-    }
+    //  randomCoordonates(gameMap){
+    //     // console.log("gameMap  :", gameMap);
+    //     return  Math.floor(Math.random() * gameMap)
+    // }
 }
 
 
@@ -775,11 +770,14 @@ function animate(timestamp) {
         game.ui.gameOverEl.style.display = 'block';
         
     } else {
+        console.log(666);
+        
         if (pauseEl) pauseEl.style.display = 'none';
         game.draw(deltatime);
     }
+        game.update(deltatime);
 
-    game.update(deltatime);
+  
     requestAnimationFrame(animate);
 }
 
