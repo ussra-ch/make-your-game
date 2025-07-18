@@ -1,5 +1,7 @@
 const bord = document.getElementById('game');
 let tilesContainer = null; // Container for map tiles
+const GRID_CELL_SIZE = 40
+const initialSpeed = 0.01
 
 class Map {
     constructor(game) {
@@ -217,14 +219,14 @@ class Player {
         } else {
             
             if ( (this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  < 0.5) {
-                this.pixelX--
+                this.pixelX -= 5
             }else if((this.pixelX / this.game.map.tileSize)- Math.floor(this.pixelX / this.game.map.tileSize)  > 0.5) {
-                this.pixelX++
+                this.pixelX += 5
             }
             if ( (this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  < 0.5) {
-                this.pixelY--
+                this.pixelY-= 5
             }else if((this.pixelY / this.game.map.tileSize)- Math.floor(this.pixelY / this.game.map.tileSize)  > 0.5) {
-                this.pixelY++
+                this.pixelY+= 5
             }
 
         }
@@ -460,6 +462,131 @@ class Bomb {
     }
 }
 
+class Enemies {
+    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed) {
+        this.x = x
+        this.y = y
+        this.isAlive = true //active or no
+        this.size = enemySize
+        this.speed = speed
+        this.direction = 'idle'
+        bord.append(this.create())
+
+        this.render()
+    }
+
+    create() {
+        this.element = document.createElement('div')
+        this.element.className = 'enemy'
+        this.element.style = `
+            width: 40px;
+            height: 40px;
+            z-index: 100;
+            position: absolute;
+            left: ${this.x}px;
+            top: ${this.y}px;
+            background-color: red;
+            transform: translate(${this.x}px, ${this.y}px);
+        `
+        this.element.style.zIndex = 100
+        console.log("create enemy");
+
+        return this.element
+    }
+
+    render() {
+        if (!this.isAlive) return
+        console.log('hehe');
+        
+        // console.log("b" , this.x);
+        console.log("b" , this.y);
+        console.log(`translate(${this.x}px, ${this.y}px);`);
+        
+        this.element.style.top = `${this.x}px`;
+        this.element.style.left = `${this.y}px`;
+        // this.element.style.top = `${this.y}px`;
+    }
+
+    update(deltatime, gameBoard) {
+        
+        //time howa time li kan bin had l frame wl frame li kant 9bl
+        if (!this.isAlive) return
+        let distance = this.speed * deltatime ;
+        
+        if (this.direction === 'idle') {
+            this.randomDirection();
+        }
+
+        // console.log(deltatime);
+        if (this.direction === 'up') {
+            this.y = this.y - distance
+             this.x = this.x
+            // console.log();
+        } else if (this.direction === 'down') {
+            this.y = this.y + distance
+             this.x = this.x
+            // console.log(this.y);
+
+        } else if (this.direction === 'left') {
+             this.x = this.x - distance
+            this.y = this.y
+            // console.log(this.y);
+
+        } else if (this.direction === 'right') {
+             this.x = this.x + distance
+            this.y = this.y
+            // console.log(newY);
+
+        }
+
+        // console.log(newX);
+        // console.log(newY);
+        // if (this.checkForCollision(newX, newY, gameBoard)) {
+        //     this.randomDirection()
+        // } else {
+            
+        // }
+
+        console.log("a" , this.x);
+        console.log("a" , this.y);
+
+        this.render()
+    }
+
+    checkForCollision(newX, newY, gameBoard) {
+        // console.log(newY);
+        // console.log(newX);
+        const corners = [
+            { x: newX, y: newY },// Top-left
+            { x: newX + this.size - 1, y: newY }, // Top-right
+            { x: newX, y: newY + this.size - 1 }, // Bottom-left
+            { x: newX + this.size - 1, y: newY + this.size - 1 } // Bottom-right
+        ];
+        for (let corner of corners) {
+            const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
+            const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
+            // console.log(corner);
+            // console.log(corner.y);
+
+            if (tileX >= gameBoard[0].length || tileX < 0 ||
+                tileY >= gameBoard.length || tileY < 0) {
+                return true
+            }
+            if (gameBoard[tileY][tileX] == 1) {
+                return true
+            }
+        }
+        return false
+    }
+
+    randomDirection() {
+        const directions = ['up', 'down', 'left', 'right']
+        this.direction = directions[Math.floor(Math.random() * directions.length)]
+    }
+}
+
+
+
 class Game {
     constructor() {
         this.map = new Map(this);
@@ -468,10 +595,18 @@ class Game {
         this.player = new Player(this, 1, 1);
         this.puse = false;
         this.pPressedLastFrame = false;
+        this.enemies = []
+        this.startDraw = true
+
+        this.enemies.push(new Enemies(3 * GRID_CELL_SIZE, 3 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
+        this.enemies.push(new Enemies(8 * GRID_CELL_SIZE, 5 * GRID_CELL_SIZE, bord, GRID_CELL_SIZE * 1.2, initialSpeed * 0.8));
     }
 
     draw(deltaTime) {
-        this.map.draw();
+        if (this.startDraw) {
+            this.startDraw = false
+            this.map.draw()
+        }
         this.player.draw();
         this.ui.draw(deltaTime);
 
@@ -484,9 +619,13 @@ class Game {
         if (scoreEl) {
             scoreEl.textContent = `Score: ${this.ui.score}`;
         }
+
+        this.enemies.forEach(enemy => {
+            enemy.render();
+        })
     }
 
-    update() {
+    update(deltatime) {
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
             this.puse = !this.puse;
@@ -495,7 +634,12 @@ class Game {
 
         if (!this.puse) {
             this.player.update();
+            this.enemies.forEach(enemy => {
+                enemy.update(deltatime, this.map.map); // Pass deltaTime and the actual map array
+            });
+            // this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
+
     }
 }
 
