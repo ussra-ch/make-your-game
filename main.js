@@ -2,7 +2,7 @@ const bord = document.getElementById('game');
 let tilesContainer = null;
 const GRID_CELL_SIZE = 35
 const initialSpeed = 0.05 // Container for map tiles
-let  cadeau = [4, 5, 6]; 
+let cadeau = [4, 5, 6];
 class Map {
     constructor(game) {
         this.game = game;
@@ -29,7 +29,7 @@ class Map {
         this.addblocke();
         this.createTilesContainer();
     }
-     findEmptySpaces(){
+    findEmptySpaces() {
         let emtiSpais = [];
         this.map.forEach((element, y) => {
             for (let x = 0; x < element.length; x++) {
@@ -110,17 +110,17 @@ class Map {
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
                     tile.style.backgroundImage = "url('grass.png')";
                 }
-                if(this.map[y][x] === 4){
-                   
-                tile.style.backgroundImage = "url('energy.gif')";
+                if (this.map[y][x] === 4) {
+
+                    tile.style.backgroundImage = "url('energy.gif')";
                 }
-                  if(this.map[y][x] === 5){
-                 
-                tile.style.backgroundImage = "url('heart.gif')";
+                if (this.map[y][x] === 5) {
+
+                    tile.style.backgroundImage = "url('heart.gif')";
                 }
-                   if(this.map[y][x] === 6){
-                
-                tile.style.backgroundImage = "url('poison.gif')";
+                if (this.map[y][x] === 6) {
+
+                    tile.style.backgroundImage = "url('poison.gif')";
                 }
 
                 tilesContainer.appendChild(tile);
@@ -138,6 +138,8 @@ class Input {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
+
+
                 }
             }
         });
@@ -160,7 +162,7 @@ class Ui {
         this.timeS = 0;
         this.timeM = 0;
         this.elapsed = 0;
-        this.gameOverEl= null; 
+        this.gameOverEl = null;
     }
 
     draw(deltaTime) {
@@ -181,14 +183,14 @@ class Ui {
         document.getElementById('bombs').textContent = `Bombs: ${this.game.player.maxBombs - this.game.player.bombs.length}`;
         document.getElementById('speed').textContent = `Speed: ${this.game.player.speed}`;
         document.getElementById('enemy').textContent = `Enemies: ${this.game.enemies.length}`;
-        const gameover=document.getElementById('game-over');
+        const gameover = document.getElementById('game-over');
         if (!gameover) {
             this.gameOverEl = document.createElement('div');
             this.gameOverEl.id = 'game-over';
             this.gameOverEl.textContent = `Game Over! Score: ${this.score}`;
             bord.prepend(this.gameOverEl);
         }
-        
+
     }
 }
 
@@ -224,17 +226,19 @@ class Player {
         let moveX = 0;
         let moveY = 0;
 
+
+
         // Handle movement
-        if (this.game.input.keys.includes('ArrowUp')) {
+        if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowUp') {
             moveY = -this.speed;
             this.inagif = 'up';
-        } else if (this.game.input.keys.includes('ArrowDown')) {
+        } else if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowDown') {
             moveY = this.speed;
             this.inagif = 'down';
-        } else if (this.game.input.keys.includes('ArrowLeft')) {
+        } else if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowLeft') {
             moveX = -this.speed;
             this.inagif = 'left';
-        } else if (this.game.input.keys.includes('ArrowRight')) {
+        } else if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowRight') {
             moveX = this.speed;
             this.inagif = 'right';
         }
@@ -263,22 +267,22 @@ class Player {
             this.placeBomb();
             this.bombCooldown = 10;
         }
-       
-            let X = this.pixelX / this.game.map.tileSize;
-            let Y = this.pixelY / this.game.map.tileSize;
-            const gridX = Math.round(X);
-            const gridY = Math.round(Y);
 
-               this.game.enemies.forEach(enemy => { 
+        let X = this.pixelX / this.game.map.tileSize;
+        let Y = this.pixelY / this.game.map.tileSize;
+        const gridX = Math.round(X);
+        const gridY = Math.round(Y);
 
-          
+        this.game.enemies.forEach(enemy => {
+
+
             const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
             const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
-           
-            
+
+
             if (enemyGridX === gridY && enemyGridY === gridX) {
-                
-                
+
+
                 this.lives--;
                 this.pixelX = 1 * this.game.map.tileSize;
                 this.pixelY = 1 * this.game.map.tileSize;
@@ -290,25 +294,30 @@ class Player {
                 }
             }
         })
-     
-        if( this.game.map.map[gridY][gridX] === 4) {
+
+        if (this.game.map.map[gridY][gridX] === 4) {
             this.game.map.map[gridY][gridX] = 0;
             this.game.player.speed += 0.5;
             this.game.ui.score += 10;
+            this.game.map.draw();
         }
-        if( this.game.map.map[gridY][gridX] === 5) {
+        if (this.game.map.map[gridY][gridX] === 5) {
             this.game.map.map[gridY][gridX] = 0;
             this.game.player.lives += 1;
             this.game.ui.score += 10;
+            this.game.map.draw();
+
         }
-        if( this.game.map.map[gridY][gridX] === 6) {
+        if (this.game.map.map[gridY][gridX] === 6) {
             this.game.map.map[gridY][gridX] = 0;
             this.game.player.lives -= 1;
             this.game.ui.score -= 10;
             if (this.game.player.lives <= 0) {
-               
+
                 this.game.gameOver = true;
             }
+            this.game.map.draw();
+
         }
 
         // Update bombs
@@ -482,9 +491,10 @@ class Bomb {
 
                 // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
-                    
-                    this.game.map.map[ny][nx] = cadeau[Math.floor(Math.random() * cadeau.length)] ;
+
+                    this.game.map.map[ny][nx] = cadeau[Math.floor(Math.random() * cadeau.length)];
                     //this.game.ui.score += 10;
+                    this.game.map.draw();
                 }
 
                 // const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
@@ -504,13 +514,13 @@ class Bomb {
                     }
                 }
 
-                if( this.game.enemies.length > 0){
+                if (this.game.enemies.length > 0) {
                     this.game.enemies.forEach(enemy => {
                         const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
                         const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
-                        
+
                         if (enemyGridX === ny && enemyGridY === nx) {
-                              enemy.isAlive = false;
+                            enemy.isAlive = false;
                             enemy.element.remove();
                             this.game.ui.score += 20;
                         }
@@ -548,9 +558,9 @@ class Bomb {
             if (scale < 2) {
                 requestAnimationFrame(animateExplosion);
             } else {
-              
-            bommmmm.remove();
-                
+
+                bommmmm.remove();
+
             }
         };
 
@@ -582,7 +592,7 @@ class Enemies {
     }
 
     create() {
-        console.log('create enemy');
+
         this.element = document.createElement('div')
         this.element.className = 'enemy'
         this.element.style = `
@@ -634,17 +644,17 @@ class Enemies {
             // console.log(newY);
 
         }
-        if(!this.checkForCollision(newX, newY, gameBoard.map)){
+        if (!this.checkForCollision(newX, newY, gameBoard.map)) {
             this.x = newX, this.y = newY
             this.render()
-        }else{
+        } else {
             this.randomDirection();
         }
+        // console.log("after : ", this.x, this.y);
 
     }
 
     checkForCollision(newX, newY, gameBoard) {
-        // console.log(newY);
         // console.log(newX);
         const corners = [
             { x: newX, y: newY },// Top-left
@@ -659,9 +669,9 @@ class Enemies {
             // console.log(corner.y);
 
 
-            if (tileX >= gameBoard[0].length || tileX < 0 ||
-                tileY >= gameBoard.length || tileY < 0) {
-                    // console.log('khdmat ?');
+            if (tileX > gameBoard[0].length || tileX < 0 ||
+                tileY > gameBoard.length || tileY < 0) {
+                // console.log('khdmat ?');
                 return true
             }
             // console.log(gameBoard[tileY][tileX]);
@@ -676,7 +686,8 @@ class Enemies {
         // console.log('random direction');
         const directions = ['up', 'down', 'left', 'right']
         this.direction = directions[Math.floor(Math.random() * directions.length)]
-        // console.log(this.direction);
+        // console.log("New direction:", this.direction);
+
     }
 }
 class Game {
@@ -693,7 +704,7 @@ class Game {
         // this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
         // this.boardHeight = (this.map.map[0].length - 1) * GRID_CELL_SIZE
         let emptySpaces = this.map.findEmptySpaces()
-        
+
         // console.log(bord.getBoundingClientRect());
 
         // this.enemies.push(new Enemies(0, 0 , bord, GRID_CELL_SIZE, initialSpeed));
@@ -701,18 +712,18 @@ class Game {
         // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
         // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
 
-        for(let i = 0; i < 1; i++){ 
-            let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
-            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
+        for (let i = 0; i < 1; i++) {
+            let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)]
+            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) * GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
         }
     }
 
     draw(deltaTime) {
-     if (this.startDraw) {
-     this.startDraw = false
-    
-        }        
-          this.map.draw()
+        if (this.startDraw) {
+            this.startDraw = false
+
+            this.map.draw()
+        }
         this.player.draw();
         this.ui.draw(deltaTime);
 
@@ -739,10 +750,10 @@ class Game {
 
         if (!this.puse && !this.gameOver) {
             this.player.update();
-             this.enemies.forEach(enemy => {
+            this.enemies.forEach(enemy => {
                 enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
             });
-         this.enemies = this.enemies.filter(enemy => enemy.isAlive);
+            this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
     }
     //  randomCoordonates(gameMap){
@@ -761,39 +772,39 @@ function animate(timestamp) {
     lastTime = timestamp;
 
     const pauseEl = document.getElementById('puse');
-    
-    
-    
-    if (game.puse)  {
+
+
+
+    if (game.puse) {
         pauseEl.style.display = 'block';
-        console.log(this.game.enemies);
-        
-        
-    }else if (game.gameOver || game.enemies.length === 0) {
-              
-        if(game.gameOver){
-                    game.ui.gameOverEl.style.display = 'block';
 
-        }else{
 
-              const jj = document.getElementById('win');
-        if (jj) {
-            jj.style.display = 'block';
+
+    } else if (game.gameOver || game.enemies.length === 0) {
+
+        if (game.gameOver) {
+            game.ui.gameOverEl.style.display = 'block';
+
+        } else {
+
+            const jj = document.getElementById('win');
+            if (jj) {
+                jj.style.display = 'block';
+            }
+
         }
-    
-        }
-        
 
-        
+
+
     } else {
-        
+
         if (pauseEl) pauseEl.style.display = 'none';
         game.draw(deltatime);
     }
-        game.update(deltatime);
-        
+    game.update(deltatime);
 
-  
+
+
     requestAnimationFrame(animate);
 }
 
