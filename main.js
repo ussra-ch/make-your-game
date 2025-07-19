@@ -1,8 +1,4 @@
-const bord = document.getElementById('game');
-let tilesContainer = null;
-const GRID_CELL_SIZE = 35
-const initialSpeed = 0.05 // Container for map tiles
-let cadeau = [4, 5, 6];
+import {variables} from "./variables.js"
 class Map {
     constructor(game) {
         this.game = game;
@@ -52,28 +48,28 @@ class Map {
     }
 
     createTilesContainer() {
-        if (!tilesContainer) {
-            tilesContainer = document.createElement('div');
-            tilesContainer.style.position = "absolute";
-            tilesContainer.style.top = "0";
-            tilesContainer.style.left = "0";
-            tilesContainer.style.width = `${this.map[0].length * GRID_CELL_SIZE}px`;
-            tilesContainer.style.height = `${this.map.length * GRID_CELL_SIZE}px`;
-            tilesContainer.style.zIndex = "1";
-            bord.appendChild(tilesContainer);
+        if (!variables.tilesContainer) {
+            variables.tilesContainer = document.createElement('div');
+            variables.tilesContainer.style.position = "absolute";
+            variables.tilesContainer.style.top = "0";
+            variables.tilesContainer.style.left = "0";
+            variables.tilesContainer.style.width = `${this.map[0].length * variables.GRID_CELL_SIZE}px`;
+            variables.tilesContainer.style.height = `${this.map.length * variables.GRID_CELL_SIZE}px`;
+            variables.tilesContainer.style.zIndex = "1";
+            variables.bord.appendChild(variables.tilesContainer);
         }
     }
 
     draw() {
         // Setup board
-        bord.style.position = "relative";
-        bord.style.width = `${this.map[0].length * GRID_CELL_SIZE}px`;
-        bord.style.height = `${this.map.length * GRID_CELL_SIZE}px`;
-        bord.style.border = "2px solid #333";
+        variables.bord.style.position = "relative";
+        variables.bord.style.width = `${this.map[0].length * variables.GRID_CELL_SIZE}px`;
+        variables.bord.style.height = `${this.map.length * variables.GRID_CELL_SIZE}px`;
+        variables.bord.style.border = "2px solid #333";
 
         // Clear only tiles container
-        if (tilesContainer) {
-            tilesContainer.innerHTML = "";
+        if (variables.tilesContainer) {
+            variables.tilesContainer.innerHTML = "";
         }
 
         // Draw tiles
@@ -81,10 +77,10 @@ class Map {
             for (let x = 0; x < this.map[y].length; x++) {
                 const tile = document.createElement('div');
                 tile.style.position = "absolute";
-                tile.style.left = `${x * GRID_CELL_SIZE}px`;
-                tile.style.top = `${y * GRID_CELL_SIZE}px`;
-                tile.style.width = `${GRID_CELL_SIZE}px`;
-                tile.style.height = `${GRID_CELL_SIZE}px`;
+                tile.style.left = `${x * variables.GRID_CELL_SIZE}px`;
+                tile.style.top = `${y * variables.GRID_CELL_SIZE}px`;
+                tile.style.width = `${variables.GRID_CELL_SIZE}px`;
+                tile.style.height = `${variables.GRID_CELL_SIZE}px`;
                 tile.style.backgroundSize = "cover";
 
                 if (this.map[y][x] === 1) {
@@ -106,7 +102,7 @@ class Map {
                     tile.style.backgroundImage = "url('./img/poison.gif')";
                 }
 
-                tilesContainer.appendChild(tile);
+                variables.tilesContainer.appendChild(tile);
             }
         }
     }
@@ -168,7 +164,7 @@ class Ui {
             this.gameOver = document.createElement('div');
             this.gameOver.id = 'game-over';
             this.gameOver.textContent = `Game Over! Score: ${this.score}`;
-            bord.prepend(this.gameOver);
+            variables.bord.prepend(this.gameOver);
         }
 
     }
@@ -177,8 +173,8 @@ class Ui {
 class Player {
     constructor(game, x, y) {
         this.game = game;
-        this.pixelX = x * GRID_CELL_SIZE;
-        this.pixelY = y * GRID_CELL_SIZE;
+        this.pixelX = x * variables.GRID_CELL_SIZE;
+        this.pixelY = y * variables.GRID_CELL_SIZE;
         this.speed = 2;
         this.lives = 5;
         this.bombs = [];
@@ -190,15 +186,15 @@ class Player {
     }
 
     createPlayerElement() {
-        if (!this.element && bord) {
+        if (!this.element && variables.bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.width = `${GRID_CELL_SIZE- 5}px`;
-            this.element.style.height = `${GRID_CELL_SIZE - 5}px`;
+            this.element.style.width = `${variables.GRID_CELL_SIZE- 5}px`;
+            this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
             this.element.style.zIndex = '10';
-            bord.appendChild(this.element);
+            variables.bord.appendChild(this.element);
         }
     }
 
@@ -243,19 +239,19 @@ class Player {
             this.bombCooldown = 10;
         }
 
-        let X = this.pixelX /GRID_CELL_SIZE;
-        let Y = this.pixelY / GRID_CELL_SIZE;
+        let X = this.pixelX /variables.GRID_CELL_SIZE;
+        let Y = this.pixelY / variables.GRID_CELL_SIZE;
         const gridX = Math.round(X);
         const gridY = Math.round(Y);
 
         this.game.enemies.forEach(enemy => {
-            const enemyGridX = Math.round(enemy.x / GRID_CELL_SIZE);
-            const enemyGridY = Math.round(enemy.y / GRID_CELL_SIZE);
+            const enemyGridX = Math.round(enemy.x / variables.GRID_CELL_SIZE);
+            const enemyGridY = Math.round(enemy.y / variables.GRID_CELL_SIZE);
 
             if (enemyGridX === gridY && enemyGridY === gridX) {
                 this.lives--;
-                this.pixelX = 1 * GRID_CELL_SIZE;
-                this.pixelY = 1 * GRID_CELL_SIZE;
+                this.pixelX = 1 * variables.GRID_CELL_SIZE;
+                this.pixelY = 1 * variables.GRID_CELL_SIZE;
 
                 if (this.lives <= 0) {
                     this.game.gameOver = true;
@@ -293,7 +289,7 @@ class Player {
     }
 
     canMove(newX, newY) {
-        const playerSize = GRID_CELL_SIZE - 5;
+        const playerSize = variables.GRID_CELL_SIZE - 5;
         const nudgeAmount = 1.5;
         const edgeThreshold = 0.4; // in tile units
         // Check corners of player hitbox
@@ -304,8 +300,8 @@ class Player {
             [newX + playerSize, newY + playerSize]
         ];
         for (const [px, py] of corners) {
-            let X = px / GRID_CELL_SIZE;
-            let Y = py / GRID_CELL_SIZE;
+            let X = px / variables.GRID_CELL_SIZE;
+            let Y = py / variables.GRID_CELL_SIZE;
             const gridX = Math.floor(X);
             const gridY = Math.floor(Y);
             // Check bounds
@@ -347,11 +343,11 @@ class Player {
     }
 
     placeBomb() {
-        const centerX = this.pixelX + (GRID_CELL_SIZE / 2);
-        const centerY = this.pixelY + (GRID_CELL_SIZE / 2);
+        const centerX = this.pixelX + (variables.GRID_CELL_SIZE / 2);
+        const centerY = this.pixelY + (variables.GRID_CELL_SIZE / 2);
 
-        const gridX = Math.floor(centerX / GRID_CELL_SIZE);
-        const gridY = Math.floor(centerY / GRID_CELL_SIZE);
+        const gridX = Math.floor(centerX / variables.GRID_CELL_SIZE);
+        const gridY = Math.floor(centerY / variables.GRID_CELL_SIZE);
 
         if (this.bombs.length < this.maxBombs &&
             !this.bombs.some(b => b.x === gridX && b.y === gridY)) {
@@ -399,17 +395,17 @@ class Bomb {
     }
 
     createBombElement() {
-        if (!this.element && bord) {
+        if (!this.element && variables.bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.left = `${this.x * GRID_CELL_SIZE}px`;
-            this.element.style.top = `${this.y * GRID_CELL_SIZE}px`;
-            this.element.style.width = `${GRID_CELL_SIZE}px`;
-            this.element.style.height = `${GRID_CELL_SIZE}px`;
+            this.element.style.left = `${this.x * variables.GRID_CELL_SIZE}px`;
+            this.element.style.top = `${this.y * variables.GRID_CELL_SIZE}px`;
+            this.element.style.width = `${variables.GRID_CELL_SIZE}px`;
+            this.element.style.height = `${variables.GRID_CELL_SIZE}px`;
             this.element.style.backgroundImage = "url('./img/bomb.gif')";
             this.element.style.borderRadius = `${50}px`
             this.element.style.zIndex = '8';
-            bord.appendChild(this.element);
+            variables.bord.appendChild(this.element);
         }
     }
 
@@ -447,17 +443,17 @@ class Bomb {
 
                 // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
-                    this.game.map.map[ny][nx] = cadeau[Math.floor(Math.random() * cadeau.length)];
+                    this.game.map.map[ny][nx] = variables.cadeau[Math.floor(Math.random() * variables.cadeau.length)];
                     this.game.map.draw();
                 }
 
-                const playerGridX = Math.round(this.game.player.pixelX / GRID_CELL_SIZE);
-                const playerGridY = Math.round(this.game.player.pixelY / GRID_CELL_SIZE);
+                const playerGridX = Math.round(this.game.player.pixelX / variables.GRID_CELL_SIZE);
+                const playerGridY = Math.round(this.game.player.pixelY / variables.GRID_CELL_SIZE);
 
                 if (playerGridX === nx && playerGridY === ny) {
                     this.game.player.lives--;
-                    this.game.player.pixelX = 1 * GRID_CELL_SIZE;
-                    this.game.player.pixelY = 1 * GRID_CELL_SIZE;
+                    this.game.player.pixelX = 1 * variables.GRID_CELL_SIZE;
+                    this.game.player.pixelY = 1 * variables.GRID_CELL_SIZE;
 
                     if (this.game.player.lives <= 0) {
                         this.game.gameOver = true;
@@ -466,8 +462,8 @@ class Bomb {
 
                 if (this.game.enemies.length > 0) {
                     this.game.enemies.forEach(enemy => {
-                        const enemyGridX = Math.round(enemy.x / GRID_CELL_SIZE);
-                        const enemyGridY = Math.round(enemy.y / GRID_CELL_SIZE);
+                        const enemyGridX = Math.round(enemy.x / variables.GRID_CELL_SIZE);
+                        const enemyGridY = Math.round(enemy.y / variables.GRID_CELL_SIZE);
 
                         if (enemyGridX === ny && enemyGridY === nx) {
                             enemy.isAlive = false;
@@ -484,18 +480,18 @@ class Bomb {
     createExplosion(x, y) {
         const bommmmm = document.createElement('div');
         bommmmm.style.position = 'absolute';
-        bommmmm.style.left = `${x * GRID_CELL_SIZE}px`;
-        bommmmm.style.top = `${y * GRID_CELL_SIZE}px`;
-        bommmmm.style.width = `${GRID_CELL_SIZE}px`;
-        bommmmm.style.height = `${GRID_CELL_SIZE}px`;
+        bommmmm.style.left = `${x * variables.GRID_CELL_SIZE}px`;
+        bommmmm.style.top = `${y * variables.GRID_CELL_SIZE}px`;
+        bommmmm.style.width = `${variables.GRID_CELL_SIZE}px`;
+        bommmmm.style.height = `${variables.GRID_CELL_SIZE}px`;
         bommmmm.style.backgroundColor = 'rgba(255, 165, 0, 0.9)';
         bommmmm.style.borderRadius = '50%';
         bommmmm.style.zIndex = '15';
         bommmmm.style.border = '2px solid rgba(255, 0, 0, 0.8)';
         bommmmm.style.boxShadow = '0 0 20px rgba(255, 165, 0, 0.8)';
 
-        if (bord) {
-            bord.appendChild(bommmmm);
+        if (variables.bord) {
+            variables.bord.appendChild(bommmmm);
         }
 
         // Animate explosion
@@ -524,14 +520,14 @@ class Bomb {
 }
 
 class Enemies {
-    constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed) {
+    constructor(x, y, gameBord, enemySize = variables.GRID_CELL_SIZE, speed = variables.initialSpeed) {
         this.x = x
         this.y = y
         this.isAlive = true //active or no
         this.size = enemySize
         this.speed = speed
         this.direction = 'idle'
-        bord.append(this.create())
+        variables.bord.append(this.create())
         this.state = true
         this.gameBoard = gameBord
         this.render()
@@ -609,8 +605,8 @@ class Enemies {
             { x: newX + this.size - 1, y: newY + this.size - 1 } // Bottom-right
         ];
         for (let corner of corners) {
-            const tileX = Math.floor(corner.x / GRID_CELL_SIZE); // hadi hia column
-            const tileY = Math.floor(corner.y / GRID_CELL_SIZE); //hadi hia row
+            const tileX = Math.floor(corner.x / variables.GRID_CELL_SIZE); // hadi hia column
+            const tileY = Math.floor(corner.y / variables.GRID_CELL_SIZE); //hadi hia row
             // console.log(tileX, gameBoard[0].length);
             // console.log(corner.y);
 
@@ -651,7 +647,7 @@ class Game {
         let emptySpaces = this.map.findEmptySpaces()
         for (let i = 0; i < 1; i++) {
             let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)]
-            this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) * GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
+            this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
         }
     }
 
@@ -695,7 +691,6 @@ class Game {
     }
 
 }
-
 
 const game = new Game();
 let lastTime = 0;
