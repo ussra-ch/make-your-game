@@ -1,7 +1,5 @@
 - l enemy ki9tl lplayer hta kisaliw ga3 lives ila kan f (1,1) dyal l map
 - layers (3ndna ri wa7da wkhas ykoun ktar)
-- ndirou wahd l max l speed 
-- ndirou max l 7ayat li kil9a l player
 - fix 60FPS
 - menu fih restart wla continue mnu ydir pause
 - responsive

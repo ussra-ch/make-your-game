@@ -9,7 +9,8 @@ export class Player {
         this.pixelY = y * variables.GRID_CELL_SIZE;
         this.speed = 2;
         this.maxSpeed = 4
-        this.lives = 5;
+        this.lives = 3;
+        this.maxLives = 5
         this.bombs = [];
         this.maxBombs = 3;
         this.inagif = '3adi';
@@ -102,7 +103,9 @@ export class Player {
         }
         if (this.game.map.map[gridY][gridX] === 5) {
             this.game.map.map[gridY][gridX] = 0;
-            this.lives += 1;
+            if(this.lives < this.maxLives){
+                this.lives += 1;
+            }
             this.game.ui.score += 10;
             this.game.map.draw();
 
