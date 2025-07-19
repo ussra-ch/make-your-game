@@ -8,7 +8,6 @@ class Map {
         this.game = game;
         this.width = 80;
         this.height = 70;
-        this.tileSize = 35;
         this.map = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -26,32 +25,26 @@ class Map {
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
-        this.addblocke();
+        this.addBoxes();
         this.createTilesContainer();
     }
+
     findEmptySpaces() {
-        let emtiSpais = [];
+        let emptySpaces = [];
         this.map.forEach((element, y) => {
             for (let x = 0; x < element.length; x++) {
                 if (element[x] === 0) {
-                    emtiSpais.push({ x, y });
+                    emptySpaces.push({ x, y });
                 }
             }
         });
-        return emtiSpais
+        return emptySpaces
     }
 
-    addblocke() {
-        let emtiSpais = [];
-        this.map.forEach((element, y) => {
-            for (let x = 0; x < element.length; x++) {
-                if (element[x] === 0) {
-                    emtiSpais.push({ x, y });
-                }
-            }
-        });
+    addBoxes() {
+        let emptySpaces = this.findEmptySpaces()
         for (let i = 0; i < 50; i++) {
-            let pos = emtiSpais[Math.floor(Math.random() * emtiSpais.length)];
+            let pos = emptySpaces[Math.floor(Math.random() * emptySpaces.length)];
             if (pos) {
                 this.map[pos.y][pos.x] = 2;
             }
@@ -64,22 +57,19 @@ class Map {
             tilesContainer.style.position = "absolute";
             tilesContainer.style.top = "0";
             tilesContainer.style.left = "0";
-            tilesContainer.style.width = `${this.map[0].length * this.tileSize}px`;
-            tilesContainer.style.height = `${this.map.length * this.tileSize}px`;
+            tilesContainer.style.width = `${this.map[0].length * GRID_CELL_SIZE}px`;
+            tilesContainer.style.height = `${this.map.length * GRID_CELL_SIZE}px`;
             tilesContainer.style.zIndex = "1";
             bord.appendChild(tilesContainer);
         }
     }
 
     draw() {
-
-
         // Setup board
         bord.style.position = "relative";
-        bord.style.width = `${this.map[0].length * this.tileSize}px`;
-        bord.style.height = `${this.map.length * this.tileSize}px`;
+        bord.style.width = `${this.map[0].length * GRID_CELL_SIZE}px`;
+        bord.style.height = `${this.map.length * GRID_CELL_SIZE}px`;
         bord.style.border = "2px solid #333";
-        //  bord.style.backgroundColor = "#333";
 
         // Clear only tiles container
         if (tilesContainer) {
@@ -91,36 +81,29 @@ class Map {
             for (let x = 0; x < this.map[y].length; x++) {
                 const tile = document.createElement('div');
                 tile.style.position = "absolute";
-                tile.style.left = `${x * this.tileSize}px`;
-                tile.style.top = `${y * this.tileSize}px`;
-                tile.style.width = `${this.tileSize}px`;
-                tile.style.height = `${this.tileSize}px`;
-                //tile.style.border = '1px solid #555';
+                tile.style.left = `${x * GRID_CELL_SIZE}px`;
+                tile.style.top = `${y * GRID_CELL_SIZE}px`;
+                tile.style.width = `${GRID_CELL_SIZE}px`;
+                tile.style.height = `${GRID_CELL_SIZE}px`;
                 tile.style.backgroundSize = "cover";
-                // tile.style.boxSizing = "border-box";
 
                 if (this.map[y][x] === 1) {
-                    tile.style.backgroundImage = "url('block.png')";
-                    //tile.style.backgroundColor = "#654321";
+                    tile.style.backgroundImage = "url('./img/block.png')";
                 }
                 if (this.map[y][x] === 2) {
-                    tile.style.backgroundImage = "url('RTS.png')";
-                    //tile.style.backgroundColor = "#ffdd44";
+                    tile.style.backgroundImage = "url('./img/RTS.png')";
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
-                    tile.style.backgroundImage = "url('grass.png')";
+                    tile.style.backgroundImage = "url('./img/grass.png')";
                 }
                 if (this.map[y][x] === 4) {
-
-                    tile.style.backgroundImage = "url('energy.gif')";
+                    tile.style.backgroundImage = "url('./img/energy.gif')";
                 }
                 if (this.map[y][x] === 5) {
-
-                    tile.style.backgroundImage = "url('heart.gif')";
+                    tile.style.backgroundImage = "url('./img/heart.gif')";
                 }
                 if (this.map[y][x] === 6) {
-
-                    tile.style.backgroundImage = "url('poison.gif')";
+                    tile.style.backgroundImage = "url('./img/poison.gif')";
                 }
 
                 tilesContainer.appendChild(tile);
@@ -129,17 +112,14 @@ class Map {
     }
 }
 
-class Input {
+class KeyboardListner {
     constructor(game) {
         this.game = game;
         this.keys = [];
-
         window.addEventListener('keydown', e => {
             if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
-
-
                 }
             }
         });
@@ -159,10 +139,10 @@ class Ui {
     constructor(game) {
         this.game = game;
         this.score = 0;
-        this.timeS = 0;
-        this.timeM = 0;
+        this.timeS = 0; //seconds
+        this.timeM = 0; //minutes
         this.elapsed = 0;
-        this.gameOverEl = null;
+        this.gameOver = null;
     }
 
     draw(deltaTime) {
@@ -185,10 +165,10 @@ class Ui {
         document.getElementById('enemy').textContent = `Enemies: ${this.game.enemies.length}`;
         const gameover = document.getElementById('game-over');
         if (!gameover) {
-            this.gameOverEl = document.createElement('div');
-            this.gameOverEl.id = 'game-over';
-            this.gameOverEl.textContent = `Game Over! Score: ${this.score}`;
-            bord.prepend(this.gameOverEl);
+            this.gameOver = document.createElement('div');
+            this.gameOver.id = 'game-over';
+            this.gameOver.textContent = `Game Over! Score: ${this.score}`;
+            bord.prepend(this.gameOver);
         }
 
     }
@@ -197,8 +177,8 @@ class Ui {
 class Player {
     constructor(game, x, y) {
         this.game = game;
-        this.pixelX = x * this.game.map.tileSize;
-        this.pixelY = y * this.game.map.tileSize;
+        this.pixelX = x * GRID_CELL_SIZE;
+        this.pixelY = y * GRID_CELL_SIZE;
         this.speed = 2;
         this.lives = 5;
         this.bombs = [];
@@ -213,21 +193,17 @@ class Player {
         if (!this.element && bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.width = `${this.game.map.tileSize - 5}px`;
-            this.element.style.height = `${this.game.map.tileSize - 5}px`;
+            this.element.style.width = `${GRID_CELL_SIZE- 5}px`;
+            this.element.style.height = `${GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
-            this.element.style.backgroundImage = "url('wa9f.gif')";
+            this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
             this.element.style.zIndex = '10';
             bord.appendChild(this.element);
         }
     }
 
     update() {
-        let moveX = 0;
-        let moveY = 0;
-
-
-
+        let moveX = 0, moveY = 0;
         // Handle movement
         if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowUp') {
             moveY = -this.speed;
@@ -258,7 +234,6 @@ class Player {
             this.pixelY = newY;
         }
 
-
         if (this.bombCooldown > 0) {
             this.bombCooldown--;
         }
@@ -268,28 +243,21 @@ class Player {
             this.bombCooldown = 10;
         }
 
-        let X = this.pixelX / this.game.map.tileSize;
-        let Y = this.pixelY / this.game.map.tileSize;
+        let X = this.pixelX /GRID_CELL_SIZE;
+        let Y = this.pixelY / GRID_CELL_SIZE;
         const gridX = Math.round(X);
         const gridY = Math.round(Y);
 
         this.game.enemies.forEach(enemy => {
-
-
-            const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
-            const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
-
+            const enemyGridX = Math.round(enemy.x / GRID_CELL_SIZE);
+            const enemyGridY = Math.round(enemy.y / GRID_CELL_SIZE);
 
             if (enemyGridX === gridY && enemyGridY === gridX) {
-
-
                 this.lives--;
-                this.pixelX = 1 * this.game.map.tileSize;
-                this.pixelY = 1 * this.game.map.tileSize;
+                this.pixelX = 1 * GRID_CELL_SIZE;
+                this.pixelY = 1 * GRID_CELL_SIZE;
 
                 if (this.lives <= 0) {
-                    //alert("Game Over! Score: " + this.game.ui.score);
-                    // window.location.reload();
                     this.game.gameOver = true;
                 }
             }
@@ -313,7 +281,6 @@ class Player {
             this.game.player.lives -= 1;
             this.game.ui.score -= 10;
             if (this.game.player.lives <= 0) {
-
                 this.game.gameOver = true;
             }
             this.game.map.draw();
@@ -325,10 +292,8 @@ class Player {
         this.bombs = this.bombs.filter(bomb => !bomb.exploded);
     }
 
-
-
     canMove(newX, newY) {
-        const playerSize = this.game.map.tileSize - 5;
+        const playerSize = GRID_CELL_SIZE - 5;
         const nudgeAmount = 1.5;
         const edgeThreshold = 0.4; // in tile units
         // Check corners of player hitbox
@@ -339,8 +304,8 @@ class Player {
             [newX + playerSize, newY + playerSize]
         ];
         for (const [px, py] of corners) {
-            let X = px / this.game.map.tileSize;
-            let Y = py / this.game.map.tileSize;
+            let X = px / GRID_CELL_SIZE;
+            let Y = py / GRID_CELL_SIZE;
             const gridX = Math.floor(X);
             const gridY = Math.floor(Y);
             // Check bounds
@@ -377,22 +342,16 @@ class Player {
                 }
                 return false;
             }
-            // const hasBomb = this.bombs.some(
-            //     b => b.x === gridX && b.y === gridY && !b.exploded
-            // );
-            /* if (hasBomb) {
-                 return false;
-             }*/
         }
         return true;
     }
 
     placeBomb() {
-        const centerX = this.pixelX + (this.game.map.tileSize / 2);
-        const centerY = this.pixelY + (this.game.map.tileSize / 2);
+        const centerX = this.pixelX + (GRID_CELL_SIZE / 2);
+        const centerY = this.pixelY + (GRID_CELL_SIZE / 2);
 
-        const gridX = Math.floor(centerX / this.game.map.tileSize);
-        const gridY = Math.floor(centerY / this.game.map.tileSize);
+        const gridX = Math.floor(centerX / GRID_CELL_SIZE);
+        const gridY = Math.floor(centerY / GRID_CELL_SIZE);
 
         if (this.bombs.length < this.maxBombs &&
             !this.bombs.some(b => b.x === gridX && b.y === gridY)) {
@@ -411,18 +370,17 @@ class Player {
 
             // Update animation
             if (this.inagif === 'right') {
-                this.element.style.backgroundImage = "url('liman.gif')";
+                this.element.style.backgroundImage = "url('./img/player/liman.gif')";
             } else if (this.inagif === 'left') {
-                this.element.style.backgroundImage = "url('left.gif')";
+                this.element.style.backgroundImage = "url('./img/player/left.gif')";
             } else if (this.inagif === 'up') {
-                this.element.style.backgroundImage = "url('up.gif')";
+                this.element.style.backgroundImage = "url('./img/player/up.gif')";
             } else if (this.inagif === 'down') {
-                this.element.style.backgroundImage = "url('down.gif')";
+                this.element.style.backgroundImage = "url('./img/player/down.gif')";
             } else if (this.inagif === '3adi') {
-                this.element.style.backgroundImage = "url('wa9f.gif')";
+                this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
             }
         }
-
         this.bombs.forEach(bomb => bomb.draw());
     }
 }
@@ -444,13 +402,12 @@ class Bomb {
         if (!this.element && bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.left = `${this.x * this.game.map.tileSize}px`;
-            this.element.style.top = `${this.y * this.game.map.tileSize}px`;
-            this.element.style.width = `${this.game.map.tileSize}px`;
-            this.element.style.height = `${this.game.map.tileSize}px`;
-            this.element.style.backgroundImage = "url('bomb.gif')";
+            this.element.style.left = `${this.x * GRID_CELL_SIZE}px`;
+            this.element.style.top = `${this.y * GRID_CELL_SIZE}px`;
+            this.element.style.width = `${GRID_CELL_SIZE}px`;
+            this.element.style.height = `${GRID_CELL_SIZE}px`;
+            this.element.style.backgroundImage = "url('./img/bomb.gif')";
             this.element.style.borderRadius = `${50}px`
-            //this.element.style.backgroundSize = 'cover';
             this.element.style.zIndex = '8';
             bord.appendChild(this.element);
         }
@@ -458,7 +415,6 @@ class Bomb {
 
     update() {
         this.timer--;
-
         if (this.timer < 60) {
             this.blinkTimer++;
             if (this.blinkTimer % 10 === 0) {
@@ -491,33 +447,27 @@ class Bomb {
 
                 // Destroy destructible blocks
                 if (this.game.map.map[ny][nx] === 2) {
-
                     this.game.map.map[ny][nx] = cadeau[Math.floor(Math.random() * cadeau.length)];
-                    //this.game.ui.score += 10;
                     this.game.map.draw();
                 }
 
-                // const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
-                // const playerCenterY = this.game.player.pixelY + (this.game.map.tileSize / 2);
-                const playerGridX = Math.round(this.game.player.pixelX / this.game.map.tileSize);
-                const playerGridY = Math.round(this.game.player.pixelY / this.game.map.tileSize);
+                const playerGridX = Math.round(this.game.player.pixelX / GRID_CELL_SIZE);
+                const playerGridY = Math.round(this.game.player.pixelY / GRID_CELL_SIZE);
 
                 if (playerGridX === nx && playerGridY === ny) {
                     this.game.player.lives--;
-                    this.game.player.pixelX = 1 * this.game.map.tileSize;
-                    this.game.player.pixelY = 1 * this.game.map.tileSize;
+                    this.game.player.pixelX = 1 * GRID_CELL_SIZE;
+                    this.game.player.pixelY = 1 * GRID_CELL_SIZE;
 
                     if (this.game.player.lives <= 0) {
-                        //alert("Game Over! Score: " + this.game.ui.score);
-                        // window.location.reload();
                         this.game.gameOver = true;
                     }
                 }
 
                 if (this.game.enemies.length > 0) {
                     this.game.enemies.forEach(enemy => {
-                        const enemyGridX = Math.round(enemy.x / this.game.map.tileSize);
-                        const enemyGridY = Math.round(enemy.y / this.game.map.tileSize);
+                        const enemyGridX = Math.round(enemy.x / GRID_CELL_SIZE);
+                        const enemyGridY = Math.round(enemy.y / GRID_CELL_SIZE);
 
                         if (enemyGridX === ny && enemyGridY === nx) {
                             enemy.isAlive = false;
@@ -526,7 +476,6 @@ class Bomb {
                         }
                     });
                 }
-
                 this.createExplosion(nx, ny);
             }
         });
@@ -535,10 +484,10 @@ class Bomb {
     createExplosion(x, y) {
         const bommmmm = document.createElement('div');
         bommmmm.style.position = 'absolute';
-        bommmmm.style.left = `${x * this.game.map.tileSize}px`;
-        bommmmm.style.top = `${y * this.game.map.tileSize}px`;
-        bommmmm.style.width = `${this.game.map.tileSize}px`;
-        bommmmm.style.height = `${this.game.map.tileSize}px`;
+        bommmmm.style.left = `${x * GRID_CELL_SIZE}px`;
+        bommmmm.style.top = `${y * GRID_CELL_SIZE}px`;
+        bommmmm.style.width = `${GRID_CELL_SIZE}px`;
+        bommmmm.style.height = `${GRID_CELL_SIZE}px`;
         bommmmm.style.backgroundColor = 'rgba(255, 165, 0, 0.9)';
         bommmmm.style.borderRadius = '50%';
         bommmmm.style.zIndex = '15';
@@ -554,16 +503,12 @@ class Bomb {
         const animateExplosion = () => {
             scale += 0.1;
             bommmmm.style.transform = `scale(${scale})`;
-
             if (scale < 2) {
                 requestAnimationFrame(animateExplosion);
             } else {
-
                 bommmmm.remove();
-
             }
         };
-
         requestAnimationFrame(animateExplosion);
     }
 
@@ -577,6 +522,7 @@ class Bomb {
         }
     }
 }
+
 class Enemies {
     constructor(x, y, gameBord, enemySize = GRID_CELL_SIZE, speed = initialSpeed) {
         this.x = x
@@ -602,7 +548,7 @@ class Enemies {
             position: absolute;
             left: ${this.x}px;
             top: ${this.y}px;
-            background-image: url('enemy.gif');
+            background-image: url('./img/enemy.gif');
         `
         return this.element
     }
@@ -690,28 +636,19 @@ class Enemies {
 
     }
 }
+
 class Game {
     constructor() {
         this.map = new Map(this);
         this.ui = new Ui(this);
-        this.input = new Input(this);
+        this.input = new KeyboardListner(this);
         this.player = new Player(this, 1, 1);
         this.puse = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
         this.enemies = []
         this.startDraw = true
-        // this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
-        // this.boardHeight = (this.map.map[0].length - 1) * GRID_CELL_SIZE
         let emptySpaces = this.map.findEmptySpaces()
-
-        // console.log(bord.getBoundingClientRect());
-
-        // this.enemies.push(new Enemies(0, 0 , bord, GRID_CELL_SIZE, initialSpeed));
-        // this.enemies.push(new Enemies(0, (this.map.map[0].length - 1 ) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
-        // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
-        // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
-
         for (let i = 0; i < 1; i++) {
             let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)]
             this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) * GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
@@ -756,55 +693,34 @@ class Game {
             this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }
     }
-    //  randomCoordonates(gameMap){
-    //     // console.log("gameMap  :", gameMap);
-    //     return  Math.floor(Math.random() * gameMap)
-    // }
-}
 
+}
 
 
 const game = new Game();
 let lastTime = 0;
-
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
-
     const pauseEl = document.getElementById('puse');
-
-
-
     if (game.puse) {
         pauseEl.style.display = 'block';
-
-
-
     } else if (game.gameOver || game.enemies.length === 0) {
 
         if (game.gameOver) {
-            game.ui.gameOverEl.style.display = 'block';
-
+            game.ui.gameOver.style.display = 'block';
         } else {
-
             const jj = document.getElementById('win');
             if (jj) {
                 jj.style.display = 'block';
             }
-
         }
-
-
-
     } else {
-
         if (pauseEl) pauseEl.style.display = 'none';
         game.draw(deltatime);
     }
+
     game.update(deltatime);
-
-
-
     requestAnimationFrame(animate);
 }
 
