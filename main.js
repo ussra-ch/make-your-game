@@ -2,8 +2,7 @@ const bord = document.getElementById('game');
 let tilesContainer = null;
 const GRID_CELL_SIZE = 35
 const initialSpeed = 0.05 // Container for map tiles
-let  cadeau = [4, 5, 6]; // Array of possible gifts
-
+let  cadeau = [4, 5, 6]; 
 class Map {
     constructor(game) {
         this.game = game;
@@ -490,8 +489,8 @@ class Bomb {
 
                 // const playerCenterX = this.game.player.pixelX + (this.game.map.tileSize / 2);
                 // const playerCenterY = this.game.player.pixelY + (this.game.map.tileSize / 2);
-                const playerGridX = Math.floor(this.game.player.pixelX / this.game.map.tileSize);
-                const playerGridY = Math.floor(this.game.player.pixelY / this.game.map.tileSize);
+                const playerGridX = Math.round(this.game.player.pixelX / this.game.map.tileSize);
+                const playerGridY = Math.round(this.game.player.pixelY / this.game.map.tileSize);
 
                 if (playerGridX === nx && playerGridY === ny) {
                     this.game.player.lives--;
@@ -550,7 +549,7 @@ class Bomb {
                 requestAnimationFrame(animateExplosion);
             } else {
               
-                    bommmmm.remove();
+            bommmmm.remove();
                 
             }
         };
