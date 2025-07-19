@@ -8,6 +8,7 @@ export class Player {
         this.pixelX = x * variables.GRID_CELL_SIZE;
         this.pixelY = y * variables.GRID_CELL_SIZE;
         this.speed = 2;
+        this.maxSpeed = 4
         this.lives = 5;
         this.bombs = [];
         this.maxBombs = 3;
@@ -93,22 +94,24 @@ export class Player {
 
         if (this.game.map.map[gridY][gridX] === 4) {
             this.game.map.map[gridY][gridX] = 0;
-            this.game.player.speed += 0.5;
+            if (this.speed < this.maxSpeed){
+                this.speed += 0.5;
+            }
             this.game.ui.score += 10;
             this.game.map.draw();
         }
         if (this.game.map.map[gridY][gridX] === 5) {
             this.game.map.map[gridY][gridX] = 0;
-            this.game.player.lives += 1;
+            this.lives += 1;
             this.game.ui.score += 10;
             this.game.map.draw();
 
         }
         if (this.game.map.map[gridY][gridX] === 6) {
             this.game.map.map[gridY][gridX] = 0;
-            this.game.player.lives -= 1;
+            this.lives -= 1;
             this.game.ui.score -= 10;
-            if (this.game.player.lives <= 0) {
+            if (this.lives <= 0) {
                 this.game.gameOver = true;
             }
             this.game.map.draw();
