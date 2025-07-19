@@ -694,7 +694,6 @@ class Game {
         // this.boardWidth = (this.map.map.length - 1) * GRID_CELL_SIZE
         // this.boardHeight = (this.map.map[0].length - 1) * GRID_CELL_SIZE
         let emptySpaces = this.map.findEmptySpaces()
-        console.log(emptySpaces.length);
         
         // console.log(bord.getBoundingClientRect());
 
@@ -703,14 +702,14 @@ class Game {
         // this.enemies.push(new Enemies((this.map.map.length - 1) * GRID_CELL_SIZE, 0, bord, GRID_CELL_SIZE, initialSpeed));
         // this.enemies.push(new Enemies((this.map.map.length -  1) * GRID_CELL_SIZE, (this.map.map[0].length -1) * GRID_CELL_SIZE, bord, GRID_CELL_SIZE, initialSpeed));
 
-        for(let i = 0; i < 5; i++){ 
+        for(let i = 0; i < 1; i++){ 
             let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)] 
             this.enemies.push(new Enemies(place.y * GRID_CELL_SIZE, (place.x) *GRID_CELL_SIZE, this.map, GRID_CELL_SIZE, initialSpeed));
         }
     }
 
     draw(deltaTime) {
-if (this.startDraw) {
+     if (this.startDraw) {
      this.startDraw = false
     
         }        
@@ -763,19 +762,37 @@ function animate(timestamp) {
     lastTime = timestamp;
 
     const pauseEl = document.getElementById('puse');
+    
+    
+    
     if (game.puse)  {
         pauseEl.style.display = 'block';
+        console.log(this.game.enemies);
         
-    }else if (game.gameOver) {
-        game.ui.gameOverEl.style.display = 'block';
+        
+    }else if (game.gameOver || game.enemies.length === 0) {
+              
+        if(game.gameOver){
+                    game.ui.gameOverEl.style.display = 'block';
+
+        }else{
+
+              const jj = document.getElementById('win');
+        if (jj) {
+            jj.style.display = 'block';
+        }
+    
+        }
+        
+
         
     } else {
-        console.log(666);
         
         if (pauseEl) pauseEl.style.display = 'none';
         game.draw(deltatime);
     }
         game.update(deltatime);
+        
 
   
     requestAnimationFrame(animate);
