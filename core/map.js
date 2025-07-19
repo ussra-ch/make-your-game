@@ -94,13 +94,16 @@ export class Map {
                     tile.style.backgroundImage = "url('./img/grass.png')";
                 }
                 if (this.map[y][x] === 4) {
+                    // tile.style.backgroundImage = "url('./img/grass.png')";
                     tile.style.backgroundImage = "url('./img/energy.gif')";
                 }
                 if (this.map[y][x] === 5) {
+                    // tile.style.backgroundImage = "url('./img/grass.png')";
                     tile.style.backgroundImage = "url('./img/heart.gif')";
                 }
                 if (this.map[y][x] === 6) {
-                    tile.style.backgroundImage = "url('./img/poison.gif')";
+                    tile.style.backgroundImage = "url('./img/poison1.gif')";
+                    // tile.style.backgroundImage = "url('./img/poison-unscreen.gif')";
                 }
 
                 variables.tilesContainer.appendChild(tile);
