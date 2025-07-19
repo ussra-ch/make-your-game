@@ -22,17 +22,16 @@ export class Enemies {
             height: 35px;
             z-index: 100;
             position: absolute;
-            left: ${this.x}px;
-            top: ${this.y}px;
+            will-change: transform;
             background-image: url('./img/enemy.gif');
-        `
-        return this.element
+            transform: translate(${this.y}px, ${this.x}px)
+            `
+            return this.element
     }
 
     render() {
         if (!this.isAlive) return
-        this.element.style.top = `${this.x}px`;
-        this.element.style.left = `${this.y}px`;
+        this.element.style.transform = `translate(${this.y}px, ${this.x}px)`;
     }
 
     update(deltatime, gameBoard) {

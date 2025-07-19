@@ -193,8 +193,8 @@ export class Player {
         }
 
         if (this.element) {
-            this.element.style.left = `${this.pixelX}px`;
-            this.element.style.top = `${this.pixelY}px`;
+            // this.element.style.left = `${this.pixelX}px`;
+            this.element.style.transform =  `translate(${this.pixelX}px, ${this.pixelY}px)`
 
             // Update animation
             if (this.inagif === 'right') {
