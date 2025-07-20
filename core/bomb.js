@@ -33,7 +33,7 @@ export class Bomb {
         this.timer--;
         if (this.timer < 60) {
             this.blinkTimer++;
-            if (this.blinkTimer % 10 === 0) {
+            if (this.blinkTimer % 9 === 0) {
                 this.visible = !this.visible;
             }
         }
@@ -46,17 +46,20 @@ export class Bomb {
     explode() {
         this.exploded = true;
 
-        if (this.element && this.element.parentNode) {
+        if (this.element) {
             this.element.remove();
+            //console.log(this.element);
+            
             this.element = null;
         }
         const dirs = [
-            [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]
+            [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1],[2, 0], [-2, 0], [0, -2], [0, 2]
         ];
-
+         
+            
         dirs.forEach(([dx, dy]) => {
-            const nx = this.x + dx;
-            const ny = this.y + dy;
+            const nx = this.x + dx ;
+            const ny = this.y + dy ;
 
             if (ny >= 0 && ny < this.game.map.map.length &&
                 nx >= 0 && nx < this.game.map.map[0].length) {
@@ -92,9 +95,14 @@ export class Bomb {
                         }
                     });
                 }
+                console.log(nx, ny);
+                
                 this.createExplosion(nx, ny);
+            
             }
+            
         });
+    
     }
 
     createExplosion(x, y) {
