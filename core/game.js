@@ -1,8 +1,8 @@
-import {variables} from "./variables.js"
-import {Map} from "./map.js"
-import {Player} from "./player.js"
-import {Enemies} from "./enemies.js"
-import {Ui, KeyboardListner} from "./tools.js"
+import { variables } from "./variables.js"
+import { Map } from "./map.js"
+import { Player } from "./player.js"
+import { Enemies } from "./enemies.js"
+import { Ui, KeyboardListner } from "./tools.js"
 
 
 
@@ -15,11 +15,12 @@ export class Game {
         this.puse = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
+        this.maxEnemies = 5;
         this.enemies = []
         this.startDraw = true
-        let emptySpaces = this.map.findEmptySpaces()
-        for (let i = 0; i < 5; i++) {
-            let place = emptySpaces[Math.floor(Math.random() * emptySpaces.length)]
+        this.emptySpaces = this.map.findEmptySpaces()
+        for (let i = 0; i < this.maxEnemies; i++) {
+            let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
             this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
         }
     }
@@ -27,7 +28,10 @@ export class Game {
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-
+            while (this.enemies.length-1 < this.maxEnemies) {
+                let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+                this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+            }
             this.map.draw()
         }
         this.player.draw();
