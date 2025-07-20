@@ -12,6 +12,7 @@ function animate(timestamp) {
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
+    let constinue = document.getElementById('pause-button');
 
 
     if (game.pause) {
@@ -23,7 +24,10 @@ function animate(timestamp) {
         } else {
             const jj = document.getElementById('win');
             if (jj) {
+                pauseEl.style.display = 'block';
+                 blur.style.filter = 'blur(10px)';
                 jj.style.display = 'block';
+                constinue.style.display = 'none';
             }
         }
     } else {
@@ -84,7 +88,7 @@ function startGame() {
                 blur.style.filter = 'none'
                 for (let i = 0; i < 8; i++) {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
-                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, ga.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 }
                 game.player.maxLives = 3
             }

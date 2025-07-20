@@ -112,17 +112,17 @@ body {
 
 #win {
     position: fixed;
-    top: 40%;
+    top: 20%;
     left: 50%;
     display: none;
     transform: translate(-50%, -50%);
-    background-color: rgba(224, 5, 5, 0.8);
+    background-color: rgba(211, 191, 11, 0.8);
     color: white;
     padding: 20px 40px;
     border-radius: 10px;
     font-size: 24px;
     text-align: center;
-    z-index: 1000;
+    z-index: 1000000;
     font-family: "Bitcount Grid Single", system-ui;
 }
 #blur-wrapper {
