@@ -15,7 +15,6 @@ export class Game {
         this.pause = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
-        // this.minenemies = 3;
         this.maxEnemies = 4;
         this.startDraw = true
         this.enemies = []

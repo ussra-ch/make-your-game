@@ -6,9 +6,11 @@ let lastTime = 0;
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
+    const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
     if (game.pause) {
         pauseEl.style.display = 'block';
+        blur.style.filter = 'blur(10px)';
     } else if (game.gameOver || game.enemies.length === 0) {
         if (game.gameOver) {
             game.ui.gameOver.style.display = 'block';
@@ -19,7 +21,10 @@ function animate(timestamp) {
             }
         }
     } else {
-        if (pauseEl) pauseEl.style.display = 'none';
+        if (pauseEl){
+            pauseEl.style.display = 'none';
+            blur.style.filter = 'none'
+        } 
         game.draw(deltatime);
     }
 
