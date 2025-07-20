@@ -8,6 +8,8 @@ function animate(timestamp) {
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
+
+
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
@@ -31,6 +33,7 @@ function animate(timestamp) {
     game.update(deltatime);
     requestAnimationFrame(animate);
 }
+
 function startGame() {
     const overlay = document.createElement('div');
     overlay.id = 'difficulty-card';
@@ -72,5 +75,13 @@ function startGame() {
             animate(0);
         };
     });
+
+    const pauseEl = document.getElementById('pause');
+    const restartEl = document.getElementById('restart')
+
+    pauseEl.addEventListener('click', ()=>{
+        game.pause = false
+        blur.style.filter = 'none'
+    })
 }
 startGame();
