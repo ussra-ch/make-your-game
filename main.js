@@ -47,6 +47,9 @@ function animate(timestamp) {
 
 function startGame() {
     const overlay = document.createElement('div');
+    const item = document.querySelectorAll('#ui h1');
+    console.log(item);
+    
     overlay.id = 'difficulty-card';
     overlay.innerHTML = `
     <div style="margin-bottom: 24px;">Choose Difficulty</div>
@@ -78,12 +81,18 @@ function startGame() {
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 } game.player.maxLives = 5;
                 blur.style.filter = 'none'
+                for(let i =0;i<item.length;i++){
+                    item[i].style.display = 'block';
+                }
             } else if (e.target.dataset.diff === 'medium') {
                 blur.style.filter = 'none'
                 for (let i = 0; i < 6; i++) {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 } game.player.maxLives = 4
+                 for(let i =0;i<item.length;i++){
+                    item[i].style.display = 'block';
+                }
             } else if (e.target.dataset.diff === 'hard') {
                 blur.style.filter = 'none'
                 for (let i = 0; i < 8; i++) {
@@ -91,6 +100,9 @@ function startGame() {
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 }
                 game.player.maxLives = 3
+                 for(let i =0;i<item.length;i++){
+                    item[i].style.display = 'block';
+                }
             }
             animate(0);
         };
