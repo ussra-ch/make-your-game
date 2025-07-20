@@ -6,8 +6,8 @@ let lastTime = 0;
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
-    const pauseEl = document.getElementById('puse');
-    if (game.puse) {
+    const pauseEl = document.getElementById('pause');
+    if (game.pause) {
         pauseEl.style.display = 'block';
     } else if (game.gameOver || game.enemies.length === 0) {
 

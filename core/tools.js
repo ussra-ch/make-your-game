@@ -33,7 +33,7 @@ export class Ui {
         this.timeM = 0; //minutes
         this.elapsed = 0;
         this.gameOver = null;
-        [this.pauseButton, this.restartButton] = [document.getElementById('puse-button'), document.getElementById('restart')];
+        [this.pauseButton, this.restartButton] = [document.getElementById('pause-button'), document.getElementById('restart')];
     }
 
     draw(deltaTime) {
@@ -63,9 +63,9 @@ export class Ui {
         }
         [this.pauseButton, this.restartButton].forEach(button => {
             button.addEventListener('click', () => {
-                if (button.id === 'puse-button') {
-                    this.game.puse = !this.game.puse;
-                    button.textContent = this.game.puse ? 'Resume' : 'Pause';
+                if (button.id === 'pause-button') {
+                    this.game.pause = !this.game.pause;
+                    // button.textContent = this.game.pause ? 'Resume' : 'Pause';
                 } else if (button.id === 'restart') {
                     window.location.reload();
                 }

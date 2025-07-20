@@ -3,6 +3,7 @@
 - fix 60FPS
 - menu fih restart wla continue mnu ydir pause
 - responsive
+- mni kirb7 l player l menu dyal continue w restart kitlagga
 
 
 OPTIONAL:
