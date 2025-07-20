@@ -81,7 +81,7 @@ export class Enemies {
                 tileY > gameBoard.length || tileY < 0) {
                 return true
             }
-            if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2) {
+            if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2||gameBoard[tileX][tileY] == 3) {
                 return true
             }
         }

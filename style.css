@@ -40,30 +40,49 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 20px 40px;
-    border: none;
-    border-radius: 10px;
-    font-size: 24px;
-    /* display: none;*/
-    cursor: pointer;
+    background: rgba(30, 30, 30, 0.95);
+    color: #fff;
+    padding: 32px 48px;
+    border-radius: 18px;
+    border: 2px solid #ffb300;
+    box-shadow: 0 0 32px 8px rgba(0,0,0,0.7);
+    display: none;
     z-index: 1000;
-    /* Ensure it appears above other elements */
+    text-align: center;
+    font-family: 'Bitcount Grid Single', monospace;
+    font-size: 2rem;
 }
 
-button {
-    background-color: #555555;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+#puse button {
+    background: #222;
+    color: #ffb300;
+    border: 2px solid #ffb300;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding: 10px 24px;
+    margin: 12px 8px 0 8px;
     cursor: pointer;
-   
+    font-family: 'Bitcount Grid Single', monospace;
+    transition: background 0.2s, color 0.2s;
 }
 
-button:hover {
-    background-color: #777;
+#puse button:hover {
+    background: #ffb300;
+    color: #222;
+}
+
+#restart {
+    background-color: #4caf50;
+    color: white;
+}
+
+#puse button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+#puse button:active {
+    transform: scale(0.98);
 }
 
 #player {
@@ -90,6 +109,7 @@ button:hover {
     font-family: "Bitcount Grid Single", system-ui;
     display: none;
 }
+
 #win {
     position: fixed;
     top: 40%;

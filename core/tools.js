@@ -1,4 +1,4 @@
-import {variables} from "./variables.js"
+import { variables } from "./variables.js"
 
 
 export class KeyboardListner {
@@ -33,6 +33,7 @@ export class Ui {
         this.timeM = 0; //minutes
         this.elapsed = 0;
         this.gameOver = null;
+        [this.pauseButton, this.restartButton] = [document.getElementById('puse-button'), document.getElementById('restart')];
     }
 
     draw(deltaTime) {
@@ -60,6 +61,16 @@ export class Ui {
             this.gameOver.textContent = `Game Over! Score: ${this.score}`;
             variables.bord.prepend(this.gameOver);
         }
+        [this.pauseButton, this.restartButton].forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.id === 'puse-button') {
+                    this.game.puse = !this.game.puse;
+                    button.textContent = this.game.puse ? 'Resume' : 'Pause';
+                } else if (button.id === 'restart') {
+                    window.location.reload();
+                }
+            });
+        })
 
     }
 }
