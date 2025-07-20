@@ -12,6 +12,7 @@ export class Enemies {
         this.state = true
         this.gameBoard = gameBord
         this.render()
+        this.time = 100
     }
 
     create() {
@@ -60,10 +61,14 @@ export class Enemies {
         if (!this.checkForCollision(newX, newY, gameBoard.map)) {
             this.x = newX, this.y = newY
             this.render()
-        } else {
+        }else{
             this.randomDirection();
+        } 
+        if(this.time <= 0) {
+            this.randomDirection();
+            this.time = 100
         }
-
+        this.time -= 1
     }
 
     checkForCollision(newX, newY, gameBoard) {
