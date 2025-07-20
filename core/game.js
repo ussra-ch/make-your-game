@@ -1,7 +1,7 @@
-import { variables } from "./variables.js"
+//import { variables } from "./variables.js"
 import { Map } from "./map.js"
 import { Player } from "./player.js"
-import { Enemies } from "./enemies.js"
+//import { Enemies } from "./enemies.js"
 import { Ui, KeyboardListner } from "./tools.js"
 
 
@@ -19,19 +19,19 @@ export class Game {
         this.startDraw = true
         this.enemies = []
         this.emptySpaces = this.map.findEmptySpaces()
-        for (let i = 0; i < this.maxEnemies; i++) {
-            let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
-            this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-        }
+        // for (let i = 0; i < this.maxEnemies; i++) {
+        //     let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+        //     this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+        // }
     }
 
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-            while (this.enemies.length - 1 < this.maxEnemies) {
-                let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
-                this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-            }
+            // while (this.enemies.length - 1 < this.maxEnemies) {
+            //     let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+            //     this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+            // }
             this.map.draw()
         }
         // console.log('map created');

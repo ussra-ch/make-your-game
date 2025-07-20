@@ -33,6 +33,7 @@ export class Player {
     }
 
     update() {
+        // this.maxLives = this.game.player.maxLives;
         let moveX = 0, moveY = 0;
         // Handle movement
         if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowUp') {

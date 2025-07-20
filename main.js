@@ -1,4 +1,8 @@
 import { Game } from "./core/game.js"
+import { variables } from "../core/variables.js"
+import { Enemies } from "../core/enemies.js"
+
+
 
 const game = new Game();
 let lastTime = 0;
@@ -23,12 +27,15 @@ function animate(timestamp) {
             }
         }
     } else {
-        if (pauseEl){
+        if (pauseEl) {
             pauseEl.style.display = 'none';
             blur.style.filter = 'none'
-        } 
+        }
         game.draw(deltatime);
     }
+
+
+
 
     game.update(deltatime);
     requestAnimationFrame(animate);
@@ -62,14 +69,23 @@ function startGame() {
         btn.onclick = (e) => {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {
+                for (let i = 0; i < 4; i++) {
+                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
+                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+                } game.player.maxLives = 5;
                 blur.style.filter = 'none'
             } else if (e.target.dataset.diff === 'medium') {
                 blur.style.filter = 'none'
-                game.maxEnemies = 6;
-                game.player.maxLives = 4
+                for (let i = 0; i < 6; i++) {
+                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
+                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+                } game.player.maxLives = 4
             } else if (e.target.dataset.diff === 'hard') {
                 blur.style.filter = 'none'
-                game.maxEnemies = 4;
+                for (let i = 0; i < 8; i++) {
+                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
+                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, ga.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+                }
                 game.player.maxLives = 3
             }
             animate(0);
@@ -79,7 +95,7 @@ function startGame() {
     const pauseEl = document.getElementById('pause');
     const restartEl = document.getElementById('restart')
 
-    pauseEl.addEventListener('click', ()=>{
+    pauseEl.addEventListener('click', () => {
         game.pause = false
         blur.style.filter = 'none'
     })
