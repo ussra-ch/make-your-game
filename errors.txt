@@ -1,7 +1,7 @@
 - layers (3ndna ri wa7da wkhas ykoun ktar)
 - fix 60FPS
-- responsive
-- mni kirb7 l player l menu dyal continue w restart kitlagga, khas tla3 lih ri restart
+
+
 - restart katlagga
 - enemies.js:89 Uncaught TypeError: Cannot read properties of undefined (reading '13')
     at Enemies.checkForCollision (enemies.js:89:33)
@@ -10,9 +10,14 @@
     at Array.forEach (<anonymous>)
     at Game.update (game.js:64:26)
     at animate (main.js:47:10)
-
 - ila farg3 9nbola 3la rassu wtka7z 3la liman wla lisar  kitn9so juj dyal lives (ri fstart)
+- kola tania khas ytzad enemy jdid
+
+
 - l board khasha tcentra
+- responsive
+- lfront dyal l win w restart khas yt9ad
+
 
 OPTIONAL:
     - ndirou 3 niveaux dyal s3obia :
