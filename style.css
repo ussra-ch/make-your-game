@@ -147,3 +147,44 @@ body {
         font-family: 'Bitcount Grid Single', monospace;
         font-size: 2rem;
 }
+@media (max-width: 400px) {
+  body {
+    padding: 10px;
+  }
+
+  #ui {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  #game {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 17 / 15; /* 9a3ida sahla  l3ard  * 17/15 bach t3tina height  ghir 3la 9bal dakchi li3tina width o height falawl   // 680px * 15 / 17 = 600 lihiya height*/
+  }
+
+  #player {
+    width: 32px;
+    height: 32px;
+  }
+
+  #pause,
+  #win,
+  #game-over,
+  #difficulty-card {
+    width: 90%;
+    padding: 10px 10px;
+    font-size: 15px;
+  }
+
+  #pause button {
+    width: 100%;
+    margin: 10px ;
+    font-size: 15px;
+  }
+
+ 
+}

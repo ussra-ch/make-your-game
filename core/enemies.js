@@ -19,8 +19,8 @@ export class Enemies {
         this.element = document.createElement('div')
         this.element.className = 'enemy'
         this.element.style = `
-            width: 35px;
-            height: 35px;
+            width:  ${this.size}px;
+            height: ${this.size}px;
             z-index: 100;
             position: absolute;
             will-change: transform;

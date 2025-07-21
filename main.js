@@ -46,6 +46,8 @@ function animate(timestamp) {
 }
 
 function startGame() {
+    console.log(variables.GRID_CELL_SIZE);
+    
     const overlay = document.createElement('div');
     const item = document.querySelectorAll('#ui h1');
     console.log(item);
