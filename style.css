@@ -86,13 +86,7 @@ body {
     transform: scale(0.98);
 }
 
-#player {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 40px;
-    left: 40px;
-}
+
 
 #game-over {
     position: fixed;
@@ -166,10 +160,7 @@ body {
     aspect-ratio: 17 / 15; /* 9a3ida sahla  l3ard  * 17/15 bach t3tina height  ghir 3la 9bal dakchi li3tina width o height falawl   // 680px * 15 / 17 = 600 lihiya height*/
   }
 
-  #player {
-    width: 32px;
-    height: 32px;
-  }
+
 
   #pause,
   #win,
