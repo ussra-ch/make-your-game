@@ -15,26 +15,22 @@ export class Game {
         this.pause = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
-        this.maxEnemies = 30;
+        this.maxEnemies = 4;
         this.startDraw = true
         this.enemies = []
         this.emptySpaces = this.map.findEmptySpaces()
-        // for (let i = 0; i < this.maxEnemies; i++) {
-        //     let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
-        //     this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-        // }
     }
 
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-            // while (this.enemies.length - 1 < this.maxEnemies) {
-            //     let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
-            //     this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-            // }
+            while (this.enemies.length - 1 < this.maxEnemies) {
+                let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+                this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+            }
             this.map.draw()
         }
-      
+
         // console.log('map created');
         this.player.draw();
         this.ui.draw(deltaTime);
@@ -54,6 +50,10 @@ export class Game {
     }
 
     update(deltaTime) {
+        if (this.enemies.length==0) {
+            this.gameOver = true;
+            
+        }
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
             this.pause = !this.pause;

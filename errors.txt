@@ -11,7 +11,7 @@
     at Game.update (game.js:64:26)
     at animate (main.js:47:10)
 - ila farg3 9nbola 3la rassu wtka7z 3la liman wla lisar  kitn9so juj dyal lives (ri fstart)
-- kola tania khas ytzad enemy jdid
+
 
 
 - l board khasha tcentra

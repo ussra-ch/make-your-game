@@ -18,7 +18,7 @@ function animate(timestamp) {
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
-    } else if (game.gameOver || game.enemies.length === 0) {
+    } else if (game.gameOver) {
         if (game.gameOver) {
             game.ui.gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
@@ -53,7 +53,7 @@ function startGame() {
 
     const overlay = document.createElement('div');
     const item = document.querySelectorAll('#ui h1');
-   
+
 
     overlay.id = 'difficulty-card';
     overlay.innerHTML = `
@@ -81,46 +81,36 @@ function startGame() {
         btn.onclick = (e) => {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {
-                for (let i = 0; i < 1; i++) {
-                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
-                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-                } game.player.maxLives = 5;
+                document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
-                for (let i = 0; i < item.length; i++) {
-                    item[i].style.display = 'block';
-                }
+
             } else if (e.target.dataset.diff === 'medium') {
+                document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
-                for (let i = 0; i < 8; i++) {
-                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
-                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-                } game.player.maxLives = 4
+                game.maxEnemies = 8;
+                game.player.maxLives = 4
                 for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
+
             } else if (e.target.dataset.diff === 'hard') {
+                document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
-                for (let i = 0; i < 4; i++) {
-                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
-                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
-                }
                 variables.Hared = true
                 game.player.maxLives = 3
-                for (let i = 0; i < item.length; i++) {
-                    item[i].style.display = 'block';
-                }
-                let a=setInterval(() => {
-                    
+                let a = setInterval(() => {
+                    game.maxEnemies = 30;
                     if (game.enemies.length >= game.maxEnemies) {
-                       clearInterval(a)
+                        clearInterval(a)
                     }
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                     console.log(game.enemies.length);
-                    
+
                 }, 3000)
-
-
+                for (let i = 0; i < item.length; i++) {
+                    item[i].style.display = 'block';
+                }
             }
             animate(0);
         };
