@@ -13,19 +13,22 @@ function animate(timestamp) {
     const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
     let constinue = document.getElementById('pause-button');
+    const jj = document.getElementById('win');
+    const  gameOver = document.getElementById('game-over');
 
     
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
-    } else if (game.gameOver) {
-        if (game.gameOver) {
-            game.ui.gameOver.style.display = 'block';
+    } else if (game.gameOver ) { 
+        console.log(888);
+        
+        if (game.enemies.length !== 0) {
+            gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
             blur.style.filter = 'blur(10px)';
             constinue.style.display = 'none';
         } else {
-            const jj = document.getElementById('win');
             if (jj) {
                 pauseEl.style.display = 'block';
                 blur.style.filter = 'blur(10px)';
@@ -46,16 +49,21 @@ function animate(timestamp) {
 
     game.update(deltatime);
     if (variables.restart) {
+        jj.style.display = 'none';
+        gameOver.style.display = 'none';
         clearInterval(a)
         startGame();
         variables.restart = false;
-        variables.start = true;
+    //    variables.start = true;
+
+    }else {
+        requestAnimationFrame(animate);
 
     }
-    if(!variables.start) {
+   
         
-        requestAnimationFrame(animate);
-    }
+    
+    
 }
 
 export function startGame() {
