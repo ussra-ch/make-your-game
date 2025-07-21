@@ -4,5 +4,6 @@ export let variables = {
     GRID_CELL_SIZE:  Math.floor(game.offsetWidth / 19) ,
     initialSpeed: 0.05, // Container for map tiles
     cadeau: [4, 5, 6],
-    Hared:false
+    Hared:false,
+    restart:false
 }

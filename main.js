@@ -4,10 +4,15 @@ import { Enemies } from "../core/enemies.js"
 
 
 
-const game = new Game();
+let game
 let lastTime = 0;
-
+var a = null;
 function animate(timestamp) {
+    if (variables.restart) {
+        clearInterval(a)
+        startGame();
+        variables.restart = false;
+    }
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
@@ -48,7 +53,13 @@ function animate(timestamp) {
     requestAnimationFrame(animate);
 }
 
-function startGame() {
+export function startGame() {
+    game = new Game();
+    const en = document.querySelectorAll('.enemy');
+    en.forEach(enemy => {
+
+        enemy.remove();
+    })
     //console.log(variables.GRID_CELL_SIZE);
 
     const overlay = document.createElement('div');
@@ -83,24 +94,28 @@ function startGame() {
             if (e.target.dataset.diff === 'easy') {
                 document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
+                game.startDraw = true
 
             } else if (e.target.dataset.diff === 'medium') {
                 document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
                 game.maxEnemies = 8;
+                console.log(1);
+                game.startDraw = true
                 game.player.maxLives = 4
                 for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
 
             } else if (e.target.dataset.diff === 'hard') {
+                game.startDraw = true
                 document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
                 variables.Hared = true
                 game.player.maxLives = 3
-                let a = setInterval(() => {
+                 a = setInterval(() => {
                     game.maxEnemies = 30;
-                    if (game.enemies.length >= game.maxEnemies) {
+                    if ((game.enemies.length >= game.maxEnemies)) {
                         clearInterval(a)
                     }
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
@@ -112,8 +127,10 @@ function startGame() {
                     item[i].style.display = 'block';
                 }
             }
+
             animate(0);
         };
+
     });
 
     const pauseEl = document.getElementById('pause');

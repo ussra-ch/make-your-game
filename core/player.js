@@ -19,6 +19,10 @@ export class Player {
     }
 
     createPlayerElement() {
+        const existingElement = document.getElementById('player');
+        if (existingElement) {
+            existingElement.remove();
+        }
         if (!this.element && variables.bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';

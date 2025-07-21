@@ -1,4 +1,5 @@
 import { variables } from "./variables.js"
+import { startGame } from "../main.js";
 
 
 export class KeyboardListner {
@@ -67,7 +68,10 @@ export class Ui {
                     this.game.pause = !this.game.pause;
                     // button.textContent = this.game.pause ? 'Resume' : 'Pause';
                 } else if (button.id === 'restart') {
-                    window.location.replace(window.location.href)
+                    //window.location.replace(window.location.href)
+                    variables.restart = true;
+
+                   // startGame();
                 }
             });
         })
