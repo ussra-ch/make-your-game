@@ -98,6 +98,7 @@ export function startGame() {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {
                 document.getElementById('ui').style.display = 'flex';
+                game.maxEnemies = 4;
                 blur.style.filter = 'none'
                 game.startDraw = true
 

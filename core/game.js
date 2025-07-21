@@ -24,7 +24,7 @@ export class Game {
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-            while (this.enemies.length - 1 < this.maxEnemies) {
+            while (this.enemies.length  < this.maxEnemies) {
                 let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
                 this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
             }
