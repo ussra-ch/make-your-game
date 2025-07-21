@@ -14,8 +14,7 @@
 - kola tania khas ytzad enemy jdid
 
 
-- l board khasha tcentra
-- responsive
+- menu's responsive mazalaa
 - lfront dyal l win w restart khas yt9ad
 
 
