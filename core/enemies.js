@@ -79,13 +79,13 @@ export class Enemies {
             { x: newX + this.size - 1, y: newY + this.size - 1 } // Bottom-right
         ];
         for (let corner of corners) {
-            const tileX = Math.floor(corner.x / variables.GRID_CELL_SIZE); // hadi hia column
+            let tileX = Math.floor(corner.x / variables.GRID_CELL_SIZE); // hadi hia column
             const tileY = Math.floor(corner.y / variables.GRID_CELL_SIZE); //hadi hia row
-
-            if (tileX > gameBoard[0].length || tileX < 0 ||
-                tileY > gameBoard.length || tileY < 0) {
+            if (tileX >= gameBoard.length || tileX < 0 ||
+                tileY >= gameBoard[0].length || tileY < 0) {
                 return true
             }
+            
             if (gameBoard[tileX][tileY] == 1 || gameBoard[tileX][tileY] == 2) {
                 return true
             }
