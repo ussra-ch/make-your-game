@@ -1,24 +1,32 @@
 body {
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #222;
-    color: white;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  background-color:  #3a3a3a;
+
+
 }
 
+
 #ui {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #333;
-    border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+
+  padding: 16px 24px;
+  margin-bottom: 20px;
+
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+
+
 }
+
 
 #ui h1 {
     display: none;
     margin: 0;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 #game {
