@@ -8,18 +8,13 @@ let game
 let lastTime = 0;
 var a = null;
 function animate(timestamp) {
-    if (variables.restart) {
-        clearInterval(a)
-        startGame();
-        variables.restart = false;
-    }
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
     let constinue = document.getElementById('pause-button');
 
-
+    
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
@@ -45,12 +40,22 @@ function animate(timestamp) {
         }
         game.draw(deltatime);
     }
-
-
-
+    
+    
+    
 
     game.update(deltatime);
-    requestAnimationFrame(animate);
+    if (variables.restart) {
+        clearInterval(a)
+        startGame();
+        variables.restart = false;
+        variables.start = true;
+
+    }
+    if(!variables.start) {
+        
+        requestAnimationFrame(animate);
+    }
 }
 
 export function startGame() {
@@ -127,7 +132,7 @@ export function startGame() {
                     item[i].style.display = 'block';
                 }
             }
-
+            variables.start = false;
             animate(0);
         };
 

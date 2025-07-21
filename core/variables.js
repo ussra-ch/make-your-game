@@ -5,5 +5,6 @@ export let variables = {
     initialSpeed: 0.05, // Container for map tiles
     cadeau: [4, 5, 6],
     Hared:false,
-    restart:false
+    restart:false,
+    start: false,
 }
