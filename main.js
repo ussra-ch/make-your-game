@@ -21,11 +21,13 @@ function animate(timestamp) {
     } else if (game.gameOver || game.enemies.length === 0) {
         if (game.gameOver) {
             game.ui.gameOver.style.display = 'block';
+            blur.style.filter = 'blur(10px)';
+
         } else {
             const jj = document.getElementById('win');
             if (jj) {
                 pauseEl.style.display = 'block';
-                 blur.style.filter = 'blur(10px)';
+                blur.style.filter = 'blur(10px)';
                 jj.style.display = 'block';
                 constinue.style.display = 'none';
             }
@@ -46,12 +48,12 @@ function animate(timestamp) {
 }
 
 function startGame() {
-    console.log(variables.GRID_CELL_SIZE);
-    
+    //console.log(variables.GRID_CELL_SIZE);
+
     const overlay = document.createElement('div');
     const item = document.querySelectorAll('#ui h1');
     console.log(item);
-    
+
     overlay.id = 'difficulty-card';
     overlay.innerHTML = `
     <div style="margin-bottom: 24px;">Choose Difficulty</div>
@@ -83,7 +85,7 @@ function startGame() {
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 } game.player.maxLives = 5;
                 blur.style.filter = 'none'
-                for(let i =0;i<item.length;i++){
+                for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
             } else if (e.target.dataset.diff === 'medium') {
@@ -92,7 +94,7 @@ function startGame() {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 } game.player.maxLives = 4
-                 for(let i =0;i<item.length;i++){
+                for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
             } else if (e.target.dataset.diff === 'hard') {
@@ -102,7 +104,7 @@ function startGame() {
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 }
                 game.player.maxLives = 3
-                 for(let i =0;i<item.length;i++){
+                for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
             }
@@ -111,7 +113,7 @@ function startGame() {
     });
 
     const pauseEl = document.getElementById('pause');
-    const restartEl = document.getElementById('restart')
+    //const restartEl = document.getElementById('restart')
 
     pauseEl.addEventListener('click', () => {
         game.pause = false

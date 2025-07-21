@@ -59,7 +59,7 @@ export class Ui {
             this.gameOver = document.createElement('div');
             this.gameOver.id = 'game-over';
             this.gameOver.textContent = `Game Over! Score: ${this.score}`;
-            variables.bord.prepend(this.gameOver);
+            document.body.append(this.gameOver);
         }
         [this.pauseButton, this.restartButton].forEach(button => {
             button.addEventListener('click', () => {
