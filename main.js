@@ -21,7 +21,7 @@ function animate(timestamp) {
     } else if (game.gameOver || game.enemies.length === 0) {
         if (game.gameOver) {
             game.ui.gameOver.style.display = 'block';
-          pauseEl.style.display = 'block';
+              pauseEl.style.display = 'block';
                 blur.style.filter = 'blur(10px)';
                 constinue.style.display = 'none';
         } else {
