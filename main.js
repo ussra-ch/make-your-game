@@ -77,7 +77,7 @@ export function startGame() {
     let blur = document.getElementById('blur-wrapper')
     Array.from(overlay.querySelectorAll('button')).forEach(btn => {
         btn.style = `
-        background: #222;
+        background: #1c1c22;
         color: #ffb300;
         border: 2px solid #ffb300;
         border-radius: 8px;
@@ -87,8 +87,8 @@ export function startGame() {
         cursor: pointer;
         font-family: 'Bitcount Grid Single', monospace;
         `;
-        btn.onmouseover = () => { btn.style.background = '#ffb300'; btn.style.color = '#222'; };
-        btn.onmouseout = () => { btn.style.background = '#222'; btn.style.color = '#ffb300'; };
+        btn.onmouseover = () => { btn.style.background = '#ffb300'; btn.style.color = '#1c1c22'; };
+        btn.onmouseout = () => { btn.style.background = '#1c1c22'; btn.style.color = '#ffb300'; };
         btn.onclick = (e) => {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {

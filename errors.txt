@@ -13,10 +13,7 @@
 
 
 
-- l board khasha tcentra
-- responsive
-- lfront dyal l win w restart khas yt9ad
-
+- menu's responsive mazalaa
 
 OPTIONAL:
     - ndirou 3 niveaux dyal s3obia :
