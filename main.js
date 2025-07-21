@@ -14,15 +14,15 @@ function animate(timestamp) {
     const pauseEl = document.getElementById('pause');
     let constinue = document.getElementById('pause-button');
     const jj = document.getElementById('win');
-    const  gameOver = document.getElementById('game-over');
+    const gameOver = document.getElementById('game-over');
 
-    
+
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
-    } else if (game.gameOver ) { 
+    } else if (game.gameOver) {
         console.log(888);
-        
+
         if (game.enemies.length !== 0) {
             gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
@@ -43,27 +43,29 @@ function animate(timestamp) {
         }
         game.draw(deltatime);
     }
-    
-    
-    
+
+
+
 
     game.update(deltatime);
     if (variables.restart) {
         jj.style.display = 'none';
         gameOver.style.display = 'none';
+        constinue.style.display = 'block';
+
         clearInterval(a)
         startGame();
         variables.restart = false;
-    //    variables.start = true;
+        //    variables.start = true;
 
-    }else {
+    } else {
         requestAnimationFrame(animate);
 
     }
-   
-        
-    
-    
+
+
+
+
 }
 
 export function startGame() {
@@ -127,7 +129,7 @@ export function startGame() {
                 blur.style.filter = 'none'
                 variables.Hared = true
                 game.player.maxLives = 3
-                 a = setInterval(() => {
+                a = setInterval(() => {
                     game.maxEnemies = 30;
                     if ((game.enemies.length >= game.maxEnemies)) {
                         clearInterval(a)
