@@ -1,6 +1,5 @@
 - layers (3ndna ri wa7da wkhas ykoun ktar)
 - fix 60FPS
-- menu fih restart wla continue mni ydir pause
 - responsive
 - mni kirb7 l player l menu dyal continue w restart kitlagga, khas tla3 lih ri restart
 

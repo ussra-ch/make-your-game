@@ -91,7 +91,7 @@ function startGame() {
                 }
             } else if (e.target.dataset.diff === 'medium') {
                 blur.style.filter = 'none'
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i < 8; i++) {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 } game.player.maxLives = 4
@@ -100,7 +100,7 @@ function startGame() {
                 }
             } else if (e.target.dataset.diff === 'hard') {
                 blur.style.filter = 'none'
-                for (let i = 0; i < 8; i++) {
+                for (let i = 0; i < 18; i++) {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 }
