@@ -1,4 +1,4 @@
-import {variables} from "./variables.js"
+import { variables } from "./variables.js"
 
 
 export class Bomb {
@@ -49,17 +49,17 @@ export class Bomb {
         if (this.element) {
             this.element.remove();
             //console.log(this.element);
-            
+
             this.element = null;
         }
         const dirs = [
             [0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]
         ];
-         
-            
+
+
         dirs.forEach(([dx, dy]) => {
-            const nx = this.x + dx ;
-            const ny = this.y + dy ;
+            const nx = this.x + dx;
+            const ny = this.y + dy;
 
             if (ny >= 0 && ny < this.game.map.map.length &&
                 nx >= 0 && nx < this.game.map.map[0].length) {
@@ -73,11 +73,11 @@ export class Bomb {
                 const playerGridX = Math.round(this.game.player.pixelX / variables.GRID_CELL_SIZE);
                 const playerGridY = Math.round(this.game.player.pixelY / variables.GRID_CELL_SIZE);
 
-                if (playerGridX === nx && playerGridY === ny) {
+                if (playerGridX === nx && playerGridY === ny && !this.game.player.emortal) {
                     this.game.player.lives--;
                     this.game.player.pixelX = 1 * variables.GRID_CELL_SIZE;
                     this.game.player.pixelY = 1 * variables.GRID_CELL_SIZE;
-
+                    this.game.player.emortal = true;
                     if (this.game.player.lives <= 0) {
                         this.game.gameOver = true;
                     }
@@ -95,14 +95,14 @@ export class Bomb {
                         }
                     });
                 }
-               
-                
+
+
                 this.createExplosion(nx, ny);
-            
+
             }
-            
+
         });
-    
+
     }
 
     createExplosion(x, y) {

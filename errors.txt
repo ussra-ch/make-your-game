@@ -2,7 +2,6 @@
 - fix 60FPS
 
 
-- restart katlagga
 - enemies.js:89 Uncaught TypeError: Cannot read properties of undefined (reading '13')
     at Enemies.checkForCollision (enemies.js:89:33)
     at Enemies.update (enemies.js:61:19)

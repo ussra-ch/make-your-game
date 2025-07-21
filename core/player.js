@@ -1,5 +1,5 @@
-import {variables} from "./variables.js"
-import {Bomb} from "./bomb.js"
+import { variables } from "./variables.js"
+import { Bomb } from "./bomb.js"
 
 
 export class Player {
@@ -13,6 +13,7 @@ export class Player {
         this.maxLives = 5
         this.bombs = [];
         this.maxBombs = 3;
+        this.emortal = false;
         this.inagif = '3adi';
         this.element = null;
         this.createPlayerElement();
@@ -26,7 +27,7 @@ export class Player {
         if (!this.element && variables.bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
-            this.element.style.width = `${variables.GRID_CELL_SIZE- 5}px`;
+            this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
@@ -63,29 +64,36 @@ export class Player {
         const newY = this.pixelY + moveY;
 
         // Check collision and move
-        if (this.canMove(newX , newY )) {
+        if (this.canMove(newX, newY)) {
             this.pixelX = newX;
             this.pixelY = newY;
         }
 
-      
-        if (this.game.input.keys.includes(' ') ) {
+
+        if (this.game.input.keys.includes(' ')) {
             this.placeBomb();
         }
 
-        let X = this.pixelX /variables.GRID_CELL_SIZE;
+        let X = this.pixelX / variables.GRID_CELL_SIZE;
         let Y = this.pixelY / variables.GRID_CELL_SIZE;
         const gridX = Math.round(X);
         const gridY = Math.round(Y);
 
+        let a = setInterval(() => {
+            this.emortal = false;
+        }, 1000);
+        if (!this.emortal) {
+            clearInterval(a);
+        }
         this.game.enemies.forEach(enemy => {
             const enemyGridX = Math.round(enemy.x / variables.GRID_CELL_SIZE);
             const enemyGridY = Math.round(enemy.y / variables.GRID_CELL_SIZE);
 
-            if (enemyGridX === gridY && enemyGridY === gridX) {
+            if (enemyGridX === gridY && enemyGridY === gridX && !this.emortal) {
                 this.lives--;
                 this.pixelX = 1 * variables.GRID_CELL_SIZE;
                 this.pixelY = 1 * variables.GRID_CELL_SIZE;
+                this.emortal = true;
 
                 if (this.lives <= 0) {
                     this.game.gameOver = true;
@@ -95,7 +103,7 @@ export class Player {
 
         if (this.game.map.map[gridY][gridX] === 4) {
             this.game.map.map[gridY][gridX] = 0;
-            if (this.speed < this.maxSpeed){
+            if (this.speed < this.maxSpeed) {
                 this.speed += 0.5;
             }
             this.game.ui.score += 10;
@@ -103,7 +111,7 @@ export class Player {
         }
         if (this.game.map.map[gridY][gridX] === 5) {
             this.game.map.map[gridY][gridX] = 0;
-            if(this.lives < this.maxLives){
+            if (this.lives < this.maxLives) {
                 this.lives += 1;
             }
             this.game.ui.score += 10;
@@ -200,7 +208,7 @@ export class Player {
 
         if (this.element) {
             // this.element.style.left = `${this.pixelX}px`;
-            this.element.style.transform =  `translate(${this.pixelX}px, ${this.pixelY}px)`
+            this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`
 
             // Update animation
             if (this.inagif === 'right') {
