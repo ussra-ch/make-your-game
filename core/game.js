@@ -1,7 +1,7 @@
-//import { variables } from "./variables.js"
+import { variables } from "./variables.js"
 import { Map } from "./map.js"
 import { Player } from "./player.js"
-//import { Enemies } from "./enemies.js"
+import { Enemies } from "./enemies.js"
 import { Ui, KeyboardListner } from "./tools.js"
 
 
@@ -15,7 +15,7 @@ export class Game {
         this.pause = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
-        this.maxEnemies = 4;
+        this.maxEnemies = 30;
         this.startDraw = true
         this.enemies = []
         this.emptySpaces = this.map.findEmptySpaces()
@@ -34,6 +34,7 @@ export class Game {
             // }
             this.map.draw()
         }
+      
         // console.log('map created');
         this.player.draw();
         this.ui.draw(deltaTime);

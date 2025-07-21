@@ -21,9 +21,9 @@ function animate(timestamp) {
     } else if (game.gameOver || game.enemies.length === 0) {
         if (game.gameOver) {
             game.ui.gameOver.style.display = 'block';
-              pauseEl.style.display = 'block';
-                blur.style.filter = 'blur(10px)';
-                constinue.style.display = 'none';
+            pauseEl.style.display = 'block';
+            blur.style.filter = 'blur(10px)';
+            constinue.style.display = 'none';
         } else {
             const jj = document.getElementById('win');
             if (jj) {
@@ -53,7 +53,7 @@ function startGame() {
 
     const overlay = document.createElement('div');
     const item = document.querySelectorAll('#ui h1');
-    console.log(item);
+   
 
     overlay.id = 'difficulty-card';
     overlay.innerHTML = `
@@ -100,14 +100,27 @@ function startGame() {
                 }
             } else if (e.target.dataset.diff === 'hard') {
                 blur.style.filter = 'none'
-                for (let i = 0; i < 18; i++) {
+                for (let i = 0; i < 4; i++) {
                     let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
                     game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
                 }
+                variables.Hared = true
                 game.player.maxLives = 3
                 for (let i = 0; i < item.length; i++) {
                     item[i].style.display = 'block';
                 }
+                let a=setInterval(() => {
+                    
+                    if (game.enemies.length >= game.maxEnemies) {
+                       clearInterval(a)
+                    }
+                    let place = game.emptySpaces[Math.floor(Math.random() * game.emptySpaces.length)]
+                    game.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, game.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+                    console.log(game.enemies.length);
+                    
+                }, 3000)
+
+
             }
             animate(0);
         };

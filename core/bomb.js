@@ -95,7 +95,7 @@ export class Bomb {
                         }
                     });
                 }
-                console.log(nx, ny);
+               
                 
                 this.createExplosion(nx, ny);
             
