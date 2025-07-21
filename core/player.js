@@ -20,12 +20,13 @@ export class Player {
     }
 
     createPlayerElement() {
-        const existingElement = document.getElementById('player');
+        const existingElement = document.getElementById('p');
         if (existingElement) {
             existingElement.remove();
         }
         if (!this.element && variables.bord) {
             this.element = document.createElement('div');
+            this.element.id = 'p';
             this.element.style.position = 'absolute';
             this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
