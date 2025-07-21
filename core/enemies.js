@@ -66,7 +66,7 @@ export class Enemies {
         } 
         if(this.time <= 0) {
             this.randomDirection();
-            this.time = 100
+            this.time = 550
         }
         this.time -= 1
     }
