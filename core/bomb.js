@@ -73,7 +73,11 @@ export class Bomb {
                 const playerGridX = Math.round(this.game.player.pixelX / variables.GRID_CELL_SIZE);
                 const playerGridY = Math.round(this.game.player.pixelY / variables.GRID_CELL_SIZE);
 
-                if (playerGridX === nx && playerGridY === ny && !this.game.player.emortal) {
+                if (playerGridX === nx && playerGridY === ny && this.game.player.time==0) {
+                    this.game.player.time = 1;
+                    setTimeout(() => {
+                        this.game.player.time = 0;
+                    }, 3000);
                     this.game.player.lives--;
                     this.game.player.pixelX = 1 * variables.GRID_CELL_SIZE;
                     this.game.player.pixelY = 1 * variables.GRID_CELL_SIZE;

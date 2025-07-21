@@ -16,6 +16,7 @@ export class Player {
         this.emortal = false;
         this.inagif = '3adi';
         this.element = null;
+        this.time= 0
         this.createPlayerElement();
     }
 
@@ -69,6 +70,9 @@ export class Player {
             this.pixelX = newX;
             this.pixelY = newY;
         }
+     
+     
+
 
 
         if (this.game.input.keys.includes(' ')) {
@@ -80,17 +84,16 @@ export class Player {
         const gridX = Math.round(X);
         const gridY = Math.round(Y);
 
-        let a = setInterval(() => {
-            this.emortal = false;
-        }, 1000);
-        if (!this.emortal) {
-            clearInterval(a);
-        }
         this.game.enemies.forEach(enemy => {
             const enemyGridX = Math.round(enemy.x / variables.GRID_CELL_SIZE);
             const enemyGridY = Math.round(enemy.y / variables.GRID_CELL_SIZE);
 
-            if (enemyGridX === gridY && enemyGridY === gridX && !this.emortal) {
+            if (enemyGridX === gridY && enemyGridY === gridX && this.time==0) {
+                this.time = 1
+                setTimeout(() => {
+                  this.time = 0
+                }, 3000)
+                
                 this.lives--;
                 this.pixelX = 1 * variables.GRID_CELL_SIZE;
                 this.pixelY = 1 * variables.GRID_CELL_SIZE;
