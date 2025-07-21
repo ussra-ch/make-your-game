@@ -15,7 +15,6 @@ export class Player {
         this.maxBombs = 3;
         this.inagif = '3adi';
         this.element = null;
-        this.bombCooldown = 0;
         this.createPlayerElement();
     }
 
@@ -60,18 +59,14 @@ export class Player {
         const newY = this.pixelY + moveY;
 
         // Check collision and move
-        if (this.canMove(newX + 2, newY + 2)) {
+        if (this.canMove(newX , newY )) {
             this.pixelX = newX;
             this.pixelY = newY;
         }
 
-        if (this.bombCooldown > 0) {
-            this.bombCooldown--;
-        }
-
-        if (this.game.input.keys.includes(' ') && this.bombCooldown === 0) {
+      
+        if (this.game.input.keys.includes(' ') ) {
             this.placeBomb();
-            this.bombCooldown = 10;
         }
 
         let X = this.pixelX /variables.GRID_CELL_SIZE;
