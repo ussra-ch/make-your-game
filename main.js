@@ -52,6 +52,7 @@ function animate(timestamp) {
         jj.style.display = 'none';
         gameOver.style.display = 'none';
         constinue.style.display = 'block';
+        pauseEl.style.display = 'none';
 
         clearInterval(a)
         startGame();

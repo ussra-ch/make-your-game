@@ -66,7 +66,7 @@ export class Ui {
             button.addEventListener('click', () => {
                 if (button.id === 'pause-button') {
                     this.game.pause = !this.game.pause;
-                    this.gameOver.style.display = "none"
+                  //  this.gameOver.style.display = "none"
                     // button.textContent = this.game.pause ? 'Resume' : 'Pause';
                 } else if (button.id === 'restart') {
                     //window.location.replace(window.location.href)
