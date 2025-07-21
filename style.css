@@ -4,7 +4,10 @@ body {
     font-family: Arial, sans-serif;
     background-color: #222;
     background-size: 200% 200%;
-    animation: move-bg 8s linear infinite;
+    background-image: url("./img/black1.jpg");
+    background-size: contain;
+    background-repeat: repeat;
+    backdrop-filter: blur(5px);
     color: white;
 }
 
@@ -16,8 +19,10 @@ body {
     padding-left: 47px;
     padding-right: 47px;
     margin-top: -5px;
-    background-color: #333;
+    background-color: #1c1c22;
     border-radius: 5px;
+    border: 1px solid #ffb300;
+    box-shadow: 0 0 32px 8px #040404;
 }
 
 #ui h1 {
@@ -46,12 +51,12 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(30, 30, 30, 0.95);
+    background: #040404;
     color: #fff;
     padding: 32px 48px;
     border-radius: 18px;
     border: 2px solid #ffb300;
-    box-shadow: 0 0 32px 8px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 32px 8px #040404;
     display: none;
     z-index: 1000;
     text-align: center;
@@ -60,7 +65,7 @@ body {
 }
 
 #pause button {
-    background: #222;
+    background: #040404;
     color: #ffb300;
     border: 2px solid #ffb300;
     border-radius: 8px;
@@ -142,7 +147,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(30, 30, 30, 0.97);
+    background: #040404;
     color: #fff;
     padding: 36px 56px;
     border-radius: 18px;
