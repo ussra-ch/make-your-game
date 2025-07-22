@@ -1,5 +1,4 @@
 import { variables } from "./variables.js"
-import { startGame } from "../main.js";
 
 
 export class KeyboardListner {
