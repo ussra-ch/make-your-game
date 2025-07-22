@@ -3,7 +3,7 @@ export let variables = {
     tilesContainer: null,
     GRID_CELL_SIZE:  Math.floor(game.offsetWidth / 19) ,
     initialSpeed: 0.05, // Container for map tiles
-    cadeau: [4, 5, 6,4,4,4],
+    cadeau: [4, 5, 6],
     restart:false,
     start: false,
 }
