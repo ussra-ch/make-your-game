@@ -80,7 +80,6 @@ export function startGame() {
     game = new Game();
     const en = document.querySelectorAll('.enemy');
     en.forEach(enemy => {
-
         enemy.remove();
     })
     //console.log(variables.GRID_CELL_SIZE);
@@ -136,7 +135,6 @@ export function startGame() {
                 game.startDraw = true
                 document.getElementById('ui').style.display = 'flex';
                 blur.style.filter = 'none'
-                variables.Hared = true
                 game.player.maxLives = 3
                 a = setInterval(() => {
                     game.maxEnemies = 30;
