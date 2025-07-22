@@ -18,6 +18,7 @@ export class Bomb {
         if (!this.element && variables.bord) {
             this.element = document.createElement('div');
             this.element.style.position = 'absolute';
+            this.element.className = 'bomb';
             this.element.style.left = `${this.x * variables.GRID_CELL_SIZE}px`;
             this.element.style.top = `${this.y * variables.GRID_CELL_SIZE}px`;
             this.element.style.width = `${variables.GRID_CELL_SIZE}px`;

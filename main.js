@@ -65,6 +65,10 @@ export function startGame() {
     en.forEach(enemy => {
         enemy.remove();
     })
+    const bomb = document.querySelectorAll('.bomb');
+    bomb.forEach(b => {
+        b.remove();
+    })
     const overlay = document.createElement('div');
     const item = document.querySelectorAll('#ui h1');
     overlay.id = 'difficulty-card';
