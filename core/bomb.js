@@ -22,7 +22,7 @@ export class Bomb {
             this.element.style.top = `${this.y * variables.GRID_CELL_SIZE}px`;
             this.element.style.width = `${variables.GRID_CELL_SIZE}px`;
             this.element.style.height = `${variables.GRID_CELL_SIZE}px`;
-            this.element.style.backgroundImage = "url('./img/bomb.gif')";
+            this.element.style.backgroundImage = "url('./img/bomb.png')";
             this.element.style.borderRadius = `${50}px`
             this.element.style.zIndex = '8';
             variables.bord.appendChild(this.element);

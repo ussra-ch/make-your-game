@@ -95,14 +95,14 @@ export class Map {
                 }
                 if (this.map[y][x] === 4) {
                     // tile.style.backgroundImage = "url('./img/grass.png')";
-                    tile.style.backgroundImage = "url('./img/energy.gif')";
+                    tile.style.backgroundImage = "url('./img/enrgy.png')";
                 }
                 if (this.map[y][x] === 5) {
                     // tile.style.backgroundImage = "url('./img/grass.png')";
-                    tile.style.backgroundImage = "url('./img/heart.gif')";
+                    tile.style.backgroundImage = "url('./img/heart.png')";
                 }
                 if (this.map[y][x] === 6) {
-                    tile.style.backgroundImage = "url('./img/poison1.gif')";
+                    tile.style.backgroundImage = "url('./img/poison.png')";
                     // tile.style.backgroundImage = "url('./img/poison-unscreen.gif')";
                 }
 

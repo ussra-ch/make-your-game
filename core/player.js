@@ -218,8 +218,8 @@ export class Player {
             this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`;
             this.lastTime += deltaTime;
             // Sprite sheet config
-            const frameW = 35; 
-            const frameH = 34; 
+            const frameW = variables.GRID_CELL_SIZE; 
+            const frameH = variables.GRID_CELL_SIZE- 5; 
             this.element.style.width = `${frameW}px`;
             this.element.style.height = `${frameH}px`;
             this.element.style.backgroundSize = `${frameW * 3}px ${frameH * 4}px`;
