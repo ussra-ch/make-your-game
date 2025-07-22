@@ -34,8 +34,8 @@ export class Player {
             this.element = document.createElement('div');
             this.element.id = 'p';
             this.element.style.position = 'absolute';
-            this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
-            this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
+            // this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
+            // this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = `url('${this.img}')`;
             this.element.style.backgroundRepeat = "no - repeiat";
@@ -223,7 +223,7 @@ export class Player {
             this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`;
             this.lastTime += deltaTime;
             // Sprite sheet config
-            const frameW = variables.GRID_CELL_SIZE; 
+            const frameW = variables.GRID_CELL_SIZE-5; 
             const frameH = variables.GRID_CELL_SIZE- 5; 
             this.element.style.width = `${frameW}px`;
             this.element.style.height = `${frameH}px`;
