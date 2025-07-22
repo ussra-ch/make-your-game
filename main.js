@@ -1,6 +1,6 @@
 import { Game } from "./core/game.js"
-import { variables } from "../core/variables.js"
-import { Enemies } from "../core/enemies.js"
+import { variables } from "./core/variables.js"
+import { Enemies } from "./core/enemies.js"
 
 
 
