@@ -206,14 +206,15 @@ body {
     #game-over,
     #difficulty-card {
         width: 90%;
-        padding: 10px 10px;
+        padding: 10px 10px 10px 10px;
         font-size: 15px;
     }
 
     #pause button {
-        width: 100%;
+        width: 90%;
         margin: 10px;
         font-size: 15px;
+        align-items: center;
     }
 
 
