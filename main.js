@@ -58,6 +58,7 @@ function animate(timestamp) {
         gameOver.style.display = 'none';
         constinue.style.display = 'block';
         pauseEl.style.display = 'none';
+        blur.style.filter = 'blur(10px)';
 
         clearInterval(a)
         startGame();
@@ -85,6 +86,7 @@ export function startGame() {
     //console.log(variables.GRID_CELL_SIZE);
 
     const overlay = document.createElement('div');
+    
     const item = document.querySelectorAll('#ui h1');
 
 
