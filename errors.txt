@@ -8,7 +8,7 @@
     at Array.forEach (<anonymous>)
     at Game.update (game.js:64:26)
     at animate (main.js:47:10)
-
+-sprite sheet f blast gif
 - menu's responsive mazalaa
 
 

@@ -6,8 +6,13 @@ import { Enemies } from "../core/enemies.js"
 
 let game
 let lastTime = 0;
+let last=performance.now();
+let fps = 0;
 var a = null;
 function animate(timestamp) {
+    const now=performance.now();
+    fps=1000/(now-last);
+    last=now;
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
@@ -63,6 +68,7 @@ function animate(timestamp) {
         requestAnimationFrame(animate);
 
     }
+console.log(`FPS: ${Math.round(fps)}`);
 
 
 
