@@ -1,4 +1,4 @@
-import {variables} from "./variables.js"
+import { variables } from "./variables.js"
 
 export class Enemies {
     constructor(x, y, gameBord, enemySize = variables.GRID_CELL_SIZE, speed = variables.initialSpeed) {
@@ -13,6 +13,10 @@ export class Enemies {
         this.gameBoard = gameBord
         this.render()
         this.time = 100
+        this.totalFrames = 15;
+        this.frameWidth = this.size;
+        this.currentFrame = 0;
+        this.lastTime = 0;
     }
 
     create() {
@@ -24,14 +28,25 @@ export class Enemies {
             z-index: 100;
             position: absolute;
             will-change: transform;
-            background-image: url('./img/enemy.gif');
+            background-image: url('./img/enemy.png');
+             background-repeat: no-repeat;
+            image-rendering: pixelated;
             transform: translate(${this.y}px, ${this.x}px)
             `
-            return this.element
+        return this.element
     }
 
-    render() {
+    render(deltatime=0) {
         if (!this.isAlive) return
+        this.lastTime += deltatime;
+        if (this.lastTime >= 100) {
+            console.log(1);
+            
+            this.lastTime = 0;
+            const xOffset = -this.currentFrame * this.frameWidth;
+            this.element.style.backgroundPosition = `${xOffset}px 0`;
+            this.currentFrame = (this.currentFrame + 1) % this.totalFrames;
+        }
         this.element.style.transform = `translate(${this.y}px, ${this.x}px)`;
     }
 
@@ -60,11 +75,11 @@ export class Enemies {
         }
         if (!this.checkForCollision(newX, newY, gameBoard.map)) {
             this.x = newX, this.y = newY
-            this.render()
-        }else{
+            this.render(deltatime)
+        } else {
             this.randomDirection();
-        } 
-        if(this.time <= 0) {
+        }
+        if (this.time <= 0) {
             this.randomDirection();
             this.time = 550
         }

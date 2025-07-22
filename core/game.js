@@ -32,7 +32,7 @@ export class Game {
         }
 
         // console.log('map created');
-        this.player.draw();
+        this.player.draw(deltaTime);
         this.ui.draw(deltaTime);
 
         const livesEl = document.querySelector('#ui h1');

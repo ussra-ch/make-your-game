@@ -13,6 +13,11 @@ export class Player {
         this.maxLives = 5
         this.bombs = [];
         this.maxBombs = 3;
+        this.img = './img/player/player.png';
+        this.totalFrames = 5;
+        this.frameWidth = 20;
+        this.currentFrame = 0;
+        this.lastTime = 0;
         this.emortal = false;
         this.inagif = '3adi';
         this.element = null;
@@ -31,13 +36,16 @@ export class Player {
             this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
-            this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
+            this.element.style.backgroundImage = `url('${this.img}')`;
+            this.element.style.backgroundRepeat = "no - repeiat";
+            this.element.imageRendering = "pixelated";
+             this.element.style.backgroundPosition = `80px 0`;
             this.element.style.zIndex = '10';
             variables.bord.appendChild(this.element);
         }
     }
 
-    update() {
+    update(deltaTime) {
         // this.maxLives = this.game.player.maxLives;
         let moveX = 0, moveY = 0;
         // Handle movement
@@ -202,27 +210,39 @@ export class Player {
         }
     }
 
-    draw() {
+    draw(deltaTime) {
         if (!this.element) {
             this.createPlayerElement();
         }
-
         if (this.element) {
-            // this.element.style.left = `${this.pixelX}px`;
-            this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`
-
-            // Update animation
-            if (this.inagif === 'right') {
-                this.element.style.backgroundImage = "url('./img/player/liman.gif')";
-            } else if (this.inagif === 'left') {
-                this.element.style.backgroundImage = "url('./img/player/left.gif')";
-            } else if (this.inagif === 'up') {
-                this.element.style.backgroundImage = "url('./img/player/up.gif')";
-            } else if (this.inagif === 'down') {
-                this.element.style.backgroundImage = "url('./img/player/down.gif')";
-            } else if (this.inagif === '3adi') {
-                this.element.style.backgroundImage = "url('./img/player/wa9f.gif')";
+            this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`;
+            this.lastTime += deltaTime;
+            // Sprite sheet config
+            const frameW = 35; 
+            const frameH = 34; 
+            this.element.style.width = `${frameW}px`;
+            this.element.style.height = `${frameH}px`;
+            this.element.style.backgroundSize = `${frameW * 3}px ${frameH * 4}px`;
+            // Direction row mapping
+            let dirRow = 0;
+            if (this.inagif === 'down') dirRow = 0;
+            else if (this.inagif === 'left') dirRow = 1;
+            else if (this.inagif === 'right') dirRow = 2;
+            else if (this.inagif === 'up') dirRow = 3;
+            // Frame count per direction
+            let framesPerDir = 3;
+            // Animate frames
+            if (!this.frameCount) this.frameCount = 0;
+            if (!this.frameIndex) this.frameIndex = 0;
+            this.frameCount++;
+            if (this.frameCount > 8) {
+                this.frameIndex = (this.frameIndex + 1) % framesPerDir;
+                this.frameCount = 0;
             }
+            // Set background position
+            const xOffset = -this.frameIndex * frameW;
+            const yOffset = -dirRow * frameH;
+            this.element.style.backgroundPosition = `${xOffset}px ${yOffset}px`;
         }
         this.bombs.forEach(bomb => bomb.draw());
     }

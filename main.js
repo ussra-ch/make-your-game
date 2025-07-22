@@ -6,31 +6,34 @@ import { Enemies } from "../core/enemies.js"
 
 let game
 let lastTime = 0;
+let last=performance.now();
+let fps = 0;
 var a = null;
 function animate(timestamp) {
-    if (variables.restart) {
-        clearInterval(a)
-        startGame();
-        variables.restart = false;
-    }
+    const now=performance.now();
+    fps=1000/(now-last);
+    last=now;
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
     const pauseEl = document.getElementById('pause');
     let constinue = document.getElementById('pause-button');
+    const jj = document.getElementById('win');
+    const gameOver = document.getElementById('game-over');
 
 
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
     } else if (game.gameOver) {
-        if (game.gameOver) {
-            game.ui.gameOver.style.display = 'block';
+        console.log(888);
+
+        if (game.enemies.length !== 0) {
+            gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
             blur.style.filter = 'blur(10px)';
             constinue.style.display = 'none';
         } else {
-            const jj = document.getElementById('win');
             if (jj) {
                 pauseEl.style.display = 'block';
                 blur.style.filter = 'blur(10px)';
@@ -50,7 +53,26 @@ function animate(timestamp) {
 
 
     game.update(deltatime);
-    requestAnimationFrame(animate);
+    if (variables.restart) {
+        jj.style.display = 'none';
+        gameOver.style.display = 'none';
+        constinue.style.display = 'block';
+        pauseEl.style.display = 'none';
+
+        clearInterval(a)
+        startGame();
+        variables.restart = false;
+        //    variables.start = true;
+
+    } else {
+        requestAnimationFrame(animate);
+
+    }
+console.log(`FPS: ${Math.round(fps)}`);
+
+
+
+
 }
 
 export function startGame() {
@@ -93,6 +115,7 @@ export function startGame() {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {
                 document.getElementById('ui').style.display = 'flex';
+                game.maxEnemies = 4;
                 blur.style.filter = 'none'
                 game.startDraw = true
 
@@ -113,7 +136,7 @@ export function startGame() {
                 blur.style.filter = 'none'
                 variables.Hared = true
                 game.player.maxLives = 3
-                 a = setInterval(() => {
+                a = setInterval(() => {
                     game.maxEnemies = 30;
                     if ((game.enemies.length >= game.maxEnemies)) {
                         clearInterval(a)
@@ -127,7 +150,7 @@ export function startGame() {
                     item[i].style.display = 'block';
                 }
             }
-
+            variables.start = false;
             animate(0);
         };
 
