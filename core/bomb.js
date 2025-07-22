@@ -48,8 +48,6 @@ export class Bomb {
 
         if (this.element) {
             this.element.remove();
-            //console.log(this.element);
-
             this.element = null;
         }
         const dirs = [

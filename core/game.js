@@ -63,7 +63,7 @@ export class Game {
         if (!this.pause && !this.gameOver) {
             this.player.update();
             this.enemies.forEach(enemy => {
-                enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
+                enemy.update(deltaTime, this.map);
             });
             this.enemies = this.enemies.filter(enemy => enemy.isAlive);
         }

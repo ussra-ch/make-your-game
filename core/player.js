@@ -34,20 +34,17 @@ export class Player {
             this.element = document.createElement('div');
             this.element.id = 'p';
             this.element.style.position = 'absolute';
-            // this.element.style.width = `${variables.GRID_CELL_SIZE - 5}px`;
-            // this.element.style.height = `${variables.GRID_CELL_SIZE - 5}px`;
             this.element.style.backgroundSize = 'cover';
             this.element.style.backgroundImage = `url('${this.img}')`;
             this.element.style.backgroundRepeat = "no - repeiat";
             this.element.imageRendering = "pixelated";
-             this.element.style.backgroundPosition = `80px 0`;
+            this.element.style.backgroundPosition = `80px 0`;
             this.element.style.zIndex = '10';
             variables.bord.appendChild(this.element);
         }
     }
 
     update(deltaTime) {
-        // this.maxLives = this.game.player.maxLives;
         let moveX = 0, moveY = 0;
         // Handle movement
         if (this.game.input.keys[this.game.input.keys.length - 1] == 'ArrowUp') {
@@ -171,7 +168,6 @@ export class Player {
             }
             const tile = this.game.map.map[gridY][gridX];
             if (tile === 1 || tile == 2) {
-                // Nudge logic for all directions
                 if (this.inagif === 'down' && X - gridX < edgeThreshold && gridX > 0 && this.game.map.map[gridY][gridX - 1] !== 1) {
                     this.pixelX -= nudgeAmount;
                 }
@@ -223,8 +219,8 @@ export class Player {
             this.element.style.transform = `translate(${this.pixelX}px, ${this.pixelY}px)`;
             this.lastTime += deltaTime;
             // Sprite sheet config
-            const frameW = variables.GRID_CELL_SIZE-5; 
-            const frameH = variables.GRID_CELL_SIZE- 5; 
+            const frameW = variables.GRID_CELL_SIZE - 5;
+            const frameH = variables.GRID_CELL_SIZE - 5;
             this.element.style.width = `${frameW}px`;
             this.element.style.height = `${frameH}px`;
             this.element.style.backgroundSize = `${frameW * 3}px ${frameH * 4}px`;

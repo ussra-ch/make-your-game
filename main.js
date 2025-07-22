@@ -6,13 +6,8 @@ import { Enemies } from "../core/enemies.js"
 
 let game
 let lastTime = 0;
-let last=performance.now();
-let fps = 0;
 var a = null;
 function animate(timestamp) {
-    const now=performance.now();
-    fps=1000/(now-last);
-    last=now;
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
@@ -26,7 +21,6 @@ function animate(timestamp) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
     } else if (game.gameOver) {
-        console.log(888);
 
         if (game.enemies.length !== 0) {
             gameOver.style.display = 'block';
@@ -49,9 +43,6 @@ function animate(timestamp) {
         game.draw(deltatime);
     }
 
-
-
-
     game.update(deltatime);
     if (variables.restart) {
         jj.style.display = 'none';
@@ -59,21 +50,13 @@ function animate(timestamp) {
         constinue.style.display = 'block';
         pauseEl.style.display = 'none';
         blur.style.filter = 'blur(10px)';
-
         clearInterval(a)
         startGame();
         variables.restart = false;
-        //    variables.start = true;
-
     } else {
         requestAnimationFrame(animate);
 
     }
-console.log(`FPS: ${Math.round(fps)}`);
-
-
-
-
 }
 
 export function startGame() {
@@ -82,13 +65,8 @@ export function startGame() {
     en.forEach(enemy => {
         enemy.remove();
     })
-    //console.log(variables.GRID_CELL_SIZE);
-
     const overlay = document.createElement('div');
-    
     const item = document.querySelectorAll('#ui h1');
-
-
     overlay.id = 'difficulty-card';
     overlay.innerHTML = `
     <div style="margin-bottom: 24px;">Choose Difficulty</div>
@@ -157,7 +135,6 @@ export function startGame() {
     });
 
     const pauseEl = document.getElementById('pause');
-    //const restartEl = document.getElementById('restart')
 
     pauseEl.addEventListener('click', () => {
         game.pause = false

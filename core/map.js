@@ -85,25 +85,22 @@ export class Map {
                 tile.style.backgroundSize = "cover";
 
                 if (this.map[y][x] === 1) {
-                    tile.style.backgroundImage = "url('./img/block.png')";
+                    tile.style.backgroundImage = "url('./img/block1.png')";
                 }
                 if (this.map[y][x] === 2) {
-                    tile.style.backgroundImage = "url('./img/RTS.png')";
+                    tile.style.backgroundImage = "url('./img/box1.png')";
                 }
                 if (this.map[y][x] === 0 || this.map[y][x] === 3) {
-                    tile.style.backgroundImage = "url('./img/grass.png')";
+                    tile.style.backgroundImage = "url('./img/grass1.png')";
                 }
                 if (this.map[y][x] === 4) {
-                    // tile.style.backgroundImage = "url('./img/grass.png')";
                     tile.style.backgroundImage = "url('./img/enrgy.png')";
                 }
                 if (this.map[y][x] === 5) {
-                    // tile.style.backgroundImage = "url('./img/grass.png')";
                     tile.style.backgroundImage = "url('./img/heart.png')";
                 }
                 if (this.map[y][x] === 6) {
                     tile.style.backgroundImage = "url('./img/poison.png')";
-                    // tile.style.backgroundImage = "url('./img/poison-unscreen.gif')";
                 }
 
                 variables.tilesContainer.appendChild(tile);

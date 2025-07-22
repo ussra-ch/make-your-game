@@ -40,7 +40,7 @@ export class Enemies {
     render(deltatime=0) {
         if (!this.isAlive) return
         this.frameDelay += deltatime;
-        if (this.frameDelay >= 100) { // Adjust the frame delay as needed
+        if (this.frameDelay >= 100) { 
             this.frameDelay = 0; // Reset the frame delay
             const xOffset = -this.currentFrame * this.frameWidth;
             this.element.style.backgroundPosition = `${xOffset}px 0`;
@@ -52,7 +52,6 @@ export class Enemies {
     }
 
     update(deltatime, gameBoard) {
-        //time howa time li kan bin had l frame wl frame li kant 9bl
         if (!this.isAlive) return
         let distance = this.speed * deltatime, newX, newY
         if (this.direction === 'idle') {
