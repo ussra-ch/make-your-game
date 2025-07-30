@@ -58,8 +58,7 @@ function animate(timestamp) {
 
     }
 }
-
-export function startGame() {
+ function startGame() {
     game = new Game();
     const en = document.querySelectorAll('.enemy');
     en.forEach(enemy => {
