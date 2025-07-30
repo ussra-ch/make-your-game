@@ -29,8 +29,8 @@ export class Ui {
     constructor(game) {
         this.game = game;
         this.score = 0;
-        this.timeS = 0; //seconds
-        this.timeM = 0; //minutes
+        this.timeM = 3;
+        this.timeS = 0;
         this.elapsed = 0;
         this.gameOver = null;
         [this.pauseButton, this.restartButton] = [document.getElementById('pause-button'), document.getElementById('restart')];
@@ -38,13 +38,24 @@ export class Ui {
 
     draw(deltaTime) {
         this.elapsed += deltaTime;
+
         if (this.elapsed >= 1000) {
-            this.timeS += Math.floor(this.elapsed / 1000);
-            this.elapsed %= 1000;
-        }
-        if (this.timeS >= 60) {
-            this.timeM += 1;
-            this.timeS = 0;
+            this.elapsed -= 1000;
+
+            if (this.timeS === 0) {
+                if (this.timeM > 0) {
+                    this.timeM -= 1;
+                    this.timeS = 59;
+                } else {
+                    this.timeM = 0;
+                    this.timeS = 0;
+                    this.game.gameOver = true;
+
+                    return;
+                }
+            } else {
+                this.timeS -= 1;
+            }
         }
         const timeEl = document.getElementById('time');
         if (timeEl) {
