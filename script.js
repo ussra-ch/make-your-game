@@ -8,9 +8,12 @@ let game
 let lastTime = 0;
 let starts = document.getElementById('startstory')
 let ss =  document.getElementById('topstory')
-
+ let  paus = false
 var a = null;
 function animate(timestamp) {
+    removeSpaceListener();
+    
+  
     if (game.ui.timeM == 2 && game.ui.timeS == 45) {
         starts.style.display = "block"
         starts.textContent = 'لقد تدربت كتيرا على هذا ,الشيء الوحيد القادر  على قتل الأشباح وتحريرها من اللعنة هي القابل'
@@ -141,17 +144,25 @@ function animate(timestamp) {
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
+        clearInterval(game.ui.interval)
+        paus =true
     } else if (game.gameOver) {
+                clearInterval(game.ui.interval)
+
                    starts.style.display = "none"
 
         if (game.enemies.length !== 0 || game.ui.timeS == 0) {
             clearTimeout(ids)
+                    clearInterval(game.ui.interval)
+
             gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
             blur.style.filter = 'blur(10px)';
             constinue.style.display = 'none';
         } else {
             if (jj) {
+                        clearInterval(game.ui.interval)
+
                 pauseEl.style.display = 'block';
                 blur.style.filter = 'blur(10px)';
                 jj.style.display = 'block';
@@ -162,6 +173,10 @@ function animate(timestamp) {
         if (pauseEl) {
             pauseEl.style.display = 'none';
             blur.style.filter = 'none'
+        }
+        if(paus){
+            game.ui.go =true
+            paus =false
         }
         game.draw(deltatime);
     }
@@ -183,6 +198,7 @@ function animate(timestamp) {
 }
 function startGame() {
     game = new Game();
+
     const en = document.querySelectorAll('.enemy');
     en.forEach(enemy => {
         enemy.remove();
@@ -201,7 +217,7 @@ function startGame() {
     <button class="diff-btn" data-diff="hard">Hard</button>
     `;
     document.body.appendChild(overlay);
-    let blur = document.getElementById('blur-wrapper')
+    var blur = document.getElementById('blur-wrapper')
     Array.from(overlay.querySelectorAll('button')).forEach(btn => {
         btn.style = `
         background: #1c1c22;
@@ -254,19 +270,13 @@ function startGame() {
                     item[i].style.display = 'block';
                 }
             }
-         ss.textContent ='لم تعد للحياة معنى  بعدما تحولت عائلته  و أصدقائه لأشباح و ذلك راجع لشئ غامض  لا يعلمه أحد ، لقد فقد زوجته وإبنته وكل  أصدقائه في لمح البصر كأن شيئا لم يكن من الأصل ،ولكن وبعد نزال طويل قرر البطل أن يحرر اليأس من روحه وأن يجعل للامعنى معنى ،فلستساعده و لتححرره من أصوات اليأس وكذلك فلتحرر عائلته من لعنة لطالما كانت عبئا عليهم'
+         ss.textContent ='لم تعد للحياة معنى  بعدما تحولت عائلته  و أصدقائه لأشباح و ذلك راجع لشئ غامض  لا يعلمه أحد ، لقد فقد زوجته وإبنته وكل  أصدقائه في لمح البصر كأن شيئا لم يكن من الأصل ،ولكن وبعد نزال طويل قرر البطل أن يحرر اليأس من روحه وأن يجعل للامعنى معنى ،فلستساعده و لتححرره من أصوات اليأس وكذلك فلتحرر عائلته من لعنة لطالما كانت عبئا عليهم press enter to  Skip'
             blur.style.filter = 'blur(10px)';
             ss.style.display = 'block'
 
-            ids = setTimeout(() => {
-                blur.style.filter = 'none';
-            ss.style.display = 'none'
+document.addEventListener('keydown', handleSpace);
 
-                ss.textContent = ""
-                animate(0);
-
-
-            }, 25000)
+           
         };
 
     });
@@ -277,5 +287,20 @@ function startGame() {
         game.pause = false
         blur.style.filter = 'none'
     })
+}
+function handleSpace(event) {
+    if (event.key === 'Enter' || event.code === 'Enter') { 
+    const blur = document.getElementById('blur-wrapper')
+    blur.style.filter = 'none';
+    ss.style.display = 'none';
+    ss.textContent = "";
+    
+    animate(0);
+        game.ui.go =true
+
+    }
+}
+function removeSpaceListener() {
+    document.removeEventListener('keydown', handleSpace);
 }
 startGame();

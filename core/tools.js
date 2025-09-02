@@ -1,6 +1,5 @@
 import { variables } from "./variables.js"
-
-
+ 
 export class KeyboardListner {
     constructor(game) {
         this.game = game;
@@ -29,34 +28,39 @@ export class Ui {
     constructor(game) {
         this.game = game;
         this.score = 0;
-        this.timeM = 3;
-        this.timeS = 0;
+        this.timeM = 1;
+        this.timeS = 10;
         this.elapsed = 0;
         this.gameOver = null;
+        this.interval = null;
+        this.go = false;
         [this.pauseButton, this.restartButton] = [document.getElementById('pause-button'), document.getElementById('restart')];
     }
 
-    draw(deltaTime) {
-        this.elapsed += deltaTime;
+    draw() {
+         
+               
+     if(this.go){
+            this.go =false
+         this.interval = setInterval(() => {
+    if (this.timeS === 0) {
+      if (this.timeM > 0) {
+        this.timeM -= 1;
+        this.timeS = 59;
+      } else {
+        this.timeM = 0;
+        this.timeS = 0;
+        this.game.gameOver = true;
+        clearInterval(this.interval); 
+      }
+    } else {
+      this.timeS -= 1;
+    }
+    }, 1000);
+     }
+              
 
-        if (this.elapsed >= 1000) {
-            this.elapsed -= 1000;
-
-            if (this.timeS === 0) {
-                if (this.timeM > 0) {
-                    this.timeM -= 1;
-                    this.timeS = 59;
-                } else {
-                    this.timeM = 0;
-                    this.timeS = 0;
-                    this.game.gameOver = true;
-
-                    return;
-                }
-            } else {
-                this.timeS -= 1;
-            }
-        }
+        
         const timeEl = document.getElementById('time');
         if (timeEl) {
             timeEl.textContent = `time: ${this.timeM.toString().padStart(2, '0')}:${this.timeS.toString().padStart(2, '0')}`;
