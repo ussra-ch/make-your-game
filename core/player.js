@@ -117,9 +117,9 @@ export class Player {
             if (this.speed < this.maxSpeed) {
                 this.speed += 0.5;
             }
-            this.game.ui.score += 10;
+            this.game.ui.score += 20;
             
-            this.game.count += 0.5
+            this.game.count += 1
             console.log(this.game.count);
             this.game.map.draw();
         }
@@ -128,15 +128,14 @@ export class Player {
             if (this.lives < this.maxLives) {
                 this.lives += 1;
             }
-            this.game.ui.score += 10;
-            this.game.count += 0.5
+            this.game.ui.score += 20;
+            this.game.count += 1
             this.game.map.draw();
 
         }
         if (this.game.map.map[gridY][gridX] === 6) {
             this.game.map.map[gridY][gridX] = 0;
             this.lives -= 1;
-            this.game.ui.score -= 10;
             if (this.lives <= 0) {
                 this.game.gameOver = true;
             }

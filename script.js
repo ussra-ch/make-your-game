@@ -23,7 +23,7 @@ function animate(timestamp) {
 
 
     }
-    if (game.count == 2 || game.count == 2.5) {
+    if (game.count == 2 ) {
 
         start1.textContent = 'علي أن أسرع الوقت غير كافي '
         start1.style.display = "block"
@@ -31,7 +31,7 @@ function animate(timestamp) {
     }
 
 
-    if (game.count == 3 || game.count == 3.5) {
+    if (game.count == 3 ) {
 
         start1.style.display = "block"
 
@@ -40,7 +40,7 @@ function animate(timestamp) {
 
 
     }
-    if (game.count == 4 || game.count == 4.5) {
+    if (game.count == 4 ) {
 
         start1.style.display = "block"
 
@@ -49,40 +49,40 @@ function animate(timestamp) {
 
 
     }
-    if (game.count == 5 || game.count == 5.5) {
+    if (game.count == 5 ) {
         start1.style.display = "block"
 
         start1.textContent = 'أنا السبب في كل شيء أنا من جعلتهم هكذا أنا السبب ،،،،أنااااااا،ليتني مت بدل ذلك'
 
 
-    }
-    if (game.count == 6 || game.count == 6.5) {
+    }5
+    if (game.count == 6 ) {
         start1.style.display = "block"
 
         start1.textContent = 'يتذكر البطل ملامح زوجته والدموع تسقط كأنها صخور تحجرت وصوت طفلته التي تتلعتم في الكلام لكن صوتها ينسي كل هم  '
 
     }
-    if (game.count == 7 || game.count == 7.5) {
+    if (game.count == 7 ) {
         start1.style.display = "block"
 
         start1.textContent = 'تم يتذكر أخر كلمات زوجته .،لاتلم  نفسك كتيرا ،لا تحمل كل العبئ وحدك، لاشيء تغير، كل شيء ظل كا هو فأنت بطلي'
 
     }
-    if (game.count == 8 || game.count == 8.5) {
+    if (game.count == 8 ) {
         start1.style.display = "block"
 
         start1.textContent = 'يصرخ البطل والغضب يشع من وجهه قائلا : أحبك'
 
 
     }
-    if (game.count == 9 || game.count == 9.5) {
+    if (game.count == 9) {
         start1.style.display = "block"
 
         start1.textContent = 'لن أستسلم'
 
 
     }
-    if (game.count == 10 || game.count == 10.5) {
+    if (game.count == 10 ) {
         start1.style.display = "block"
 
         start1.textContent = 'أبدا'
