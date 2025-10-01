@@ -118,6 +118,9 @@ export class Player {
                 this.speed += 0.5;
             }
             this.game.ui.score += 10;
+            
+            this.game.count += 0.5
+            console.log(this.game.count);
             this.game.map.draw();
         }
         if (this.game.map.map[gridY][gridX] === 5) {
@@ -126,6 +129,7 @@ export class Player {
                 this.lives += 1;
             }
             this.game.ui.score += 10;
+            this.game.count += 0.5
             this.game.map.draw();
 
         }

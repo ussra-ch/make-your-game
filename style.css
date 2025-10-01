@@ -10,7 +10,24 @@ body {
     backdrop-filter: blur(5px);
     color: white;
 }
-
+.skip {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ffb300;
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it appears above other elements */
+    font-family: 'Bitcount Grid Single', monospace;
+    display: none; /* Hidden by default */
+}
+.skip:hover {
+    background-color: #e6a700;
+}
 #ui {
     /* display: flex; */
     justify-content: space-between;

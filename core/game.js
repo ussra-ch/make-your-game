@@ -18,6 +18,7 @@ export class Game {
         this.maxEnemies = 4;
         this.startDraw = true
         this.enemies = []
+        this.count= 0
         this.emptySpaces = this.map.findEmptySpaces()
     }
 

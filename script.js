@@ -7,131 +7,96 @@ let ids
 let game
 let lastTime = 0;
 let starts = document.getElementById('startstory')
-let ss =  document.getElementById('topstory')
- let  paus = false
+let ss = document.getElementById('topstory')
+let paus = false
 var a = null;
 function animate(timestamp) {
     removeSpaceListener();
-    
-  
-    if (game.ui.timeM == 2 && game.ui.timeS == 45) {
+
+
+    if (game.count == 1 || game.count == 1.5) {
+
+
         starts.style.display = "block"
         starts.textContent = 'لقد تدربت كتيرا على هذا ,الشيء الوحيد القادر  على قتل الأشباح وتحريرها من اللعنة هي القابل'
-        ids = setTimeout(() => {
-            starts.style.display = "none"
-            starts.textContent = ""
-        }, 5000)
+
+
 
     }
-      if (game.ui.timeM == 2 && game.ui.timeS == 25) {
-        starts.textContent ='علي أن أسرع الوقت غير كافي '
+    if (game.count == 2 || game.count == 2.5) {
+
+        starts.textContent = 'علي أن أسرع الوقت غير كافي '
         starts.style.display = "block"
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
-
-            starts.textContent = ""
-        }, 5000)
 
     }
-      if (game.ui.timeM == 2 && game.ui.timeS == 1) {
-                starts.style.display = "block"
+
+
+    if (game.count == 3 || game.count == 3.5) {
+
+        starts.style.display = "block"
 
         starts.textContent = 'اللعنة هنالك الكتير من السموم'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 5000)
+
 
     }
-    if (game.ui.timeM == 1 && game.ui.timeS == 50) {
-                starts.style.display = "block"
+    if (game.count == 4 || game.count == 4.5) {
+
+        starts.style.display = "block"
 
         starts.textContent = 'لطالما أردت أن أخبرك أنني أحبك لكني ,,لكني ,,لكني,,أحتاج لتركيز علي تحريرها'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 5000)
+
 
     }
-    if (game.ui.timeM == 1 && game.ui.timeS == 25) {
-                starts.style.display = "block"
+    if (game.count == 5 || game.count == 5.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'أنا السبب في كل شيء أنا من جعلتهم هكذا أنا السبب ،،،،أنااااااا،ليتني مت بدل ذلك'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 8000)
 
     }
-    if (game.ui.timeM == 0 && game.ui.timeS == 59) {
-                starts.style.display = "block"
+    if (game.count == 6 || game.count == 6.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'يتذكر البطل ملامح زوجته والدموع تسقط كأنها صخور تحجرت وصوت طفلته التي تتلعتم في الكلام لكن صوتها ينسي كل هم  '
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
-
-            starts.textContent = ""
-        }, 8000)
 
     }
-    if (game.ui.timeM == 0 && game.ui.timeS == 45) {
-                starts.style.display = "block"
+    if (game.count == 7 || game.count == 7.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'تم يتذكر أخر كلمات زوجته .،لاتلم  نفسك كتيرا ،لا تحمل كل العبئ وحدك، لاشيء تغير، كل شيء ظل كا هو فأنت بطلي'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
-
-            starts.textContent = ""
-        }, 8000)
 
     }
-    if (game.ui.timeM == 0 && game.ui.timeS == 30) {
-                starts.style.display = "block"
+    if (game.count == 8 || game.count == 8.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'يصرخ البطل والغضب يشع من وجهه قائلا : أحبك'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 8000)
 
     }
-      if (game.ui.timeM == 0 && game.ui.timeS == 20) {
-                starts.style.display = "block"
+    if (game.count == 9 || game.count == 9.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'لن أستسلم'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 8000)
 
     }
-      if (game.ui.timeM == 0 && game.ui.timeS == 20) {
-                starts.style.display = "block"
+    if (game.count == 10 || game.count == 10.5) {
+        starts.style.display = "block"
 
         starts.textContent = 'أبدا'
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
 
-            starts.textContent = ""
-        }, 8000)
 
     }
-       if (game.ui.timeM == 0 && game.ui.timeS == 10) {
-                starts.style.display = "block"
+    if (game.count == 11) {
+        starts.style.display = "block"
+        console.log(game.count, '------------');
 
         starts.textContent = 'فلتساعني أناجيك أيها الاعب '
-        ids = setTimeout(() => {
-                    starts.style.display = "none"
-
-            starts.textContent = ""
-        }, 8000)
 
     }
+
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
     const blur = document.getElementById('blur-wrapper')
@@ -145,15 +110,15 @@ function animate(timestamp) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
         clearInterval(game.ui.interval)
-        paus =true
+        paus = true
     } else if (game.gameOver) {
-                clearInterval(game.ui.interval)
+        clearInterval(game.ui.interval)
 
-                   starts.style.display = "none"
+        starts.style.display = "none"
 
         if (game.enemies.length !== 0 || game.ui.timeS == 0) {
             clearTimeout(ids)
-                    clearInterval(game.ui.interval)
+            clearInterval(game.ui.interval)
 
             gameOver.style.display = 'block';
             pauseEl.style.display = 'block';
@@ -161,7 +126,7 @@ function animate(timestamp) {
             constinue.style.display = 'none';
         } else {
             if (jj) {
-                        clearInterval(game.ui.interval)
+                clearInterval(game.ui.interval)
 
                 pauseEl.style.display = 'block';
                 blur.style.filter = 'blur(10px)';
@@ -174,15 +139,17 @@ function animate(timestamp) {
             pauseEl.style.display = 'none';
             blur.style.filter = 'none'
         }
-        if(paus){
-            game.ui.go =true
-            paus =false
+        if (paus) {
+            game.ui.go = true
+            paus = false
         }
         game.draw(deltatime);
     }
 
     game.update(deltatime);
     if (variables.restart) {
+        starts.style.display = "none"
+        starts.textContent = ""
         jj.style.display = 'none';
         gameOver.style.display = 'none';
         constinue.style.display = 'block';
@@ -270,13 +237,14 @@ function startGame() {
                     item[i].style.display = 'block';
                 }
             }
-         ss.textContent ='لم تعد للحياة معنى  بعدما تحولت عائلته  و أصدقائه لأشباح و ذلك راجع لشئ غامض  لا يعلمه أحد ، لقد فقد زوجته وإبنته وكل  أصدقائه في لمح البصر كأن شيئا لم يكن من الأصل ،ولكن وبعد نزال طويل قرر البطل أن يحرر اليأس من روحه وأن يجعل للامعنى معنى ،فلستساعده و لتححرره من أصوات اليأس وكذلك فلتحرر عائلته من لعنة لطالما كانت عبئا عليهم press enter to  Skip'
+            ss.textContent = "لم  تعدّ للحياة معنى جديدًا بعدما تحوّلت عائلته وأصدقاؤه إلى أشباح، بسبب أمرٍ غامض لا يعلمه أحد. فقد زوجته وابنته وجميع أصدقائه في لمح البصر، وكأن شيئًا لم يكن أصلًا. لكن، وبعد صراعٍ طويل، قرر البطل أن يحرّر اليأس من روحه، وأن يمنح للّامعنى معنى جديدًا. ساعده على ذلك ليُحرّر نفسه من أصوات اليأس، ويحرّر عائلته من لعنةٍ طالما كانت عبئًا عليهم                 "
             blur.style.filter = 'blur(10px)';
+           document.querySelector('.skip').style.display = 'block'
             ss.style.display = 'block'
 
-document.addEventListener('keydown', handleSpace);
+            document.addEventListener('keydown', handleSpace);
 
-           
+
         };
 
     });
@@ -289,14 +257,16 @@ document.addEventListener('keydown', handleSpace);
     })
 }
 function handleSpace(event) {
-    if (event.key === 'Enter' || event.code === 'Enter') { 
-    const blur = document.getElementById('blur-wrapper')
-    blur.style.filter = 'none';
-    ss.style.display = 'none';
-    ss.textContent = "";
-    
-    animate(0);
-        game.ui.go =true
+    if (event.key === 'Enter' || event.code === 'Enter') {
+        const blur = document.getElementById('blur-wrapper')
+        blur.style.filter = 'none';
+        ss.style.display = 'none';
+        ss.textContent = "";
+
+        animate(0);
+        game.ui.go = true
+        document.querySelector('.skip').style.display = 'none'
+
 
     }
 }

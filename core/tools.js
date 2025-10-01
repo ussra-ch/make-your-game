@@ -28,8 +28,8 @@ export class Ui {
     constructor(game) {
         this.game = game;
         this.score = 0;
-        this.timeM = 1;
-        this.timeS = 10;
+        this.timeM = 3;
+        this.timeS = 0;
         this.elapsed = 0;
         this.gameOver = null;
         this.interval = null;

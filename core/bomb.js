@@ -95,6 +95,7 @@ export class Bomb {
                             enemy.isAlive = false;
                             enemy.element.remove();
                             this.game.ui.score += 20;
+                            this.game.count++;
                         }
                     });
                 }
