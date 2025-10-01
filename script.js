@@ -6,8 +6,8 @@ import { Enemies } from "./core/enemies.js"
 let ids
 let game
 let lastTime = 0;
-let starts = document.getElementById('startstory')
-let ss = document.getElementById('topstory')
+let start1 = document.getElementById('startstory')
+let start0 = document.getElementById('topstory')
 let paus = false
 var a = null;
 function animate(timestamp) {
@@ -17,83 +17,83 @@ function animate(timestamp) {
     if (game.count == 1 || game.count == 1.5) {
 
 
-        starts.style.display = "block"
-        starts.textContent = 'لقد تدربت كتيرا على هذا ,الشيء الوحيد القادر  على قتل الأشباح وتحريرها من اللعنة هي القابل'
+        start1.style.display = "block"
+        start1.textContent= 'لقد تدربت كتيرا على هذا ,الشيء الوحيد القادر  على قتل الأشباح وتحريرها من اللعنةهي قنابلي '
 
 
 
     }
     if (game.count == 2 || game.count == 2.5) {
 
-        starts.textContent = 'علي أن أسرع الوقت غير كافي '
-        starts.style.display = "block"
+        start1.textContent = 'علي أن أسرع الوقت غير كافي '
+        start1.style.display = "block"
 
     }
 
 
     if (game.count == 3 || game.count == 3.5) {
 
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'اللعنة هنالك الكتير من السموم'
+        start1.textContent = 'اللعنة هنالك الكتير من السموم'
 
 
 
     }
     if (game.count == 4 || game.count == 4.5) {
 
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'لطالما أردت أن أخبرك أنني أحبك لكني ,,لكني ,,لكني,,أحتاج لتركيز علي تحريرها'
+        start1.textContent = 'لطالما أردت أن أخبرك أنني أحبك لكني ,,لكني ,,لكني,,أحتاج لتركيز علي تحريرها'
 
 
 
     }
     if (game.count == 5 || game.count == 5.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'أنا السبب في كل شيء أنا من جعلتهم هكذا أنا السبب ،،،،أنااااااا،ليتني مت بدل ذلك'
+        start1.textContent = 'أنا السبب في كل شيء أنا من جعلتهم هكذا أنا السبب ،،،،أنااااااا،ليتني مت بدل ذلك'
 
 
     }
     if (game.count == 6 || game.count == 6.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'يتذكر البطل ملامح زوجته والدموع تسقط كأنها صخور تحجرت وصوت طفلته التي تتلعتم في الكلام لكن صوتها ينسي كل هم  '
+        start1.textContent = 'يتذكر البطل ملامح زوجته والدموع تسقط كأنها صخور تحجرت وصوت طفلته التي تتلعتم في الكلام لكن صوتها ينسي كل هم  '
 
     }
     if (game.count == 7 || game.count == 7.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'تم يتذكر أخر كلمات زوجته .،لاتلم  نفسك كتيرا ،لا تحمل كل العبئ وحدك، لاشيء تغير، كل شيء ظل كا هو فأنت بطلي'
+        start1.textContent = 'تم يتذكر أخر كلمات زوجته .،لاتلم  نفسك كتيرا ،لا تحمل كل العبئ وحدك، لاشيء تغير، كل شيء ظل كا هو فأنت بطلي'
 
     }
     if (game.count == 8 || game.count == 8.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'يصرخ البطل والغضب يشع من وجهه قائلا : أحبك'
+        start1.textContent = 'يصرخ البطل والغضب يشع من وجهه قائلا : أحبك'
 
 
     }
     if (game.count == 9 || game.count == 9.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'لن أستسلم'
+        start1.textContent = 'لن أستسلم'
 
 
     }
     if (game.count == 10 || game.count == 10.5) {
-        starts.style.display = "block"
+        start1.style.display = "block"
 
-        starts.textContent = 'أبدا'
+        start1.textContent = 'أبدا'
 
 
     }
     if (game.count == 11) {
-        starts.style.display = "block"
+        start1.style.display = "block"
         console.log(game.count, '------------');
 
-        starts.textContent = 'فلتساعني أناجيك أيها الاعب '
+        start1.textContent = 'فلتساعني أناجيك أيها الاعب '
 
     }
 
@@ -114,7 +114,7 @@ function animate(timestamp) {
     } else if (game.gameOver) {
         clearInterval(game.ui.interval)
 
-        starts.style.display = "none"
+        start1.style.display = "none"
 
         if (game.enemies.length !== 0 || game.ui.timeS == 0) {
             clearTimeout(ids)
@@ -148,8 +148,8 @@ function animate(timestamp) {
 
     game.update(deltatime);
     if (variables.restart) {
-        starts.style.display = "none"
-        starts.textContent = ""
+        start1.style.display = "none"
+        start1.textContent = ""
         jj.style.display = 'none';
         gameOver.style.display = 'none';
         constinue.style.display = 'block';
@@ -237,10 +237,10 @@ function startGame() {
                     item[i].style.display = 'block';
                 }
             }
-            ss.textContent = "لم  تعدّ للحياة معنى جديدًا بعدما تحوّلت عائلته وأصدقاؤه إلى أشباح، بسبب أمرٍ غامض لا يعلمه أحد. فقد زوجته وابنته وجميع أصدقائه في لمح البصر، وكأن شيئًا لم يكن أصلًا. لكن، وبعد صراعٍ طويل، قرر البطل أن يحرّر اليأس من روحه، وأن يمنح للّامعنى معنى جديدًا. ساعده على ذلك ليُحرّر نفسه من أصوات اليأس، ويحرّر عائلته من لعنةٍ طالما كانت عبئًا عليهم                 "
+            start0.textContent = "لم  تعدّ للحياة معنى جديدًا بعدما تحوّلت عائلته وأصدقاؤه إلى أشباح، بسبب أمرٍ غامض لا يعلمه أحد. فقد زوجته وابنته وجميع أصدقائه في لمح البصر، وكأن شيئًا لم يكن أصلًا. لكن، وبعد صراعٍ طويل، قرر البطل أن يحرّر اليأس من روحه، وأن يمنح للّامعنى معنى جديدًا. ساعده على ذلك ليُحرّر نفسه من أصوات اليأس، ويحرّر عائلته من لعنةٍ طالما كانت عبئًا عليهم                 "
             blur.style.filter = 'blur(10px)';
            document.querySelector('.skip').style.display = 'block'
-            ss.style.display = 'block'
+            start0.style.display = 'block'
 
             document.addEventListener('keydown', handleSpace);
 
@@ -260,8 +260,8 @@ function handleSpace(event) {
     if (event.key === 'Enter' || event.code === 'Enter') {
         const blur = document.getElementById('blur-wrapper')
         blur.style.filter = 'none';
-        ss.style.display = 'none';
-        ss.textContent = "";
+        start0.style.display = 'none';
+        start0.textContent = "";
 
         animate(0);
         game.ui.go = true
