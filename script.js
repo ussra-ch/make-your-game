@@ -14,7 +14,7 @@ function animate(timestamp) {
     removeSpaceListener();
 
 
-    if (game.count == 1 || game.count == 1.5) {
+    if (game.count == 1 ) {
 
 
         start1.style.display = "block"
